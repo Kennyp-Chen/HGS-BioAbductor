@@ -1,0 +1,189 @@
+# HGS Training Configuration File
+
+# Hardware Settings
+hardware:
+  cuda_device: "cuda:0"
+  use_cuda: true
+
+# Model Configuration
+model:
+  name: "HGS"
+  bayesian_optimization: true
+  n_trials: 20
+  judge_metric: "best"  # JM parameter
+
+# Data Configuration
+data:
+  type: "PRO"  # "RNA" or "PRO"
+  knowledge_base: "STRING"  # "hcluster", "STRING", "Reactome"
+  fcluster_method: "weighted"
+  datasets: ["HCC"]  # List of datasets to process
+  cox_num: 400  # Number of features to keep after Cox filtering
+  end_point: "OS_60"
+
+# Hyperparameter Search Space
+hyperparameters:
+  # Grid search parameters
+  aggregation_methods: ["cat", "noAGG"]  # AGG
+  learning_rates: [0.01, 0.001]  # LR
+
+  prediction_layer_depths: [2, 4]  # PLD
+  
+  # Fixed parameters
+  epochs: 50
+  graph_loss_rates: 0  # GLR
+  weight_decays: 0.5  # L2
+  print_freq: 10
+  batch_size: 64
+  n_hidden: 200
+  dropout: 0.5
+  activation: "LeakyReLU"
+  mlp_hiddens: [200]
+  predict_hiddens: [200, 100]
+  pooling_hiddens: []
+  resnet: false
+  repeat_time: 10
+  tfidf: false
+  edge_pooling: true
+  pooling_method: "linear"
+  depth: 2
+
+  
+# Loss Function Weights
+loss_weights:
+  a: 1  # likelihood loss weight
+  b: 1  # ranking loss weight
+  c1: 1  # calibration loss weight
+  c2: 0  # additional calibration weight
+  d: 1  # uncensored loss weight
+
+# Knowledge Base Parameters
+knowledge_params:
+  data_drive: "STRING"  # Will be set based on knowledge_base
+  method: "layer"  # Will be set based on knowledge_base
+  criterion: "maxclust"  # Only for hcluster
+  divisor: 3  # For pooling layers
+  num_clusters: 100  # For hcluster
+  layer_reactome: 12  # For Reactome
+  type_know: "STRING"
+  layer_STRING: 100
+  k: 10
+  layer_reactome: 11
+# Paths Configuration
+paths:
+  # Data paths
+  data_root: "data"
+  proteomic_data_template: "{data_root}/PRO/{dataset}/dataset.csv"
+  rna_data_template: "{data_root}/RNA/{dataset}/feature_matrix.csv"
+  reactome_graph_template: "{data_root}/RNA/HCC/ReactomeGraph/reactome_P{layer}/"
+  string_graph_template: "{data_root}/PRO/STRING/{method}/{dataset}-Level{layer}-H.csv"
+  string_gene_list: "{data_root}/PRO/STRING/clusters.protein.ensg.csv"
+  cluster_relation_file: "{data_root}/PRO/STRING/9606.clusters.tree.v12.0.txt"
+  # survival_data_template: "{data_root}/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv"
+  survival_data_template: "{data_root}/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv"
+  mart_export: "{data_root}/mart_export.txt"
+  gsva_dir: "{data_root}/GSVA/"
+  
+  # Output paths
+  results_root: "Results/GridSearch/SingleCohort"
+  output_template: "{results_root}/{data_type}/{dataset}/{knowledge_base}/"
+  edge_pooling_suffix: "EdgePool-"
+  model_suffix: "HGS/"
+  results_files_suffix: "/Results_Files/"
+  grid_search_suffix: "/GridSearch/"
+
+# File Naming Templates
+naming:
+  results_file_template: "Results-{method}.csv"
+  checkpoint_template: "Valid{epochs}eps-{dataset}_seed{seed}_l2{l2}_lr{lr}_agg{agg}_pld{depth}_{pk_d}"
+  checkpoint_extension: ".ckpt"
+
+# Validation Settings
+validation:
+  use_existing_checkpoints: true
+  save_plots: true
+  plot_formats: ["svg"]
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  include_warnings: false
+
+# Advanced Settings
+advanced:
+  # Data validation
+  validate_data_consistency: true
+  
+  # Model specific
+  hg_bn: false  # Hypergraph batch normalization
+  transfer: true
+  bias: true
+  concat: false
+  
+  # Training specific
+  early_stopping: false
+  patience: 10
+  min_delta: 0.001
+  
+  # Memory optimization
+  gradient_accumulation_steps: 1
+  mixed_precision: false 
+
+default_model: generic.gpt-4.1
+
+# Logging and Console Configuration:
+logger:
+    # level: "debug" | "info" | "warning" | "error"
+    # type: "none" | "console" | "file" | "http"
+    # path: "/path/to/logfile.jsonl"
+
+    
+    # Switch the progress display on or off
+    progress_display: true
+
+    # Show chat User/Assistant messages on the console
+    show_chat: true
+    # Show tool calls on the console
+    show_tools: true
+    # Truncate long tool responses on the console 
+    truncate_tools: true
+
+# MCP Servers
+mcp:
+    servers:
+        pubtator3:
+            command: "mcp-server-pubtator3"
+            args: []
+
+# Novelty Scoring Configuration
+novelty:
+    scoring_set: "NoveltyScoring"
+    contemporary_path: "{data_root}/{scoring_set}/Contemporary2022-2025"
+    past_path: "{data_root}/{scoring_set}/Past2010-2021"
+    k_similar_papers: 5
+
+# Literature Evidence Configuration
+plausibility:
+    viewpoint_pattern: "examples/AI_hypotheses/*/"
+    out_dir: "./examples/AI_hypotheses"
+    evidence_results_file: "./examples/AI_hypotheses/evidence_results_pubtator3.json"
+    evidence_percent_file: "./examples/AI_hypotheses/evidence_percent_pubtator3.json"
+
+
+
+# Input Configuration
+input_triplet:
+    base_path: "examples/AI_hypotheses"
+    evidence_percent_file: "examples/AI_hypotheses/evidence_percent_pubtator3.json"
+    triplets_info_file: "examples/10triplets_statistics.json"
+    output_csv: "examples/AI_hypotheses/HypothesisScores.csv"
+
+generic:
+    # default
+    api_key: <your-api-key-here>
+    base_url: <your-base-url-here>
+anthropic:
+    api_key: ~
+openrouter:
+    api_key: <your-api-key-here>

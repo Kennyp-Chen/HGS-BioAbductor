@@ -1,0 +1,10 @@
+# Search Strategy and Reasoning
+To evaluate whether there is literature evidence for the semantic relationship that "Real-time Monitoring of Nrf2 Activity" is enabled by "biomarkers derived from omics analyses and high-resolution imaging" that maintain "Nrf2 within a strict therapeutic window," I first extracted the essential MeSH-level concepts: 'Nrf2', 'biomarkers', 'omics', 'imaging', and 'monitoring'. The query "Nrf2 AND biomarkers AND omics AND imaging AND monitoring" yielded no results, so I refined to "Nrf2 AND real-time monitoring AND omics", simplifying the query but maintaining the three core aspects: Nrf2, monitoring/activity readout (including real-time), and omics-derived biomarkers. This query produced one relevant hit. I then reviewed the full text for validation.
+
+# literature evidence
+## "Memory effects of prior subculture may impact the quality of multiomic perturbation profiles" (PMID: 38976734)
+"Real-time monitoring of cell growth allows to verify prior subculture homogeneity and thus, may be implemented as a check-point before performing elaborate multiomics workflows. ... Several canonical NRF2-target genes were induced upon ATO treatment in the homogeneous and heterogeneous scenarios of the SW480 cells, including SQSTM1, SRXN1, GCLM, as well as the ferritin components FTL and FTH1, in addition to HMOX1 ... Other NRF2-target genes were observed exclusively in the homogeneous scenario, including TXNRD1, GSTM4, and the oxidative stress-induced growth inhibitor 1 (OSGIN1). ... Only this scenario enabled the finding of synergistic combination treatments of ATO and the TXNRD1 inhibitor auranofin that may aid in circumventing NRF2-mediated resistance mechanisms. The control over memory effects of prior subculture emerges as an important determinant to maximize the sensitivity for MoA deconvolution."
+
+Crucially, the paper describes how the combination of real-time imaging-based monitoring of culture growth state and deep omics-profiling enables sensitive, actionable monitoring of NRF2 pathway activity, which is necessary for maintaining strict therapeutic targeting of NRF2-mediated responses.
+
+Answer: True

@@ -1,0 +1,39 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Dual-targeting, multi-ligand nanoparticles",
+            "relation": "are precisely targeted by delivery of high-fidelity CRISPR/Cas9 systems via",
+            "end_node": "Tumor-associated macrophages in HCC"
+        },
+        {
+            "start_node": "High-fidelity CRISPR/Cas9 systems",
+            "relation": "is disrupted by",
+            "end_node": "TGF-β receptor signaling in tumor-associated macrophages"
+        },
+        {
+            "start_node": "Integrated real-time monitoring of TAM phenotypic markers",
+            "relation": "are adaptively modulated based on feedback from",
+            "end_node": "Compensatory signaling pathways (e.g., Wnt/β-catenin and pro-angiogenic signals)"
+        },
+        {
+            "start_node": "Compensatory signaling pathways",
+            "relation": "is recalibrated through precise modulation of",
+            "end_node": "TAM polarization from an immunosuppressive M2 phenotype to a pro-inflammatory M1 phenotype"
+        },
+        {
+            "start_node": "Pro-inflammatory M1 phenotype",
+            "relation": "are promoted by reprogramming of tumor-associated macrophages to a",
+            "end_node": "Enhanced antigen presentation and effector T-cell activation"
+        },
+        {
+            "start_node": "Pro-inflammatory M1 phenotype",
+            "relation": "is attenuated as a consequence of the shift of TAMs to a",
+            "end_node": "VEGF-mediated angiogenesis in the HCC tumor microenvironment"
+        },
+        {
+            "start_node": "Nanoparticle-delivered therapeutic intervention",
+            "relation": "is ensured by coupling inducible safety switches and advanced nanoparticle tracking methods (via digital PCR and live-cell imaging) with",
+            "end_node": "Dynamic control over the immune microenvironment with minimal off-target effects"
+        }
+    ]
+}

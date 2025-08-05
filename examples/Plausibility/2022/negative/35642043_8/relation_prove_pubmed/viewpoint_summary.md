@@ -1,0 +1,9 @@
+| viewpoints | is proved | proved PMID | proved literature title | proved sentence in the literature |test method |
+|------------|-----------|-------------|-------------------------|-----------------------------------|------------|
+| Tumor microenvironment cytokines (IL-6, TNF-α) is activated by PTM enzyme JAK1 | True | 40436288 | IL-6/KIAA1429 promotes ferroptosis resistance in endometrial cancer through m6A modification of DDIT3. | "Mechanistically, IL-6 activated KIAA1429 expression through the JAK1/STAT3 pathway." |
+| Tumor microenvironment cytokines (IL-6, TNF-α) is activated by Glycosyltransferase STT3A | True | 31305264 | IL-6/JAK1 pathway drives PD-L1 Y112 phosphorylation to promote cancer immune evasion. | "Here we show that IL-6–activated JAK1 phosphorylates programmed death-ligand 1 (PD-L1) Tyr112, which recruits the endoplasmic reticulum–associated N-glycosyltransferase STT3A to catalyze PD-L1 glycosylation and maintain PD-L1 stability." |
+| Activated PTM enzyme JAK1 is phosphorylated by CLDN18.2 | False |  |  |  |
+| Activated glycosyltransferase STT3A is glycosylated by CLDN18.2 | False |  |  |  |
+| Modified CLDN18.2 is disrupted by Tight junction architecture | False |  |  |  |
+| Modified CLDN18.2 are unveiled by New extracellular epitopes on CLDN18.2 | True | 33610734 | FAST: a randomised phase II study of zolbetuximab (IMAB362) plus EOX versus EOX alone for first-line treatment of advanced CLDN18.2-positive gastric and gastro-oesophageal adenocarcinoma. | Claudin 18.2 (CLDN18.2) is contained within normal gastric mucosa epithelial tight junctions; upon malignant transformation, CLDN18.2 epitopes become exposed. |
+| New extracellular epitopes on CLDN18.2 have enhanced efficacy due to increased recognition of CLDN18.2-directed immunotherapies | False |  |  |  |

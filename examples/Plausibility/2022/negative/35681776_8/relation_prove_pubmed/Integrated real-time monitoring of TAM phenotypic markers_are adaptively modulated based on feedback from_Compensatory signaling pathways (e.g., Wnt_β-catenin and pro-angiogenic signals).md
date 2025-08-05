@@ -1,0 +1,13 @@
+# Search Strategy and Reasoning
+The initial query used the minimal MeSH terms: "TAM phenotypic markers AND compensatory signaling pathways". This did not yield results, so terms were refined by focusing on biological mechanisms directly: "TAM markers AND Wnt/β-catenin", "TAM AND pro-angiogenic signals", and finally "TAM AND Wnt signaling". This captured literature exploring the role of tumor-associated macrophage (TAM) polarization/phenotype markers and the modulation/feedback involving key compensatory pathways such as Wnt/β-catenin and pro-angiogenic signals. I then reviewed abstracts for evidence of adaptive modulation of TAM markers via feedback from signaling pathways, and for direct mechanistic connections. One article specifically described the molecular feedback loop driving TAM phenotype plasticity in the tumor microenvironment, with focus on Wnt/β-catenin, pro-angiogenic signals, and feedback regulation. I retrieved the full text to confirm detailed experimental evidence of adaptive modulation.
+
+# literature evidence
+## "β-Catenin mediated TAM phenotype promotes pancreatic cancer metastasis via the OSM/STAT3/LOXL2 axis." PMID: 39740539
+**Exact supporting sentence from the Results and Discussion (full text):**
+"Importantly, analysis of MCM-treated PDAC cells revealed significant alterations in Wnt ligand expression patterns ... indicating the existence of a feedback loop where activated TAMs can in turn modulate tumor cell Wnt production. ... These findings delineate a previously unrecognized regulatory circuit wherein β-catenin signaling orchestrates TAM phenotype and OSM expression ..."  
+and  
+"scRNA-seq analysis revealed that β-catenin signaling was uniquely activated in TAMs among immune cells, which consequently regulated both TAM polarization and OSM expression ... our transcriptional profiling of TAMs revealed concurrent activation of both pro- and anti-inflammatory programs, with enrichment in Wnt signaling pathways. ... These findings collectively suggest that OSM might serve as a critical mediator linking immune cell infiltration, stromal activation, and tumor progression in PDAC."  
+and from the Discussion:  
+"RNA sequencing analysis of TAMs revealed significant enrichment of Wnt/β-catenin pathway-related genes...highlighting the activation of this signaling cascade in PDAC-associated macrophages. ... We demonstrated that β-catenin signaling shapes TAM phenotype and function, particularly in regulating OSM expression. ... This finding suggests that targeting β-catenin in TAMs might represent a novel strategy to reprogram the immunosuppressive TME in PDAC."
+
+Answer: True

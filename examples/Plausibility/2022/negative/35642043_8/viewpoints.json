@@ -1,0 +1,39 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Tumor microenvironment cytokines (IL-6, TNF-α)",
+            "relation": "is activated by",
+            "end_node": "PTM enzyme JAK1"
+        },
+        {
+            "start_node": "Tumor microenvironment cytokines (IL-6, TNF-α)",
+            "relation": "is activated by",
+            "end_node": "Glycosyltransferase STT3A"
+        },
+        {
+            "start_node": "Activated PTM enzyme JAK1",
+            "relation": "is phosphorylated by",
+            "end_node": "CLDN18.2"
+        },
+        {
+            "start_node": "Activated glycosyltransferase STT3A",
+            "relation": "is glycosylated by",
+            "end_node": "CLDN18.2"
+        },
+        {
+            "start_node": "Modified CLDN18.2",
+            "relation": "is disrupted by",
+            "end_node": "Tight junction architecture"
+        },
+        {
+            "start_node": "Modified CLDN18.2",
+            "relation": "are unveiled by",
+            "end_node": "New extracellular epitopes on CLDN18.2"
+        },
+        {
+            "start_node": "New extracellular epitopes on CLDN18.2",
+            "relation": "have enhanced efficacy due to increased recognition of",
+            "end_node": "CLDN18.2-directed immunotherapies"
+        }
+    ]
+}

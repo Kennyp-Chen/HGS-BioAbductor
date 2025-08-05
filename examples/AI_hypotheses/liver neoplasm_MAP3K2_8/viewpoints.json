@@ -1,0 +1,44 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "MAP3K2",
+            "relation": "phosphorylates",
+            "end_node": "Geranylgeranyl transferase complex subunits"
+        },
+        {
+            "start_node": "MAP3K2",
+            "relation": "cooperates with",
+            "end_node": "RAS/RAF kinases"
+        },
+        {
+            "start_node": "Phosphorylated geranylgeranyl transferase complex",
+            "relation": "undergoes aberrant geranylgeranylation due to modification of",
+            "end_node": "Rho proteins"
+        },
+        {
+            "start_node": "Aberrantly geranylgeranylated Rho proteins",
+            "relation": "is disrupted by aberrantly modified",
+            "end_node": "Cell adhesion and migration"
+        },
+        {
+            "start_node": "Cell adhesion and migration",
+            "relation": "results from disrupted",
+            "end_node": "Metastasis-prone phenotype"
+        },
+        {
+            "start_node": "MAP3K2-driven mechanism",
+            "relation": "synergizes with the MAP3K2-driven mechanism",
+            "end_node": "GDNF-GFRA1 survival axis"
+        },
+        {
+            "start_node": "MAP3K2-driven mechanism",
+            "relation": "synergizes with the MAP3K2-driven mechanism to drive tumor initiation",
+            "end_node": "Modest increments in Met RTK expression"
+        },
+        {
+            "start_node": "MAP3K2-driven mechanism",
+            "relation": "synergizes with the MAP3K2-driven mechanism to amplify tumor aggressiveness",
+            "end_node": "MAPT-mediated autophagy inhibition"
+        }
+    ]
+}

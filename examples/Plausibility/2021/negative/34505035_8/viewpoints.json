@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Dynamic ALBI Measurements obtained via IoT-connected Biosensors",
+            "relation": "is more accurately predicted by",
+            "end_node": "Immune-Related Hepatotoxicity in HCC Patients on ICI Therapy"
+        },
+        {
+            "start_node": "Static ALBI Assessments from Electronic Health Records (EHRs)",
+            "relation": "is established through",
+            "end_node": "Baseline Hepatic Dysfunction Determination"
+        },
+        {
+            "start_node": "Additional Hepatic Markers such as AST and ALT",
+            "relation": "is enhanced by",
+            "end_node": "Detection of Early Liver Injury"
+        },
+        {
+            "start_node": "Inflammatory Markers including CRP and IL-6",
+            "relation": "is indicated by",
+            "end_node": "Immune Activation Leading to Hepatic Inflammation"
+        },
+        {
+            "start_node": "Advanced, Interpretable Machine Learning Integration of Temporal and Cross-Sectional Data",
+            "relation": "are established via",
+            "end_node": "Clinically-Relevant Threshold Shifts in ALBI Dynamics"
+        },
+        {
+            "start_node": "The Integrated Real-Time and Snapshot Data Strategy",
+            "relation": "are enabled by",
+            "end_node": "Improved Patient Outcomes through Early Interventions and Optimized Dosing"
+        }
+    ]
+}

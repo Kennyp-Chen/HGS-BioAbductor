@@ -1,0 +1,49 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "DDR gene alterations",
+            "relation": "results in",
+            "end_node": "Cytosolic DNA accumulation"
+        },
+        {
+            "start_node": "Accumulated cytosolic DNA",
+            "relation": "triggers",
+            "end_node": "cGAS-STING pathway activation"
+        },
+        {
+            "start_node": "Activated cGAS-STING pathway",
+            "relation": "induces",
+            "end_node": "Robust interferon response"
+        },
+        {
+            "start_node": "Robust interferon response",
+            "relation": "induces",
+            "end_node": "PD-L1 upregulation"
+        },
+        {
+            "start_node": "PD-L1 upregulation",
+            "relation": "promotes",
+            "end_node": "T cell recruitment"
+        },
+        {
+            "start_node": "T cell recruitment",
+            "relation": "results from",
+            "end_node": "Conversion of the tumor microenvironment (from immunologically cold to hot)"
+        },
+        {
+            "start_node": "Administration of PARP inhibitors",
+            "relation": "is mediated by",
+            "end_node": "Further compromised DDR"
+        },
+        {
+            "start_node": "Further compromised DDR",
+            "relation": "is amplified by",
+            "end_node": "Intensification of the immune activation cascade"
+        },
+        {
+            "start_node": "Adaptive treatment stratification via continuous biomarker monitoring",
+            "relation": "is ensured by",
+            "end_node": "Beneficial T cell infiltration overriding immune suppression"
+        }
+    ]
+}

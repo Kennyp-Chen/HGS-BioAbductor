@@ -1,0 +1,10 @@
+# Search Strategy and Reasoning
+I identified the minimal informative keyword set as: "engineered exosomes" AND "chemoresistant colorectal cancer". The phrase "tumor-targeting ligands" refers to ligands engineered onto exosomes for targeting tumor cells, which is commonly achieved by adding targeting peptides or molecules (e.g., RGD peptides, integrin ligands, etc.). Thus, searching for "engineered exosomes" in the context of selective delivery to chemoresistant colorectal cancer cells would capture any literature using modified ligands on exosomes for targeting. The search yielded recent and relevant results, and I proceeded to analyze full-text evidence for direct support of selective targeting.
+
+# literature evidence
+## "A Mitochondria-Targeted Biomimetic Nanomedicine Capable of Reversing Drug Resistance in Colorectal Cancer Through Mitochondrial Dysfunction" (PMID: 39943694)
+"Herein, exosomes (Exos) modified with integrin ligands and mitochondriotropic molecules are synthesized for encapsulating oxaliplatin (OXA) to construct a sequentially targeted and mitochondrion-dysfunctional nanodrug (OXA@Exo-RD). ... OXA@Exo-RD targeted cancer cells and mitochondria in sequence ... OXA@Exo-RD shows the potential to inhibit the growth and metastasis of HCT116/OXA cells in vitro, which is further validated in subcutaneous and orthotopic CRC models, as well as in CRC metastasis models."
+
+From the full text: "the cRGD peptide on the surface of OXA@Exo‐RD conjugated with αvβ3 integrin receptor overexpressed in CRC cells to mediate cellular uptake and facilitate tumor accumulation. ... HCT116/OXA cells incubated with OXA@Exo‐RD exhibited brighter red fluorescence than those incubated with OXA@Exo. ... The above results highlighted that OXA@Exo‐RD increased tumor cell death and prevented tumor cell migration as well as reversed multidrug resistance, leading to an effective paradigm for reversing drug resistance and anti‐metastatic chemotherapy."
+
+Answer: True

@@ -1,0 +1,10 @@
+# Search Strategy and Reasoning
+I focused on the minimal keyword intersection from the pair: "IL-6–STAT3 signalling" and "Increased cell survival via upregulation of MCL1". The most direct mechanistic axis is “IL-6/STAT3/MCL1 cell survival”. I searched abstracts for co-mention of these elements, specifically seeking evidence that sustained/activated IL-6–STAT3 signaling leads to increased MCL1 and enhanced cell survival. Several abstracts mentioned IL-6/STAT3 signaling promoting survival and specifically upregulating MCL1, though sometimes the mechanistic intermediates were less direct. To confirm the mechanistic sequence, I reviewed full text of the most direct paper (PMID: 32099467), ensuring the relationship was explicit, sustained, and mechanistically detailed.
+
+# literature evidence
+## "EGFR Promotes the Development of Triple Negative Breast Cancer Through JAK/STAT3 Signaling" (PMID: 32099467)
+"We found that MCL1 and PIM1, as the important downstream proteins of JAK/STAT3 signaling, were highly expressed in breast cancer tissues or cells in the EGFR overexpression group. Accordingly, their relative expression was significantly reduced in the presence of the STAT3 inhibitor or following EGFR silencing (P<0.01, Figure 8A-B). Following JAK/STAT3 inhibition by Ruxolitinib, the relative expression of MCL1 and PIM1 decreased...JAK/STAT3 signaling is a major contributor to cancer progression...A strong association exists between cancer procession and MCL1, PIM1 and JAK/STAT3. The repression of MCL1 renders leukemic cells more sensitive to synergistic cell death induced by ABT-263 in mouse models."
+
+This supports that sustained activation of IL-6–STAT3 signaling (through EGFR or JAK/STAT3 pathway activation) leads to the upregulation of MCL1, which in turn increases cell survival.
+
+Answer: True

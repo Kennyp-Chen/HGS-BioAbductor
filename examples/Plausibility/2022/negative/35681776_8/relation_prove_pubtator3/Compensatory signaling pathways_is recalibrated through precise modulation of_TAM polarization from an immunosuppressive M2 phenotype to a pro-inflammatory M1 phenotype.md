@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I used the keywords "Compensatory signaling pathways TAM polarization" to query PubTator for scientific literature combining the concepts of compensatory signaling (minimal MeSH terminology: "signaling pathways") and TAM polarization (from M2 to M1 phenotype). One highly relevant abstract (PMID: 40389566) featured a discussion of compensatory pathways and TAM polarization/reprogramming, specifically referencing the modulation of signaling through a dual PI3Kd/CSF1R inhibitor and their effects on TAMs and immune microenvironment. The abstract showed a compensatory pathway and a link to TAM repolarization. I reviewed the abstract for a direct or implied semantic connection between "compensatory signaling pathways" and the "modulation of TAM polarization from M2 to M1," specifically recalibrated via targeted manipulation.
+
+# literature evidence
+## "JMC14: a novel dual PI3Kd/CSF1R inhibitor with potent antitumor activity in hematological and solid tumors." (PMID: 40389566)
+"Notably, its efficacy negatively correlated with the PI3Ka expression among the cell lines tested, suggesting a compensatory pathway mediated by PI3Ka... Furthermore, JMC14 demonstrated potent antitumor activity in murine triple-negative breast cancer (TNBC), which was associated with its activity to reshape the immune microenvironment by reducing M2-like TAMs, enhancing CD8<sup>+</sup> T cell infiltration."
+
+Answer: True

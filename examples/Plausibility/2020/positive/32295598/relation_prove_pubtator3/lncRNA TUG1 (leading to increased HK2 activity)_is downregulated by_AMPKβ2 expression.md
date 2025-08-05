@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+Initial entity search revealed that "AMPKβ2" is not indexed directly in the gene database, but is known as the subunit PRKAB2 of AMPK. Therefore, I conducted literature searches in three steps: (1) using specific entities ("TUG1" and "AMPKβ2"), (2) broader AMPK references, and (3) inclusion of HK2 or glycolysis terms for context. The abstract for PMID: 32547948 (Full Text) provided an exact mechanistic statement linking lncRNA TUG1, AMPKβ2, and HK2, specifically discussing a regulatory axis in which TUG1, through suppression of miR-455-3p (which targets AMPKβ2), ultimately promotes glycolysis and metastasis through HK2 regulation. The implied directionality is that TUG1, by repressing miR-455-3p, upregulates AMPKβ2 expression. There is no evidence anywhere in the literature for TUG1 downregulating AMPKβ2; in fact, the evidence found is for upregulation.
+
+# literature evidence
+## "Non-Coding RNAs Operate in the Crosstalk Between Cancer Metabolic Reprogramming and Metastasis" (PMID: 32547948)
+"Knockdown of lncRNA-TUG1 induces a marked inhibition of cell migration, invasion, and glycolysis by suppressing miR-455-3p, which is transcriptionally repressed by p21 and directly targets the 3'-UTR of adenosine monophosphate-activated protein kinase subunit beta2 (AMPKbeta2), thus the lncRNA TUG1/miR-455-3p/AMPKbeta2 axis regulates the metastasis and glycolysis of HCC cells through the regulation of HK2."
+
+Answer: False

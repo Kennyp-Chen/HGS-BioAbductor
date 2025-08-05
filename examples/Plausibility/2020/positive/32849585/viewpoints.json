@@ -1,0 +1,64 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Myeloid-Derived Suppressor Cells (MDSCs)",
+            "relation": "suppress proliferation and activation of",
+            "end_node": "Cytotoxic T lymphocytes"
+        },
+        {
+            "start_node": "Tumor-derived cytokines (e.g., GM-CSF, G-CSF, VEGF, IL-6)",
+            "relation": "are expanded and recruited by the action of",
+            "end_node": "MDSCs"
+        },
+        {
+            "start_node": "Melanoma-derived extracellular vesicles (EVs)",
+            "relation": "induce conversion of",
+            "end_node": "monocytes into immunosuppressive MDSCs"
+        },
+        {
+            "start_node": "STAT3 signaling",
+            "relation": "acquire enhanced immunosuppressive functions via activation of",
+            "end_node": "MDSCs"
+        },
+        {
+            "start_node": "IL-6",
+            "relation": "are expanded by",
+            "end_node": "MDSCs"
+        },
+        {
+            "start_node": "CCL2 chemokine signaling",
+            "relation": "are recruited by",
+            "end_node": "MDSCs within the tumor microenvironment"
+        },
+        {
+            "start_node": "MDSCs",
+            "relation": "is driven by IL-23 secreted from",
+            "end_node": "Castration-resistant prostate cancer progression"
+        },
+        {
+            "start_node": "COX-2-mediated prostaglandin E2 (PGE2) production",
+            "relation": "is activated by",
+            "end_node": "MDSCs immunosuppressive activity"
+        },
+        {
+            "start_node": "All-trans retinoic acid (ATRA)",
+            "relation": "are induced to differentiate from MDSCs by",
+            "end_node": "mature, non-suppressive myeloid cells"
+        },
+        {
+            "start_node": "miR-155",
+            "relation": "are modulated by",
+            "end_node": "monocytes acquiring suppressive characteristics"
+        },
+        {
+            "start_node": "MDSCs",
+            "relation": "is promoted by MDSCs differentiating into osteoclast-like cells that support",
+            "end_node": "bone metastasis in breast cancer"
+        },
+        {
+            "start_node": "Resveratrol",
+            "relation": "are reduced through induction of apoptosis by",
+            "end_node": "MDSCs in lung cancer"
+        }
+    ]
+}

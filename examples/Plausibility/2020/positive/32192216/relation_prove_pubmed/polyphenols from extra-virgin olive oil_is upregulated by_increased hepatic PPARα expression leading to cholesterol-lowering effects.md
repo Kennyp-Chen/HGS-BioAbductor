@@ -1,0 +1,11 @@
+# Search Strategy and Reasoning
+I started with the minimized MeSH term-based query: "polyphenols AND PPAR alpha AND liver AND cholesterol." This focused the search on literature that reports on polyphenols (a key fraction in extra-virgin olive oil), hepatic (liver) expression of peroxisome proliferator-activated receptor alpha (PPARα), and outcomes relevant to cholesterol metabolism. I screened retrieved abstracts for direct or semantically implied links between extra-virgin olive oil polyphenols, hepatic PPARα upregulation, and cholesterol-lowering. When a promising abstract was found, I accessed the full text to confirm whether polyphenols from extra-virgin olive oil upregulate hepatic PPARα and produce cholesterol-lowering effects, as required by the hypothesis. I excluded PMID: 32192216 per instructions.
+
+# literature evidence
+## "Dietary Extra-Virgin Olive Oil Polyphenols Do Not Attenuate Colon Inflammation in Transgenic HLAB-27 Rats but Exert Hypocholesterolemic Effects through the Modulation of HMGCR and PPAR-α Gene Expression in the Liver." PMID: 30630166
+**Exact sentence from full text (Results Section 3.1.5 and 3.1.3):**
+"HP-EVOO also modulated liver gene expression more effectively than EVOO by increasing PPAR-α and Cd36 and down-regulating inflammatory and fibrosis-related genes like COX-2 and TNF-α [40,42]. ... Compared to a control diet or olive oil diet of low polyphenol content, HP-EVOO supplementation enhanced the expression of genes responsible for lipid metabolism such as PPAR-α and cluster of differentiation 36 (Cd36), which increased lipolysis and fatty acid oxidation [43]."
+
+"HP-EVOO contains a high amount of MUFAs and polyphenols, which have a beneficial effect on the blood lipid profile and cholesterol homeostasis, thereby reducing metabolic and CVD risks [40]. Consumption of HP-EVOO by NAFLD mice has been shown to reduce total cholesterol and LDL levels, while HDL concentration was significantly increased compared to lard- or olive oil-fed mice [37,39,40,41,42,45]."
+
+Answer: True

@@ -1,0 +1,33 @@
+# Core dependencies
+numpy
+pandas
+lifelines
+scipy
+scikit-learn
+matplotlib
+seaborn
+tqdm
+pyyaml
+configparser
+
+# HGS model
+# XAI explanation
+gprofiler-official
+gseapy
+captum
+biopython
+# hypothesis abduction
+openai
+aiofiles
+langchain-openai
+langchain-chroma
+langchain-core
+# hypothesis scoring
+mcp-server-pubtator3
+fast-agent-mcp
+
+# Survival analysis
+sksurv
+
+# Optional dependencies 
+# plotly  

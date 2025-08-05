@@ -1,0 +1,54 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Liver fluke infection (Opisthorchis viverrini and Clonorchis sinensis)",
+            "relation": "is promoted by",
+            "end_node": "Cholangiocarcinoma"
+        },
+        {
+            "start_node": "IDH1/2 mutations",
+            "relation": "is caused by",
+            "end_node": "Epigenetic deregulation (e.g., DNA hypermethylation)"
+        },
+        {
+            "start_node": "FGFR2 fusions",
+            "relation": "is driven by",
+            "end_node": "Aberrant oncogenic signalling"
+        },
+        {
+            "start_node": "Chronic inflammation of the biliary epithelium",
+            "relation": "is induced by",
+            "end_node": "Cholangiocarcinogenesis"
+        },
+        {
+            "start_node": "Cholangiocarcinoma (CCA) cells",
+            "relation": "is triggered by",
+            "end_node": "Activation of cancer-associated fibroblasts (CAFs)"
+        },
+        {
+            "start_node": "Cancer-associated fibroblasts (CAFs)",
+            "relation": "is mediated by",
+            "end_node": "Extracellular matrix remodeling and increased tumour stiffness"
+        },
+        {
+            "start_node": "KRAS mutations",
+            "relation": "is stimulated by",
+            "end_node": "Activation of receptor tyrosine kinase (RTK) signalling pathways"
+        },
+        {
+            "start_node": "EGFR overexpression",
+            "relation": "is promoted by",
+            "end_node": "Enhanced tumor aggressiveness in CCA"
+        },
+        {
+            "start_node": "Downregulation of plasma membrane solute carriers",
+            "relation": "is contributed to by",
+            "end_node": "Chemoresistance in cholangiocarcinoma"
+        },
+        {
+            "start_node": "IL-6–STAT3 signalling",
+            "relation": "is a consequence of sustained",
+            "end_node": "Increased cell survival via upregulation of MCL1"
+        }
+    ]
+}

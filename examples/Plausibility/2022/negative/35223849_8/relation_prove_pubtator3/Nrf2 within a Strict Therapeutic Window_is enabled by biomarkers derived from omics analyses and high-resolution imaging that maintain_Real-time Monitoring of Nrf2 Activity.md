@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I decomposed the original query into minimal MeSH concepts: "Nrf2", "biomarkers", "omics", and "imaging", specifically aiming to find literature on real-time monitoring of Nrf2 activity enabled by omics-derived biomarkers and imaging. I further refined the query to include "Nrf2 real-time monitoring omics imaging," looking for direct mention of real-time assessment and omics-based methods applied to Nrf2. I identified one paper (PMID: 38976734) that explicitly discusses the use of real-time monitoring technologies (cell growth and imaging) to control experimental variables in omics perturbation studies, including direct discussion of Nrf2-mediated stress responses revealed by integrated multi-omics workflows.
+
+# literature evidence
+## "Memory effects of prior subculture may impact the quality of multiomic perturbation profiles" (PMID: 38976734)
+"Real-time monitoring of cell growth allows to verify prior subculture homogeneity and thus, may be implemented as a check-point before performing elaborate multiomics workflows. ... Several cellular pathways affected by the ATO treatment were not identified directly in the CausalPath perturbation network, but only via manual data interpretation. Among these was the induction of the cytoprotective NRF2-mediated response against oxidative stress, which was previously shown as a relevant resistance pathway against ATO. Several canonical NRF2-target genes were induced upon ATO treatment in the homogeneous and heterogeneous scenarios."
+
+Answer: True

@@ -1,0 +1,39 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Tumor-targeting ligands on engineered exosomes",
+            "relation": "are selectively targeted by",
+            "end_node": "Chemoresistant colorectal cancer cells"
+        },
+        {
+            "start_node": "Bioengineered tumor-specific exosomes",
+            "relation": "is delivered by",
+            "end_node": "miR-128-3p"
+        },
+        {
+            "start_node": "miR-128-3p",
+            "relation": "is downregulated by",
+            "end_node": "Bmi1"
+        },
+        {
+            "start_node": "Bmi1",
+            "relation": "is positively regulated by",
+            "end_node": "MRP5-mediated drug efflux"
+        },
+        {
+            "start_node": "MRP5",
+            "relation": "is facilitated by",
+            "end_node": "Oxaliplatin resistance"
+        },
+        {
+            "start_node": "Bmi1",
+            "relation": "is suppressed by enhanced EMT signaling driven by",
+            "end_node": "Epithelial marker expression (epithelial phenotype)"
+        },
+        {
+            "start_node": "Near-infrared (NIR) fluorescent tracking module in exosomes",
+            "relation": "is enabled by the integration of",
+            "end_node": "Real-time monitoring of exosome biodistribution"
+        }
+    ]
+}

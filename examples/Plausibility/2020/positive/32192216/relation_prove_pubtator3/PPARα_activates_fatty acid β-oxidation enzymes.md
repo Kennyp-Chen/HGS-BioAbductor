@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I started by extracting the minimal keywords: "PPARα" and "fatty acid β-oxidation enzymes". Since no exact MeSH entities or hits appeared using the specific phrase "fatty acid β-oxidation enzymes", I refined the search systematically, first replacing "β-oxidation" with "oxidation", then searching "PPARα fatty acid oxidation", then "PPARα beta oxidation", and "PPAR alpha beta oxidation". The last attempt yielded relevant abstracts discussing the regulation of fatty acid oxidation enzymes by PPARα. After identifying a promising abstract (PMID: 32733282), I reviewed the full text to confirm a direct activation/regulation connection. The paper explicitly discusses PPARα controlling the expression of fatty acid β-oxidation enzymes in a functional/activating context.
+
+# literature evidence
+## "The Link Between the Mitochondrial Fatty Acid Oxidation Derangement and Kidney Injury", PMID: 32733282
+"In good agreement with the existence of a coordinate network between enzymes and transporters for accomplishing FAO (Figure 1), the expression of these proteins is mainly under the control of the same group of transcription factors, namely peroxisome proliferator-activated receptors PPAR-alpha, PPAR-beta/delta, and PPAR-gamma. ... Upon this binding, the heterodimer translocates in the nucleus and interacts with specific DNA responsive elements with consequent increased expression of FAO enzymes as well as of the fatty acid transporter CD36."
+
+Answer: True

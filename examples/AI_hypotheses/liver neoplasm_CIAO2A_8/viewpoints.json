@@ -1,0 +1,44 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "CIAO2A",
+            "relation": "physically interacts with",
+            "end_node": "NXF1"
+        },
+        {
+            "start_node": "CIAO2A",
+            "relation": "physically interacts with",
+            "end_node": "ALYREF"
+        },
+        {
+            "start_node": "CIAO2A",
+            "relation": "recruits and modulates the activity of",
+            "end_node": "RNA modification enzymes"
+        },
+        {
+            "start_node": "RNA modification enzymes",
+            "relation": "receive a modification signature from",
+            "end_node": "tumor suppressor mRNAs"
+        },
+        {
+            "start_node": "modified tumor suppressor mRNAs",
+            "relation": "confers high-fidelity and selective export of",
+            "end_node": "cytoplasm"
+        },
+        {
+            "start_node": "exported tumor suppressor mRNAs",
+            "relation": "leads to optimal expression of",
+            "end_node": "tumor suppressor proteins"
+        },
+        {
+            "start_node": "tumor suppressor proteins",
+            "relation": "suppresses the activity of",
+            "end_node": "oncogenic factor eIF5A2"
+        },
+        {
+            "start_node": "CIAO2A",
+            "relation": "promotes when the formation of export-competent mRNP complexes diminishes due to impaired function of",
+            "end_node": "tumor progression"
+        }
+    ]
+}

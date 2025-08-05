@@ -1,0 +1,9 @@
+| viewpoints | is proved | proved PMID | proved literature title | proved sentence in the literature |test method |
+|------------|-----------|-------------|-------------------------|-----------------------------------|------------|
+| Tumor-targeting ligands on engineered exosomes are selectively targeted by Chemoresistant colorectal cancer cells | True | 31918721 | Engineered exosomes for targeted co-delivery of miR-21 inhibitor and chemotherapeutics to reverse drug resistance in colon cancer | "The results showed that the engineered exosome-based 5-FU and miR-21i co-delivery system could efficiently facilitate cellular uptake and significantly down-regulate miR-21 expression in 5-FU resistant HCT-1165FR cell lines... the combinational delivery of miR-21i and 5-FU with the engineered exosomes effectively reverse drug resistance and significantly enhanced the cytotoxicity in 5-FU-resistant colon cancer cells, compared with the single treatment with either miR-21i or 5-FU." |
+Bioengineered tumor-specific exosomes is delivered by miR-128-3p | False |  |  | 
+| miR-128-3p is downregulated by Bmi1 | False |  |  |  |
+| Bmi1 is positively regulated by MRP5-mediated drug efflux | False |  |  |  |
+| MRP5 is facilitated by Oxaliplatin resistance | False |  |  |  |
+| Bmi1 is suppressed by enhanced EMT signaling driven by Epithelial marker expression (epithelial phenotype) | False |  |  |  |
+| Near-infrared (NIR) fluorescent tracking module in exosomes is enabled by the integration of Real-time monitoring of exosome biodistribution | True | 33407513 | Hydrophobic insertion-based engineering of tumor cell-derived exosomes for SPECT/NIRF imaging of colon cancer | Multimodality SPECT and NIRF imaging can provide complementary insight into disease progression and real-time tumor delineation. ... In this study, the nanoprobe's in vivo biodistribution was assessed using SPECT imaging, and the tumor boundaries were identified using NIRF imaging. |

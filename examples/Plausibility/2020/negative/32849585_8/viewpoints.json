@@ -1,0 +1,29 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Tumor-derived extracellular vesicles (EVs) subpopulation",
+            "relation": "uptake of EVs enriched with miR-21, miR-155, IL-6, and GM-CSF",
+            "end_node": "Mature myeloid cells"
+        },
+        {
+            "start_node": "Mature myeloid cells after internalizing EVs enriched with miR-21, miR-155, IL-6, and GM-CSF",
+            "relation": "is induced upon uptake of EV cargo",
+            "end_node": "Downregulation of IRF-8 and C/EBPα"
+        },
+        {
+            "start_node": "Downregulation of transcription factors IRF-8 and C/EBPα",
+            "relation": "is promoted by",
+            "end_node": "Formation of immunosuppressive myeloid-derived suppressor cells (MDSCs)"
+        },
+        {
+            "start_node": "Formation of immunosuppressive MDSCs",
+            "relation": "is a consequence of",
+            "end_node": "Effective T cell inhibition"
+        },
+        {
+            "start_node": "Effective T cell inhibition",
+            "relation": "is facilitated by",
+            "end_node": "Tumor immune escape"
+        }
+    ]
+}

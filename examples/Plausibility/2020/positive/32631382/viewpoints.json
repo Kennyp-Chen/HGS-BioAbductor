@@ -1,0 +1,59 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "HK2",
+            "relation": "binds to enhance ATP production and inhibit apoptosis",
+            "end_node": "VDAC1"
+        },
+        {
+            "start_node": "PFKFB3",
+            "relation": "allosterically activates by generating F-2,6-BP",
+            "end_node": "PFK1"
+        },
+        {
+            "start_node": "PKM2",
+            "relation": "is co-activated by its nuclear translocation",
+            "end_node": "HIF-1α"
+        },
+        {
+            "start_node": "AMPK",
+            "relation": "upregulates expression of to increase glucose uptake",
+            "end_node": "GLUT1"
+        },
+        {
+            "start_node": "PI3K/Akt pathway",
+            "relation": "is activated by promoting its mitochondrial binding",
+            "end_node": "HK2"
+        },
+        {
+            "start_node": "HIF-1α",
+            "relation": "transcriptionally upregulates to promote aerobic glycolysis",
+            "end_node": "glycolytic enzymes (e.g., HK2, PFK1, PKM2)"
+        },
+        {
+            "start_node": "c-Myc",
+            "relation": "activates transcription of to enhance the Warburg effect",
+            "end_node": "glycolytic genes"
+        },
+        {
+            "start_node": "miR-122",
+            "relation": "downregulates expression of to inhibit glycolysis",
+            "end_node": "PKM2"
+        },
+        {
+            "start_node": "Androgen Receptor",
+            "relation": "induces upregulation of to enhance glycolysis",
+            "end_node": "HK2"
+        },
+        {
+            "start_node": "Lactate",
+            "relation": "induces secretion of via extracellular acidification",
+            "end_node": "VEGF"
+        },
+        {
+            "start_node": "enhanced aerobic glycolysis",
+            "relation": "contributes to by enhancing the rate of aerobic glycolysis",
+            "end_node": "sorafenib resistance"
+        }
+    ]
+}

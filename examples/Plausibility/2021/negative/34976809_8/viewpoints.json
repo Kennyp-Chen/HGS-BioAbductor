@@ -1,0 +1,84 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "HBV/HCV infection",
+            "relation": "induces",
+            "end_node": "Persistent inflammation in HCC"
+        },
+        {
+            "start_node": "Persistent inflammation",
+            "relation": "promotes",
+            "end_node": "Elevated IL-6 levels"
+        },
+        {
+            "start_node": "Elevated IL-6 levels",
+            "relation": "triggers",
+            "end_node": "IL-6 receptor engagement"
+        },
+        {
+            "start_node": "IL-6 receptor engagement",
+            "relation": "activates",
+            "end_node": "JAK activation"
+        },
+        {
+            "start_node": "JAK activation",
+            "relation": "is activated by",
+            "end_node": "STAT3 activation"
+        },
+        {
+            "start_node": "JAK activation",
+            "relation": "is activated by",
+            "end_node": "STAT1 activation"
+        },
+        {
+            "start_node": "STAT3 activation",
+            "relation": "is induced by",
+            "end_node": "Anti-apoptotic gene expression"
+        },
+        {
+            "start_node": "STAT3 activation",
+            "relation": "is induced by",
+            "end_node": "Stemness gene expression"
+        },
+        {
+            "start_node": "STAT3 activation",
+            "relation": "is induced by",
+            "end_node": "Angiogenic gene expression"
+        },
+        {
+            "start_node": "STAT3 activation",
+            "relation": "is upregulated by",
+            "end_node": "PD-L1 expression"
+        },
+        {
+            "start_node": "Epigenetic silencing of SOCS",
+            "relation": "results from",
+            "end_node": "Loss of SOCS inhibitory function"
+        },
+        {
+            "start_node": "Loss of SOCS inhibitory function",
+            "relation": "is compounded by",
+            "end_node": "Enhanced STAT3 activation"
+        },
+        {
+            "start_node": "Targeted restoration of SOCS activity",
+            "relation": "is achieved by",
+            "end_node": "Inhibition of IL-6/STAT3 signaling"
+        },
+        {
+            "start_node": "Selective inhibition of STAT3",
+            "relation": "is achieved by",
+            "end_node": "Reduction in STAT3-mediated oncogenic gene expression"
+        },
+        {
+            "start_node": "Real-time STAT1 monitoring",
+            "relation": "is facilitated by",
+            "end_node": "Dynamic adjustment of therapeutic intervention"
+        },
+        {
+            "start_node": "PD-L1 expression",
+            "relation": "is promoted by",
+            "end_node": "Immune evasion"
+        }
+    ]
+}

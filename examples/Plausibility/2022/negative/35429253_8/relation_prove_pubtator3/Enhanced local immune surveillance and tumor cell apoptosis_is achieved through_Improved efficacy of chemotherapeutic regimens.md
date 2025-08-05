@@ -1,0 +1,13 @@
+# Search Strategy and Reasoning
+I began by identifying the minimal MeSH concept keywords: "immune surveillance", "tumor cell apoptosis", and "chemotherapeutic efficacy". I searched for literature that links enhanced local immune surveillance and tumor cell apoptosis to improved chemotherapeutic regimen efficacy. The goal was to find evidence supporting that improved chemotherapy outcomes ("improved efficacy of chemotherapeutic regimens") are achieved through the mechanism of increased immune surveillance and tumor cell apoptosis.
+
+The search yielded several relevant papers, but the key evidence comes from studies on immunogenic cell death (ICD) where chemotherapy-induced tumor apoptosis increases immune response and this combined effect improves treatment efficacy. After finding a highly pertinent abstract (PMID: 33762577), I reviewed the full text to confirm that enhancement of local immune surveillance and tumor cell apoptosis does indeed lead to greater efficacy of chemotherapeutic regimens, particularly where immune activation is increased alongside apoptosis.
+
+# literature evidence
+## "Oleandrin, a cardiac glycoside, induces immunogenic cell death via the PERK/elF2alpha/ATF4/CHOP pathway in breast cancer" (PMID: 33762577)
+"Chemotherapeutic agents have been linked to immunogenic cell death (ICD) induction that is capable of augmenting anti-tumor immune surveillance...certain chemotherapeutic agents such as anthracyclines, oxaliplatin, and paclitaxel can trigger tumor cell death via enhanced immune destruction via eliciting the release of damage-associated molecular patterns (DAMPs) to enhance tumor immunogenicity...Immunogenic cell death (ICD) is a cell death process characterized by the upregulation of various DAMPs. ... As an 'eat me' signal, CRT attracts antigen-presenting cells (APCs) to phagocytize the dead cells. ATP acts as a 'find me' signal, which leads to immune cell infiltration into the tumor sites."
+
+From the full text: 
+"Oleandrin triggered ER stress and induced ICD-mediated immune destruction of breast cancer cells. ... Immune checkpoint inhibitors combining with ICD-inducing agents might be a more effective approach, especially in the treatment of tumors lacking immune cell invasion that are referred as 'cold tumor'. Recently, it was demonstrated that immune checkpoint inhibitors increased the anti-tumor response while combined with ICD-inducing chemotherapy agents or radiation therapy."
+
+Answer: True

@@ -1,0 +1,49 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "ECM stiffness",
+            "relation": "is initiated by increased ECM stiffness in fibrotic liver disease",
+            "end_node": "Integrin β1/FAK signaling activation in cancer cells"
+        },
+        {
+            "start_node": "Integrin β1/FAK signaling activation in cancer cells",
+            "relation": "are reinforced by activation of the integrin β1/FAK pathway",
+            "end_node": "Enhanced tumorigenic traits (proliferation, migration, EMT) in cancer cells"
+        },
+        {
+            "start_node": "ECM stiffness",
+            "relation": "is initiated by increased ECM stiffness in fibrotic liver disease",
+            "end_node": "Integrin β5/FAK/MEK/ERK signaling cascade activation in liver-resident macrophages"
+        },
+        {
+            "start_node": "Integrin β5/FAK/MEK/ERK signaling activation in liver-resident macrophages",
+            "relation": "is driven by the activation of the integrin β5/FAK/MEK/ERK cascade",
+            "end_node": "M2-like immunosuppressive polarization of liver-resident macrophages"
+        },
+        {
+            "start_node": "M2-like polarized liver-resident macrophages",
+            "relation": "is caused by the secretory activity of M2-like polarized liver-resident macrophages",
+            "end_node": "Exacerbation of ECM stiffness through secretion of TGF-β, LOXL2, and ECM remodeling enzymes"
+        },
+        {
+            "start_node": "ECM stiffness",
+            "relation": "is compensatorily triggered by sustained high ECM stiffness",
+            "end_node": "YAP/TAZ signaling activation in cancer cells"
+        },
+        {
+            "start_node": "ECM stiffness",
+            "relation": "is compensatorily triggered by sustained high ECM stiffness",
+            "end_node": "YAP/TAZ signaling activation in liver-resident macrophages"
+        },
+        {
+            "start_node": "Combined inhibition of integrin β1/β5 pathways and YAP/TAZ modulation",
+            "relation": "is induced by combined inhibition of integrin β1/β5 pathways and modulation of YAP/TAZ signaling",
+            "end_node": "Repolarization of liver-resident macrophages to a pro-inflammatory state"
+        },
+        {
+            "start_node": "Combined inhibition of integrin β1 and YAP/TAZ signaling",
+            "relation": "is achieved by targeting integrin β1 signaling in concert with YAP/TAZ modulators",
+            "end_node": "Reduction in cancer cell malignancy"
+        }
+    ]
+}

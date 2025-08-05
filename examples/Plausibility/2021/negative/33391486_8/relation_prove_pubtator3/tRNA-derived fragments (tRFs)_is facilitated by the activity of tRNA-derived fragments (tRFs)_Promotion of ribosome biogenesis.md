@@ -1,0 +1,9 @@
+# Search Strategy and Reasoning
+The minimal MeSH keywords for this inquiry are "tRNA-derived fragments" and "ribosome biogenesis". I searched the literature using these keywords to look for direct or semantically implied evidence that tRNA-derived fragments (tRFs) facilitate or promote ribosome biogenesis. Upon review of abstracts, one (PMID: 33391486) directly referenced the regulatory roles of tRFs, specifically mentioning their function in protein translation and ribosome biogenesis. To strengthen the evidence, I reviewed the full text, which includes a distinct section titled "Translational activation via promotion of ribosome biogenesis," providing mechanistic details and a named example of a tRF with such a role.
+
+# literature evidence
+## "tRNA-derived fragments: Mechanisms underlying their regulation of gene expression and potential applications as therapeutic targets in cancers and virus infections" (PMID: 33391486)
+Extracted sentence from the full text:
+"An innovative study by Kim et al. proved that a 22 nt length tRF called 3' tRFLeuCAG enhanced translation by facilitating ribosome protein biogenesis. Ribosome gradient analysis showed that ribosomal protein S28 (RPS28) was needed for ribosomal RNA 18S rRNA biogenesis and was an integral part of the 40S ribosomal subunit. The 3' UTR target site of RPS28 mRNA forms a secondary structure that is a major region containing a translation initiation site. Several experiments involving target-site mutations demonstrated that 3' tRFLeuCAG bound to duplexed secondary target sites in RPS28 mRNA and unwound the hairpin secondary structure to increase translation in human cancer cells (Figure 3A). Thus, 3' tRFLeuCAG plays a vital function in regulating the numbers of ribosomes. The greater the number of ribosomes, the more potential protein synthesis, eventually increasing cell growth and proliferation."
+
+Answer: True

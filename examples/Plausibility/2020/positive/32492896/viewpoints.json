@@ -1,0 +1,54 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Alpha-fetoprotein (AFP)",
+            "relation": "low sensitivity of",
+            "end_node": "Early Hepatocellular Carcinoma (HCC) Diagnosis"
+        },
+        {
+            "start_node": "Chronic Hepatitis C Virus (HCV) Infection",
+            "relation": "is induced by necro-inflammatory activity in",
+            "end_node": "False-Positive AFP Elevation"
+        },
+        {
+            "start_node": "Alpha-fetoprotein-L3 (AFP-L3)",
+            "relation": "is promoted by elevated levels of",
+            "end_node": "Aggressive HCC Phenotype (e.g., vascular invasion, dedifferentiation)"
+        },
+        {
+            "start_node": "Des-γ-Carboxy Prothrombin (DCP)",
+            "relation": "is associated with increased serum levels of",
+            "end_node": "Vascular Invasion in HCC"
+        },
+        {
+            "start_node": "Combined Serum Biomarkers (AFP, AFP-L3, and DCP)",
+            "relation": "results from the sequential and longitudinal evaluation of",
+            "end_node": "Enhanced Early HCC Detection Sensitivity"
+        },
+        {
+            "start_node": "GALAD Score",
+            "relation": "is achieved by integrating biomarkers with demographic factors in the",
+            "end_node": "Superior Early-Stage HCC Detection Performance"
+        },
+        {
+            "start_node": "Alpha-fetoprotein (AFP)",
+            "relation": "is predicted by higher serum levels of",
+            "end_node": "Worse HCC Prognosis (lower overall survival and higher recurrence)"
+        },
+        {
+            "start_node": "Hepatocyte Growth Factor (HGF)/MET Signaling",
+            "relation": "is driven by the overactivation of",
+            "end_node": "Tumor Proliferation and Reduced Treatment Responsiveness (e.g., to sorafenib)"
+        },
+        {
+            "start_node": "Circulating Tumor DNA (ctDNA) via Liquid Biopsy",
+            "relation": "can be facilitated by analyzing",
+            "end_node": "Early Detection of HCC-specific Genetic Mutations"
+        },
+        {
+            "start_node": "PD-L1 Expression on Tumor Tissue",
+            "relation": "is not reliably determined by the levels of",
+            "end_node": "Predictive Assessment for Immunotherapy Response"
+        }
+    ]
+}

@@ -1,0 +1,59 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Intermittent fasting",
+            "relation": "induces",
+            "end_node": "energy-stressed tumor microenvironment in HCC"
+        },
+        {
+            "start_node": "Energy-stressed tumor microenvironment in HCC",
+            "relation": "triggers",
+            "end_node": "adaptive miRNA response"
+        },
+        {
+            "start_node": "Adaptive miRNA response",
+            "relation": "results in",
+            "end_node": "restored miR-199a-5p levels"
+        },
+        {
+            "start_node": "Adaptive miRNA response",
+            "relation": "results in",
+            "end_node": "induced miR-202 expression"
+        },
+        {
+            "start_node": "miR-199a-5p/miR-202 miRNA network",
+            "relation": "is mediated by",
+            "end_node": "HK2 glycolytic enzyme suppression"
+        },
+        {
+            "start_node": "miR-199a-5p/miR-202 miRNA network",
+            "relation": "is mediated by",
+            "end_node": "PKM2 glycolytic enzyme suppression"
+        },
+        {
+            "start_node": "Suppression of HK2 and PKM2",
+            "relation": "is achieved through",
+            "end_node": "rebalanced metabolic phenotype of HCC cells"
+        },
+        {
+            "start_node": "Rebalanced metabolic phenotype of HCC cells",
+            "relation": "results from",
+            "end_node": "lowered lactate production"
+        },
+        {
+            "start_node": "Lowered lactate production",
+            "relation": "occurs due to",
+            "end_node": "alleviated lactate-driven immune evasion"
+        },
+        {
+            "start_node": "Alleviated lactate-driven immune evasion",
+            "relation": "are restored by",
+            "end_node": "reactivated anti-tumor immune mechanisms"
+        },
+        {
+            "start_node": "Reactivated anti-tumor immune mechanisms",
+            "relation": "is enabled by",
+            "end_node": "enhanced sorafenib treatment efficacy"
+        }
+    ]
+}

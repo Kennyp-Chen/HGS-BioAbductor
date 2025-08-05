@@ -1,0 +1,39 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Accumulated 2-HG in IDH-mutant iCCA",
+            "relation": "inhibited by",
+            "end_node": "DNA/histone demethylases"
+        },
+        {
+            "start_node": "Inhibition of DNA/histone demethylases",
+            "relation": "promotes increased deposition of",
+            "end_node": "activating histone mark H3K4me3 at fibroblast-activating cytokine gene promoters"
+        },
+        {
+            "start_node": "Inhibition of DNA/histone demethylases",
+            "relation": "promotes increased deposition of",
+            "end_node": "activating histone mark H3K27ac at fibroblast-activating cytokine gene promoters"
+        },
+        {
+            "start_node": "Inhibition of DNA/histone demethylases",
+            "relation": "leads to decreased deposition of",
+            "end_node": "repressive histone mark H3K27me3 at fibroblast-activating cytokine gene promoters"
+        },
+        {
+            "start_node": "Targeted epigenetic remodeling (increased H3K4me3/H3K27ac and decreased H3K27me3) at their promoters",
+            "relation": "are transcriptionally upregulated by",
+            "end_node": "cytokine genes TGF-β and IL-6"
+        },
+        {
+            "start_node": "Elevated expression and secretion of TGF-β and IL-6",
+            "relation": "are recruited and activated by",
+            "end_node": "cancer-associated fibroblasts derived from hepatic stellate cells"
+        },
+        {
+            "start_node": "Activated cancer-associated fibroblasts",
+            "relation": "is induced by",
+            "end_node": "extracellular matrix remodeling that establishes a chemoresistant tumor microenvironment"
+        }
+    ]
+}

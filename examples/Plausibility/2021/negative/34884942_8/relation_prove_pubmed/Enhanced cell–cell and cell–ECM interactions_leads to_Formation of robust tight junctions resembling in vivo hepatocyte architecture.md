@@ -1,0 +1,11 @@
+# Search Strategy and Reasoning
+The query initially targeted key mechanistic concepts: "cell-cell interaction AND cell-ECM interaction AND tight junctions AND hepatocyte", then separately "cell-cell interaction AND tight junctions AND hepatocyte" and "cell-ECM interaction AND tight junctions AND hepatocyte", and also encompassed broader combinations like "extracellular matrix AND cell-cell interaction AND tight junctions AND hepatocyte". When these yielded only partial evidence, focus shifted to abstracts and then, crucially, to full-text analysis of papers directly involving extracellular matrix, cell–cell interactions, and tight junctions in hepatocyte models. This led to the detailed review and extraction from the full text of a recent and relevant open-access review (PMID: 16968159).
+
+# literature evidence
+## "Improved hepatocyte excretory function by immediate presentation of polarity cues." PMID: 16968159
+**Exact supporting sentence from the paper:**
+> "We hypothesized that the temporal and spatial presentation of the cell matrix and cell-cell contacts as polarity cues would be important to define the axis of polarization to improve the excretory function of hepatocytes. ... We demonstrate that the immediate presentation of the collagen matrix overlay enhances the formation of apicobasolateral domains, tight junctions, and the recovery of the functional activity of 2 canalicular transporters, the multidrug resistance-associated protein (Mrp2) and P-glycoprotein (P-gp) at 48 h of culture, and enhances the albumin secretion, urea production, and 7-ethoxyresorufin-O-deethylation cytochrome P450 activities of hepatocytes over 14 days of culture as compared to the 24-h overlay controls."
+
+This experimental data directly establishes that enhanced cell–cell and cell–ECM interactions (via proper, temporally coordinated presentation of matrix and cell contacts) lead to the formation of robust, polarized tight junctions resembling in vivo hepatocyte architecture.
+
+Answer: True

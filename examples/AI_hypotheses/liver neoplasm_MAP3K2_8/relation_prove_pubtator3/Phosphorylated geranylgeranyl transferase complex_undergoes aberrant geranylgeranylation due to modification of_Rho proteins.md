@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+The minimal keyword set to probe the literature is "geranylgeranyl transferase" and "Rho proteins." The specific relationship in question is whether Rho proteins (a subset of small GTPases) undergo aberrant geranylgeranylation due to modification of the geranylgeranyl transferase complex. However, the core mechanistic link centers on geranylgeranyl transferase activity and Rho protein geranylgeranylation (whether normal or aberrant). I searched for co-mention and detailed mechanistic discussion in abstracts. A single highly relevant article was identified: PMID 34830380, which I then reviewed in full text to identify explicit evidence for the mechanistic relationship—namely, any mention of how phosphorylation or modification of the geranylgeranyl transferase complex would impact geranylgeranylation of Rho proteins.
+
+# literature evidence
+## "Electrostatic Forces Mediate the Specificity of RHO GTPase-GDI Interactions" (PMID: 34830380)
+No exact statement was found in the abstract or full text that directly supports "Rho proteins undergo aberrant geranylgeranylation due to modification of phosphorylated geranylgeranyl transferase complex." The paper discusses in detail the mechanisms of Rho protein geranylgeranylation, the specificity of RhoGDI interactions, and the critical role of the geranylgeranyl moiety for Rho protein function, but it does not report aberrant geranylgeranylation of Rho proteins as a result of modification (e.g., phosphorylation) of the geranylgeranyl transferase complex.
+
+Answer: False

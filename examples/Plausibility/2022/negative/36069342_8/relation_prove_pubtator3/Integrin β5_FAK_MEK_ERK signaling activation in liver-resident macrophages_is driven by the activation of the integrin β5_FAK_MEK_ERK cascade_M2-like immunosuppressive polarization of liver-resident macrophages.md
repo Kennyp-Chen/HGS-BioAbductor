@@ -1,0 +1,13 @@
+# Search Strategy and Reasoning
+The main keywords that minimally connect the concepts are "FAK", "ERK", "M2 macrophages", and "liver" (to include liver-resident macrophages, as there is no more specific standard MeSH term for "Kupffer cell" polarization in immunosuppression literature). 
+Initial searches with the full cascade (integrin β5/FAK/MEK/ERK) and "M2 polarization" in liver macrophages turned up no results. I then broadened and alternated the query to cover all combinations of "FAK", "ERK", "M2 macrophages", and "liver" to catch any evidence on this signaling axis supporting M2-like (immunosuppressive) polarization in liver-resident macrophages. 
+Only one article (PMID: 38240856) gives direct experimental evidence in hepatocellular carcinoma (a relevant model for liver-resident macrophages), exploring how FAK activation drives immunosuppressive M2 polarization of macrophages via downstream signaling, including p38/JNK/ERK pathways.
+
+# Literature Evidence
+## "Phellinus linteus activates Treg cells via FAK to promote M2 macrophage polarization in hepatocellular carcinoma" (PMID: 38240856)
+Exact supporting sentence from Results/Discussion:
+"Upon stimulation with FAK and its activator, macrophages in the Treg-macrophage co-culture system transitioned from an M1-like phenotype to an M2-like phenotype. [...] In Figs. 3A, B and 4A, B, Western blot was used to attest the likely signal pathway the FAK involved. The treatment of the FAK and its activator addition, especially the FAK (200 μM) group resulted in the augment of the p-PI3K/p-AKT/p-mTOR/p-FAK/FAK/JAK2/p-STAT3, and the reduction of the p-p38/p-ERK1/2/p-JNK in the macrophages than the control group."
+and from Discussion:
+"Following our initial observations, we conducted in vitro experiments. The results demonstrated that upon stimulation with FAK and its activator, macrophages in the Treg-macrophage co-culture system transitioned from an M1-like phenotype to an M2-like phenotype. In contrast, the FAK inhibitor prompted the opposite effect. ... These M2 macrophages hinder the activation of T cells through standard antigen presentation and suppress the immune defense capabilities of T cells, thereby facilitating tumor progression. ... various studies were proving that M2 macrophage via the FAK pathway plays a role in cancer cell metastasis. ... These studies mentioned that M2 macrophage and Treg cells had a close relationship and indicated that not only could the M2 macrophage cause the accumulation of Treg, but also the Treg cells had an impact toward macrophage, making it possible to polarize to the M2-like macrophages, and the vital regulatory factor is proved to be FAK."
+
+Answer: True

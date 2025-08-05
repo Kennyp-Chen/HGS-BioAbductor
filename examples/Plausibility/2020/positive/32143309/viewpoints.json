@@ -1,0 +1,54 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Green tea catechins",
+            "relation": "scavenge",
+            "end_node": "reactive oxygen species"
+        },
+        {
+            "start_node": "EGCG",
+            "relation": "induce apoptosis in",
+            "end_node": "cancer cells"
+        },
+        {
+            "start_node": "L-theanine",
+            "relation": "reduces the stimulant effect of",
+            "end_node": "caffeine"
+        },
+        {
+            "start_node": "EGCG",
+            "relation": "inhibits metalloproteinase activity to reduce",
+            "end_node": "metastatic potential of cancer cells"
+        },
+        {
+            "start_node": "EGCG",
+            "relation": "induces cell cycle arrest in",
+            "end_node": "cancer cells"
+        },
+        {
+            "start_node": "Green tea catechins",
+            "relation": "chelate",
+            "end_node": "transition metal ions (e.g., copper and iron)"
+        },
+        {
+            "start_node": "EGCG",
+            "relation": "inhibits",
+            "end_node": "NF-κB signaling pathway"
+        },
+        {
+            "start_node": "EGCG",
+            "relation": "suppresses activation of",
+            "end_node": "EGFR signaling in cancer cells"
+        },
+        {
+            "start_node": "EGCG",
+            "relation": "induces reactive oxygen species production in",
+            "end_node": "lung cancer cell mitochondria"
+        },
+        {
+            "start_node": "Green tea catechins",
+            "relation": "repair",
+            "end_node": "UVB-induced DNA damage"
+        }
+    ]
+}

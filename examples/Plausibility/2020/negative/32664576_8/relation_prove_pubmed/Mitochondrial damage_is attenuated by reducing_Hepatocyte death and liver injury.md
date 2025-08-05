@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I used the minimal keywords "Mitochondrial damage" AND "(hepatocyte death OR liver injury)" to find literature potentially supporting that reducing mitochondrial damage attenuates hepatocyte death/liver injury. This approach targets the mechanism and consequence, without implying the relationship, to reveal direct or semantically implied connections. I then searched the abstracts for clear evidence that attenuation of mitochondrial damage leads to reduced hepatocyte death or liver injury. The abstracts were carefully assessed for direct or strongly implied causal/mitigating relationships as required by the query.
+
+# literature evidence
+## "Ferritinophagy-derived iron causes protein nitration and mitochondrial dysfunction in acetaminophen-induced liver injury." PMID: 40339610
+"Importantly, pretreatment of mice with DFO markedly attenuated serum ALT elevation and histopathological liver damage, indicating that iron released via ferritinophagy critically mediates APAP-induced hepatotoxicity." ... "Given NCOA4's central role in ferritinophagy, we next evaluated whether its knock-down could mitigate APAP-induced mitochondrial dysfunction. NCOA4 siRNA in AML-12 cells restored ATP level, enhanced MMP, and reduced Fe... Collectively, these data suggest that ferritinophagy-derived iron triggers protein nitration and mitochondrial impairment, culminating in cell death."
+
+Answer: True

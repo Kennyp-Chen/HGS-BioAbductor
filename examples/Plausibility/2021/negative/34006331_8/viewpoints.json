@@ -1,0 +1,24 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "FGF19",
+            "relation": "is overactivated by",
+            "end_node": "FGFR4"
+        },
+        {
+            "start_node": "FGFR4 activation",
+            "relation": "is promoted by",
+            "end_node": "tumor proliferation"
+        },
+        {
+            "start_node": "TGF-β signaling",
+            "relation": "is enhanced by",
+            "end_node": "PD-L1–mediated immune evasion"
+        },
+        {
+            "start_node": "FGFR redundancy",
+            "relation": "is caused by",
+            "end_node": "resistance to FGFR4 inhibition"
+        }
+    ]
+}

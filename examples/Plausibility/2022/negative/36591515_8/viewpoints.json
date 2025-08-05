@@ -1,0 +1,39 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "IL-6",
+            "relation": "is activated by",
+            "end_node": "JAK2/STAT3 cascade"
+        },
+        {
+            "start_node": "JAK2/STAT3 cascade",
+            "relation": "is upregulated by",
+            "end_node": "DNMT1"
+        },
+        {
+            "start_node": "JAK2/STAT3 cascade",
+            "relation": "is upregulated by",
+            "end_node": "JMJD2D"
+        },
+        {
+            "start_node": "DNMT1",
+            "relation": "are silenced by hypermethylation mediated by",
+            "end_node": "Tumor suppressor genes"
+        },
+        {
+            "start_node": "JMJD2D",
+            "relation": "are epigenetically altered leading to their inactivation by",
+            "end_node": "Tumor suppressor genes"
+        },
+        {
+            "start_node": "JAK2/STAT3 cascade",
+            "relation": "are promoted by",
+            "end_node": "CSC maintenance and chemoresistance"
+        },
+        {
+            "start_node": "Tumor suppressor genes",
+            "relation": "are diminished by the reactivation of",
+            "end_node": "CSC-driven tumor recurrence and drug resistance"
+        }
+    ]
+}

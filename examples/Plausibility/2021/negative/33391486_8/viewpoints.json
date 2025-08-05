@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Metabolic stress in cancer cells",
+            "relation": "is triggered by metabolic stress",
+            "end_node": "NSUN2 post-translational modifications"
+        },
+        {
+            "start_node": "NSUN2 post-translational modifications (e.g., phosphorylation, ubiquitination)",
+            "relation": "results from impaired methyltransferase function due to NSUN2 modifications",
+            "end_node": "Reduction in m5C modifications on specific tRNAs"
+        },
+        {
+            "start_node": "Reduced m5C modifications on tRNAs",
+            "relation": "is predisposed by hypomethylation of tRNAs",
+            "end_node": "Angiogenin-mediated cleavage of tRNAs"
+        },
+        {
+            "start_node": "tRNA-derived fragments (tRFs)",
+            "relation": "is induced by tRNA-derived fragments (tRFs) acting as molecular switches",
+            "end_node": "Displacement of key translation initiation factors"
+        },
+        {
+            "start_node": "tRNA-derived fragments (tRFs)",
+            "relation": "is facilitated by the activity of tRNA-derived fragments (tRFs)",
+            "end_node": "Promotion of ribosome biogenesis"
+        },
+        {
+            "start_node": "mTORC1–c-Myc–SIRT4 signaling axis",
+            "relation": "is achieved via regulation of methyl donor availability by the mTORC1–c-Myc–SIRT4 signaling axis",
+            "end_node": "Modulation of tRNA hypomethylation"
+        }
+    ]
+}

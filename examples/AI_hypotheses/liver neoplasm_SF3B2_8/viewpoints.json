@@ -1,0 +1,49 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "overexpressed SF3B2",
+            "relation": "causes",
+            "end_node": "aberrant splicing of TP53"
+        },
+        {
+            "start_node": "dysregulated SF3B1",
+            "relation": "causes",
+            "end_node": "aberrant splicing of RAD51"
+        },
+        {
+            "start_node": "dysregulated SF3B4",
+            "relation": "causes",
+            "end_node": "aberrant splicing of DNA repair genes"
+        },
+        {
+            "start_node": "dysregulated chromatin modifiers",
+            "relation": "induces",
+            "end_node": "open chromatin landscape"
+        },
+        {
+            "start_node": "open chromatin landscape",
+            "relation": "facilitates",
+            "end_node": "integration of hepatotropic viral genomes (HBV/HCV)"
+        },
+        {
+            "start_node": "integration of hepatotropic viral genomes (HBV/HCV)",
+            "relation": "results from",
+            "end_node": "exacerbated genomic instability"
+        },
+        {
+            "start_node": "exacerbated genomic instability",
+            "relation": "triggers",
+            "end_node": "activation of oncogenic signaling cascades"
+        },
+        {
+            "start_node": "activation of oncogenic signaling cascades",
+            "relation": "promotes",
+            "end_node": "enhanced metastasis and angiogenesis"
+        },
+        {
+            "start_node": "enhanced metastasis and angiogenesis",
+            "relation": "leads to",
+            "end_node": "poor clinical outcomes in liver neoplasms"
+        }
+    ]
+}

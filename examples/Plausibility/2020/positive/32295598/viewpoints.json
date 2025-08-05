@@ -1,0 +1,154 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "HBV X protein (HBx)",
+            "relation": "is upregulated by",
+            "end_node": "lncRNA HUR1"
+        },
+        {
+            "start_node": "HBV X protein (HBx)",
+            "relation": "is downregulated by",
+            "end_node": "lncRNA Dreh"
+        },
+        {
+            "start_node": "Hepatitis C virus (HCV)",
+            "relation": "is upregulated by",
+            "end_node": "lncRNA EGOT"
+        },
+        {
+            "start_node": "hypoxia‐responsive lncRNA linc-RoR",
+            "relation": "is upregulated by",
+            "end_node": "HIF-1α"
+        },
+        {
+            "start_node": "lncRNA-LALR1",
+            "relation": "is suppressed by",
+            "end_node": "Axin1"
+        },
+        {
+            "start_node": "lncHand2",
+            "relation": "is upregulated by",
+            "end_node": "Nkx1–2"
+        },
+        {
+            "start_node": "DNA methyltransferases (DNMT1/3)",
+            "relation": "is epigenetically silenced by hypermethylation via",
+            "end_node": "tumor‐suppressive lncRNA MEG3 expression"
+        },
+        {
+            "start_node": "lncRNA linc00441 (via DNMT3A)",
+            "relation": "is inactivated by promoter methylation recruited by",
+            "end_node": "RB1 (retinoblastoma gene)"
+        },
+        {
+            "start_node": "oncogenic transcription factor c-Myc",
+            "relation": "is activated by",
+            "end_node": "lncRNA linc00176 transcription"
+        },
+        {
+            "start_node": "splicing factor MBNL3",
+            "relation": "is induced by",
+            "end_node": "alternative splicing of lncRNA PXN-AS1"
+        },
+        {
+            "start_node": "lncRNA HULC",
+            "relation": "is decreased through molecular sponging by",
+            "end_node": "miR-186 availability"
+        },
+        {
+            "start_node": "lncRNA UPAT",
+            "relation": "is enhanced through direct binding by",
+            "end_node": "UHRF1 stability"
+        },
+        {
+            "start_node": "lncRNA TUG1",
+            "relation": "is repressed through EZH2 recruitment by",
+            "end_node": "KLF2 transcription"
+        },
+        {
+            "start_node": "lncRNA XIST",
+            "relation": "is antagonized (sponged) by",
+            "end_node": "miR-92b function"
+        },
+        {
+            "start_node": "lncRNA TUG1 (leading to increased HK2 activity)",
+            "relation": "is downregulated by",
+            "end_node": "AMPKβ2 expression"
+        },
+        {
+            "start_node": "lncRNA HOTTIP",
+            "relation": "is upregulated by",
+            "end_node": "GLS1 expression"
+        },
+        {
+            "start_node": "lncRNA lnc-EGFR",
+            "relation": "is promoted by direct interaction with",
+            "end_node": "EGFR activation"
+        },
+        {
+            "start_node": "LINC01225",
+            "relation": "is increased by",
+            "end_node": "EGFR protein level"
+        },
+        {
+            "start_node": "lncRNA UFC1",
+            "relation": "is enhanced by facilitating HuR binding through",
+            "end_node": "β-catenin mRNA stability"
+        },
+        {
+            "start_node": "lncRNA DANCR",
+            "relation": "is prevented by direct binding of",
+            "end_node": "β-catenin mRNA degradation"
+        },
+        {
+            "start_node": "lncRNA lnc-β-Catm (via EZH2 recruitment)",
+            "relation": "is achieved via methylation and reduced ubiquitination mediated by",
+            "end_node": "β-catenin protein stabilization"
+        },
+        {
+            "start_node": "lncRNA ATB",
+            "relation": "is indirectly enhanced by releasing it from miR-200 suppression via",
+            "end_node": "ZEB1 expression"
+        },
+        {
+            "start_node": "lncRNA ZEB1-AS1",
+            "relation": "is directly stimulated by",
+            "end_node": "ZEB1 promoter activity"
+        },
+        {
+            "start_node": "lncRNA Dreh",
+            "relation": "is disrupted by binding of",
+            "end_node": "vimentin-mediated cytoskeletal integrity"
+        },
+        {
+            "start_node": "lncRNA MVIH",
+            "relation": "is repressed by",
+            "end_node": "PGK1 secretion (anti-angiogenic function)"
+        },
+        {
+            "start_node": "lncRNA LET",
+            "relation": "are decreased by",
+            "end_node": "HIF-1α levels under hypoxia"
+        },
+        {
+            "start_node": "lncRNA PRAL",
+            "relation": "is inhibited via stabilization mediated by",
+            "end_node": "p53 protein degradation"
+        },
+        {
+            "start_node": "lncRNA HOTAIR (in conjunction with Mex3b)",
+            "relation": "is decreased due to scaffold-facilitated degradation by",
+            "end_node": "PRC2 protein stability"
+        },
+        {
+            "start_node": "lncRNA FTX",
+            "relation": "is reduced by sequestration from chromatin through binding with",
+            "end_node": "chromatin association of MCM2"
+        },
+        {
+            "start_node": "lncRNA NCBP2-AS2 (encoding the KRASIM peptide)",
+            "relation": "is inhibited by direct binding of KRAS-impaired peptide encoded from",
+            "end_node": "ERK signaling downstream of KRAS"
+        }
+    ]
+}

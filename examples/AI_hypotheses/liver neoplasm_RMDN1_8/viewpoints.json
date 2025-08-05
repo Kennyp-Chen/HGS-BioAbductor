@@ -1,0 +1,29 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "RMDN1",
+            "relation": "reconfigures HDAC1 into a tumor‐suppressive agent",
+            "end_node": "HDAC1"
+        },
+        {
+            "start_node": "RMDN1",
+            "relation": "recruits EZH2 to join the repressive complex",
+            "end_node": "EZH2"
+        },
+        {
+            "start_node": "Repressive complex",
+            "relation": "prevents the recruitment of chromatin-activating factors",
+            "end_node": "Chromatin-activating factors"
+        },
+        {
+            "start_node": "Repressive histone modifications",
+            "relation": "imposes repressive histone modifications to silence key oncogenes",
+            "end_node": "Key oncogenes"
+        },
+        {
+            "start_node": "Silenced oncogenes",
+            "relation": "silences oncogenes to attenuate tumor progression",
+            "end_node": "Tumor progression"
+        }
+    ]
+}

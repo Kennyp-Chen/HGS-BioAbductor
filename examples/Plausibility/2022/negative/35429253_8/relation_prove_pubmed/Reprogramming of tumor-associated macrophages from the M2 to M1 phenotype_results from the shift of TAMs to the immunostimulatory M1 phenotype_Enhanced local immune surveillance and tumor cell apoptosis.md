@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I started by using the minimal query "tumor-associated macrophages AND M2 to M1 AND immune surveillance AND tumor cell apoptosis" to identify papers linking macrophage phenotype switching with immune surveillance and tumor apoptosis. I refined the query to "tumor-associated macrophages AND M1 phenotype AND immune surveillance AND apoptosis" for better semantic coverage, seeking any evidence that shifting TAMs to an M1 phenotype enhances local immune surveillance and tumor cell apoptosis. I then focused on abstracts for direct or implied relationships and, upon finding a promising match, analyzed the full text for precise supporting statements.
+
+# literature evidence
+## "CXCL16 suppresses liver metastasis of colorectal cancer by promoting TNF-α-induced apoptosis by tumor-associated macrophages." (PMID: 25495942)
+**Exact supporting sentence from full text:** "We determined the mechanism of the inhibition of liver metastasis by CXCL16 by carrying out RT-PCR to identify the types of cells that infiltrated the liver. As shown in Figure 6A, the levels of M1 macrophage markers such as CD11b, CD11c and F4/80 were increased at the tumor sites. We hypothesized that M1 macrophages were recruited and inhibited liver metastasis through the secretion of TNF-α... Apoptosis of SL4-CXCL16 was significantly increased by co-culture with RAW 264.7 cells (M1 macrophage)... Collectively, these results suggest that CXCL16 expression by SL4 cells induced the accumulation of M1 macrophages, which then induced apoptosis in SL4 cells by secreting TNF-α, thereby leading to inhibition of metastasis."
+
+Answer: True

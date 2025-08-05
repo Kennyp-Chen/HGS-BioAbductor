@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "cancer cells",
+            "relation": "is overexpressed in response to metabolic stress in",
+            "end_node": "MALAT1 long noncoding RNA"
+        },
+        {
+            "start_node": "overexpressed MALAT1",
+            "relation": "folds into under stress-induced signals",
+            "end_node": "stable triple helix structure"
+        },
+        {
+            "start_node": "RNA-binding adaptor proteins",
+            "relation": "is stabilized by",
+            "end_node": "MALAT1 triple helix structure"
+        },
+        {
+            "start_node": "MALAT1 triple helix structure",
+            "relation": "are spatially organized through direct and adaptor-mediated binding by",
+            "end_node": "glycolytic enzymes"
+        },
+        {
+            "start_node": "MALAT1 triple helix structure",
+            "relation": "are modulated by",
+            "end_node": "gene regulatory networks pivotal to metabolic adaptation"
+        },
+        {
+            "start_node": "rationally designed compounds",
+            "relation": "is selectively disrupted by structure-based small molecules that target",
+            "end_node": "MALAT1 triple helix structure"
+        }
+    ]
+}

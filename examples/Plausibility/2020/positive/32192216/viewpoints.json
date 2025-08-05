@@ -1,0 +1,64 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "PPARα",
+            "relation": "activates",
+            "end_node": "fatty acid β-oxidation enzymes"
+        },
+        {
+            "start_node": "PPARα",
+            "relation": "upregulates",
+            "end_node": "serine palmitoyltransferase (SPT)"
+        },
+        {
+            "start_node": "PPARα",
+            "relation": "induces",
+            "end_node": "sulfatide production via cerebroside sulfotransferase"
+        },
+        {
+            "start_node": "PPARα",
+            "relation": "induces",
+            "end_node": "FGF21 expression"
+        },
+        {
+            "start_node": "PPARα",
+            "relation": "stimulates",
+            "end_node": "ketogenesis (via increased hydroxymethylglutaryl-CoA synthase 2)"
+        },
+        {
+            "start_node": "Hepatocyte-specific PPARα deficiency",
+            "relation": "results in",
+            "end_node": "exacerbated hepatic steatosis"
+        },
+        {
+            "start_node": "Macrophage PPARα activation",
+            "relation": "mediates",
+            "end_node": "suppression of pro-inflammatory cytokines (IL-15 and IL-18)"
+        },
+        {
+            "start_node": "Hepatic PPARβ/δ activation",
+            "relation": "promotes",
+            "end_node": "hepatic lipogenesis and synthesis of phosphatidylcholine (PC 18:0/18:1)"
+        },
+        {
+            "start_node": "PC (18:0/18:1) produced in the liver",
+            "relation": "enhances",
+            "end_node": "muscle fatty acid uptake via PPARα in muscle"
+        },
+        {
+            "start_node": "Hepatocyte PPARγ activation",
+            "relation": "drives",
+            "end_node": "lipid droplet formation (steatosis) in hepatocytes"
+        },
+        {
+            "start_node": "PPARγ activity in Kupffer cells and hepatic stellate cells",
+            "relation": "modulates",
+            "end_node": "anti-inflammatory response and reduced fibrogenesis in non-parenchymal liver cells"
+        },
+        {
+            "start_node": "polyphenols from extra-virgin olive oil",
+            "relation": "is upregulated by",
+            "end_node": "increased hepatic PPARα expression leading to cholesterol-lowering effects"
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "dual‐mode nanoparticle system employing passive (enhanced permeability) and active (receptor-mediated endocytosis) targeting",
+            "relation": "is selectively targeted by and accumulates boron via",
+            "end_node": "tumor cells (boron-avid cancer cells)"
+        },
+        {
+            "start_node": "BNCT neutron irradiation",
+            "relation": "suffers high-LET radiation-induced double-strand breaks from",
+            "end_node": "tumor cell DNA"
+        },
+        {
+            "start_node": "PARP inhibitor delivered in synchrony with irradiation",
+            "relation": "is inhibited by",
+            "end_node": "DNA repair machinery within tumor cells"
+        },
+        {
+            "start_node": "real-time imaging and dosimetry feedback",
+            "relation": "is precisely orchestrated by",
+            "end_node": "adaptive release of the PARP inhibitor from the nanoparticle system"
+        },
+        {
+            "start_node": "BNCT-induced DNA double-strand breaks combined with PARP inhibition",
+            "relation": "experience enhanced cytotoxicity due to the accumulation of unrepaired DNA damage resulting from the synergy of",
+            "end_node": "tumor cells (leading to cell death)"
+        }
+    ]
+}

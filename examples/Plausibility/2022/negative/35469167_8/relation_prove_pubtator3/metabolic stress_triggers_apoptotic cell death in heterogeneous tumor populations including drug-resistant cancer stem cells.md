@@ -1,0 +1,11 @@
+# Search Strategy and Reasoning
+I extracted the minimal MeSH terms from your query: "metabolic stress," "apoptotic cell death," "heterogeneous tumor populations," and "drug-resistant cancer stem cells." I focused on combinations around "metabolic stress," "apoptosis," and "cancer stem cells," reasoning that literature linking metabolic (nutrient or energetic) stress to apoptosis in resistant cancer stem cells within tumors would directly support the semantic relation that metabolic stress can trigger apoptotic cell death in such heterogeneous and resistant populations. After reviewing abstracts, two articles showed direct relevance: one showing nutrient starvation (a metabolic stress) triggers apoptosis in chemoresistant glioma stem-like cells (GSCs), and another exploring the interplay of metabolic pathways and apoptosis in heterogeneous, stem cell–containing glioblastoma populations. I retrieved and read their full texts to confirm the evidence.
+
+# literature evidence
+## "Compensatory cross-talk between autophagy and glycolysis regulates senescence and stemness in heterogeneous glioblastoma tumor subpopulations" (PMID: 37420311)
+"Combinatorial treatment of stem cell-like GBM tumor subpopulations with autophagy and glycolysis inhibitors blocked the induction of senescence while drastically impairing their stemness capacity which drove cells towards apoptotic cell death. These findings identify a novel and complex compensatory interplay between glycolysis, autophagy, and senescence that helps maintain stemness in heterogeneous GBM tumor subpopulations and provides a survival advantage during metabolic stress."
+
+## "Nutrient starvation induces apoptosis and autophagy in C6 glioma stem-like cells" (PMID: 33718649)
+"This study demonstrated that nutrient starvation decreases proliferation by approximately 81%, while increasing apoptosis (99.9%) and autophagy (94.6%) in C6 GSCs by the fifth day. Nutrient starvation of GSCs may, therefore, be an effective therapeutic strategy that can trigger apoptotic and autophagic metabolic reprogramming in cancer cells." 
+
+Answer: True

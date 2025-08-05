@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+My minimal keyword query was "AST AND ALT AND early liver injury AND detection", since AST (aspartate aminotransferase) and ALT (alanine aminotransferase) are the main "additional hepatic markers" under evaluation, and their ability to enhance "detection of early liver injury" is the relationship in question. I searched for abstracts that established a semantic connection whereby the measurement of AST and ALT enhances (improves, enables, or is critical to) the early detection of liver injury. On reviewing the literature, I found multiple relevant reviews and, most notably, a comprehensive full-text open-access article that directly addressed the clinical and practical role of AST and ALT in the early detection of liver injury.
+
+# literature evidence
+## "Serum glutamate dehydrogenase activity enables sensitive and specific diagnosis of hepatocellular injury in humans" (PMID: 39504457)
+**Supporting sentence from the full text**: "Alanine aminotransferase (ALT) and aspartate aminotransferase (AST) serum activities are considered the gold standard biomarkers for diagnosis of hepatocellular injury in both clinical practice and drug development... transaminase increases precede the functional changes that manifest as increased serum bilirubin and coagulation time. Thus, transaminases are especially important for the early diagnosis of hepatocellular injury before it has progressed to liver failure."
+
+Answer: True

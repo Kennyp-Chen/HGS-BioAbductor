@@ -1,0 +1,7 @@
+# Search Strategy and Reasoning
+Initial query was: "CLDN18.2 AND extracellular epitope AND immunotherapy", which yielded no results. I then tried "CLDN18.2 AND extracellular epitope", and again found no literature. I finally broadened the query to "CLDN18.2 AND immunotherapy", which returned several studies on CLDN18.2-directed immunotherapies (e.g., CAR-T cells, monoclonal antibodies) and their efficacy. I carefully reviewed abstracts for mention of "new" or "additional" extracellular epitopes, or any link between altered/identified epitopes on CLDN18.2 and enhanced efficacy of immunotherapies. None specifically discussed "new extracellular epitopes" leading to "increased recognition" or "enhanced efficacy" for CLDN18.2-targeted therapies. Most studies referenced overall CLDN18.2 expression or affinity of therapies, not discovery or use of newly identified extracellular epitopes.
+
+# literature evidence
+No abstract or full text (from available summaries) links "new extracellular epitopes" on CLDN18.2 with "enhanced efficacy" of immunotherapies due to "increased recognition." Most studies discuss efficacy with existing CLDN18.2-targeted immunotherapies or correlation with overall CLDN18.2 expression—not specific new epitopes.
+
+Answer: False

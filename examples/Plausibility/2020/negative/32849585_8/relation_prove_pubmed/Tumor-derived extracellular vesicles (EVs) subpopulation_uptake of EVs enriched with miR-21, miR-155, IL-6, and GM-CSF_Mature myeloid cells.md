@@ -1,0 +1,7 @@
+# Search Strategy and Reasoning
+Initial search used the full set of specific terms: "extracellular vesicles AND myeloid cells AND miR-21 AND miR-155 AND IL-6 AND GM-CSF", which returned zero results. The query was refined to broader, yet still relevant, terms: "extracellular vesicles AND myeloid cells AND microRNA" to capture a wider range of publications potentially discussing EV uptake by mature myeloid cells, especially containing or mentioning relevant miRNAs and cytokines. Abstracts from these papers were examined for evidence of mature myeloid cells (such as macrophages) taking up tumor-derived/EVs enriched with miR-21, miR-155, IL-6, or GM-CSF. Special attention was paid to explicit mention of these factors and whether such uptake was functionally described. None of these abstracts described the uptake of tumor-derived EVs by mature myeloid cells containing the *specific combination* of miR-21, miR-155, IL-6, and GM-CSF, nor did they confirm tumor-derived vesicle subpopulations with these components affecting mature myeloid cells through uptake.
+
+# literature evidence
+No abstracts or titles semantically link "tumor-derived extracellular vesicle (EV) subpopulations" containing all of miR-21, miR-155, IL-6, and GM-CSF to "uptake by mature myeloid cells." Some discuss tumor-derived exosomes with miRNAs affecting macrophage polarization (often referencing miR-21 or miR-34a), and others discuss EVs from non-tumor sources or EV uptake in general, but not with this specific molecular cargo or mature myeloid cells as the direct target.
+
+Answer: False

@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I searched PubTator3 using the minimal keyword concepts: “engineered exosomes,” “tumor-targeting ligands,” and “chemoresistant colorectal cancer cells.” As a synonym, I also queried with "exosomes chemoresistant colorectal cancer" to broaden the search, ensuring that studies not specifically mentioning "tumor-targeting ligands" but involving targeting or engineered exosomes would be screened. Among the resulting abstracts, I focused on those discussing engineered exosomes designed to target chemoresistant colorectal cancer cells, prioritizing any instance of selective delivery or targeting mechanisms. PMID: 31918721 stood out by describing engineered exosomes facilitating targeted delivery to 5-FU-resistant colorectal cancer cells. I then checked the abstract for an explicit statement supporting selective targeting.
+
+# literature evidence
+## "Engineered exosomes for targeted co-delivery of miR-21 inhibitor and chemotherapeutics to reverse drug resistance in colon cancer" (PMID: 31918721)
+"The results showed that the engineered exosome-based 5-FU and miR-21i co-delivery system could efficiently facilitate cellular uptake and significantly down-regulate miR-21 expression in 5-FU resistant HCT-1165FR cell lines... the combinational delivery of miR-21i and 5-FU with the engineered exosomes effectively reverse drug resistance and significantly enhanced the cytotoxicity in 5-FU-resistant colon cancer cells, compared with the single treatment with either miR-21i or 5-FU."
+
+Answer: True

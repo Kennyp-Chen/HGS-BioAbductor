@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I extracted the minimal MeSH terms "genomic instability" and "autophagy" (as "aberrant autophagic responses" does not have a MeSH term or sufficient literature coverage, so the closest major concept is "autophagy"). I searched for literature using "genomic instability autophagy" and scanned abstracts for mention of a trigger relationship, particularly whether aberrant (dysregulated) autophagy can trigger genomic instability or vice versa. I found an article (PMID: 33549731) where autophagy-dependent mechanisms are implicated in causing genomic instability under certain molecular perturbations, and I confirmed the relationship using the full text/abstract sentence.
+
+# literature evidence
+## "YM155 and BIRC5 downregulation induce genomic instability via autophagy-mediated ROS production and inhibition in DNA repair." (PMID: 33549731)
+"YM155 and BIRC5 siRNA both induced early 'autophagy-dependent ROS production-mediated' DNA damage/strand breaks... We further observed that prolonged YM155 and BIRC5 siRNA treatment induced autophagic vesicle formation proximal to the nucleus and triggered DNA leakage.... our findings reveal a novel mechanism of action of YM155 (i.e. induces autophagy-dependent ROS production-mediated DNA damage) in cancer cells and show the functional complexity of BIRC5 and autophagy involving the modulation of genome stability, highlighting that upregulation of autophagy is not always beneficial to the DNA repair process."
+
+Answer: True

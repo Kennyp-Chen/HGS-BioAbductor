@@ -1,0 +1,44 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Custom-engineered 3D hydrogel scaffold with adjustable mechanical properties and defined biochemical ligands",
+            "relation": "are improved by",
+            "end_node": "Enhanced cell–cell and cell–ECM interactions"
+        },
+        {
+            "start_node": "Enhanced cell–cell and cell–ECM interactions",
+            "relation": "leads to",
+            "end_node": "Formation of robust tight junctions resembling in vivo hepatocyte architecture"
+        },
+        {
+            "start_node": "Formation of robust tight junctions resembling in vivo hepatocyte architecture",
+            "relation": "triggers",
+            "end_node": "Activation of integrin-mediated FAK signaling"
+        },
+        {
+            "start_node": "Integrin-mediated FAK signaling",
+            "relation": "is induced by",
+            "end_node": "Activation of the Wnt/β-catenin pathway"
+        },
+        {
+            "start_node": "Integrin-mediated FAK signaling",
+            "relation": "is induced by",
+            "end_node": "Activation of the YAP/TAZ pathway"
+        },
+        {
+            "start_node": "Activation of the Wnt/β-catenin pathway",
+            "relation": "results from",
+            "end_node": "Targeted epigenetic reprogramming at CYP gene promoters (increased histone acetylation and decreased DNA methylation)"
+        },
+        {
+            "start_node": "Activation of the YAP/TAZ pathway",
+            "relation": "results from",
+            "end_node": "Targeted epigenetic reprogramming at CYP gene promoters (increased histone acetylation and decreased DNA methylation)"
+        },
+        {
+            "start_node": "Targeted epigenetic reprogramming at CYP gene promoters (increased histone acetylation and decreased DNA methylation)",
+            "relation": "culminates in",
+            "end_node": "Enhanced CYP expression and improved drug metabolism modeling"
+        }
+    ]
+}

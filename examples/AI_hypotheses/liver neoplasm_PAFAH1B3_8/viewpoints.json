@@ -1,0 +1,39 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "PAFAH1B3 upregulation",
+            "relation": "induces allosteric reconfigurations in",
+            "end_node": "1-alkyl-2-acetylglycerophosphocholine esterase complex"
+        },
+        {
+            "start_node": "allosterically reconfigured 1-alkyl-2-acetylglycerophosphocholine esterase complex",
+            "relation": "improves",
+            "end_node": "substrate binding affinity"
+        },
+        {
+            "start_node": "allosterically reconfigured 1-alkyl-2-acetylglycerophosphocholine esterase complex",
+            "relation": "enhances",
+            "end_node": "catalytic efficiency"
+        },
+        {
+            "start_node": "enhanced enzyme activity (improved substrate binding affinity and catalytic efficiency)",
+            "relation": "channels metabolism through",
+            "end_node": "lipid metabolism pathways"
+        },
+        {
+            "start_node": "altered lipid metabolism pathways",
+            "relation": "elevates",
+            "end_node": "production of bioactive lipid mediators"
+        },
+        {
+            "start_node": "elevated bioactive lipid mediator production",
+            "relation": "fosters",
+            "end_node": "angiogenesis and metastasis"
+        },
+        {
+            "start_node": "PAFAH1B3 operating in concert with ACSL1",
+            "relation": "fine-tunes",
+            "end_node": "lipid alterations"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I used the minimal keywords: "BNCT DNA double-strand breaks PARP inhibition tumor cell cytotoxicity" to search for literature referring to boron neutron capture therapy (BNCT)-induced DNA double-strand breaks combined with PARP inhibition and their cytotoxic effects in tumor cells. I evaluated the abstracts for direct or implied connections regarding the synergy in cytotoxicity due to unrepaired DNA damage. One paper (PMID: 35440126) specifically describes experimental studies on this combination, including mechanistic findings. I examined the full text for confirmation and mechanistic detail.
+
+# literature evidence
+## "Boron encapsulated in a liposome can be used for combinational neutron capture therapy" (PMID: 35440126)
+"Remarkably, BNCT effectiveness is further amplified through DNA repair system interference by PARP1 inhibitor encapsulation... To quantify DNA double-strand breaks (DSB) induced by boronsome-BNCT and the enhanced efficacy due to the persistence of DNA damage driven by PARP1 inhibition, we performed gamma-H2AX staining in 4T1 cells 2 hours after irradiation... Remarkably, after neutron irradiation, DSBs induced by PARPi-boronsome were 1.75 times that of normal boronsome, indicating an evident disruption of DNA repair process... At the concentration of 5 mg/mL, cell viability was down to 5.16% in the group of PARPi-boronsome+N, 9 times lower than that of boronsome+N. Overall, the in vitro results illustrated that PARPi amplifies the efficacy of BNCT in a DNA repair interference manner, promoting cell death mode switching from reproductive death to functional death."
+
+Answer: True

@@ -1,0 +1,124 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "H19",
+            "relation": "mutually inhibits",
+            "end_node": "p53"
+        },
+        {
+            "start_node": "H19",
+            "relation": "promotes",
+            "end_node": "angiogenesis"
+        },
+        {
+            "start_node": "H19",
+            "relation": "downregulates",
+            "end_node": "E-cadherin"
+        },
+        {
+            "start_node": "PVT1",
+            "relation": "positively interacts with",
+            "end_node": "c-Myc"
+        },
+        {
+            "start_node": "PVT1",
+            "relation": "enhances",
+            "end_node": "chemotherapy resistance"
+        },
+        {
+            "start_node": "NEAT1",
+            "relation": "confers",
+            "end_node": "chemotherapy resistance"
+        },
+        {
+            "start_node": "NKILA",
+            "relation": "induces",
+            "end_node": "tumor immune escape via T cell apoptosis"
+        },
+        {
+            "start_node": "HISLA",
+            "relation": "maintains",
+            "end_node": "HIF-1α signaling"
+        },
+        {
+            "start_node": "MALAT1",
+            "relation": "promotes",
+            "end_node": "tumor progression in multiple myeloma"
+        },
+        {
+            "start_node": "lncDACH1",
+            "relation": "regulates",
+            "end_node": "cardiac function"
+        },
+        {
+            "start_node": "lncRNA-Safe",
+            "relation": "promotes",
+            "end_node": "myocardial fibrosis"
+        },
+        {
+            "start_node": "MALAT1",
+            "relation": "modulates",
+            "end_node": "neuronal apoptosis in Alzheimer’s disease"
+        },
+        {
+            "start_node": "TUG1",
+            "relation": "contributes to",
+            "end_node": "pancreatic β-cell dysfunction"
+        },
+        {
+            "start_node": "MALAT1",
+            "relation": "regulates",
+            "end_node": "inflammatory responses in diabetic kidney disease"
+        },
+        {
+            "start_node": "siRNA",
+            "relation": "induces degradation of",
+            "end_node": "lncRNA CASC9"
+        },
+        {
+            "start_node": "siRNA",
+            "relation": "suppresses",
+            "end_node": "DANCR"
+        },
+        {
+            "start_node": "ASO",
+            "relation": "induces degradation of",
+            "end_node": "MALAT1"
+        },
+        {
+            "start_node": "CRISPR/Cas9",
+            "relation": "knocks out",
+            "end_node": "TTTY15"
+        },
+        {
+            "start_node": "Small molecule",
+            "relation": "targets",
+            "end_node": "MALAT1 triple helix structure"
+        },
+        {
+            "start_node": "Resveratrol",
+            "relation": "regulates",
+            "end_node": "MALAT1 and NEAT1"
+        },
+        {
+            "start_node": "Curcumin",
+            "relation": "downregulates",
+            "end_node": "H19"
+        },
+        {
+            "start_node": "Berberine",
+            "relation": "alters expression of",
+            "end_node": "multiple lncRNAs"
+        },
+        {
+            "start_node": "Andes-1537",
+            "relation": "binds and degrades",
+            "end_node": "ASncmtRNAs"
+        },
+        {
+            "start_node": "Exosomes",
+            "relation": "deliver",
+            "end_node": "lncRNA-targeting therapeutic agents"
+        }
+    ]
+}

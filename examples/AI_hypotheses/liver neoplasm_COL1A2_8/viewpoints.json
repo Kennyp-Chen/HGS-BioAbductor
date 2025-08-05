@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "COL1A2 overexpression",
+            "relation": "instigates",
+            "end_node": "ECM remodeling"
+        },
+        {
+            "start_node": "ECM remodeling",
+            "relation": "amplifies",
+            "end_node": "integrin-mediated FAK signaling"
+        },
+        {
+            "start_node": "integrin-mediated FAK signaling",
+            "relation": "facilitates",
+            "end_node": "nuclear translocation of YAP/TAZ"
+        },
+        {
+            "start_node": "nuclear YAP/TAZ",
+            "relation": "activates",
+            "end_node": "transcriptional upregulation of mRNA export components (NXF1 and THO complex regulators)"
+        },
+        {
+            "start_node": "upregulated mRNA export components",
+            "relation": "promotes",
+            "end_node": "enhanced export of pro-angiogenic and pro-metastatic mRNAs"
+        },
+        {
+            "start_node": "exported pro-angiogenic and pro-metastatic mRNAs",
+            "relation": "drives",
+            "end_node": "tumor progression"
+        }
+    ]
+}

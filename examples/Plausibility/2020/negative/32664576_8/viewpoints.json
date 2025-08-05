@@ -1,0 +1,44 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "MitoNEET (CISD1) function",
+            "relation": "is reduced by enhanced",
+            "end_node": "Labile iron pool"
+        },
+        {
+            "start_node": "Labile iron pool",
+            "relation": "is mitigated by a reduction in",
+            "end_node": "Fenton reaction (ROS production)"
+        },
+        {
+            "start_node": "System Xc⁻ antiporter",
+            "relation": "is enhanced by upregulation of the",
+            "end_node": "Cystine uptake"
+        },
+        {
+            "start_node": "Cystine uptake",
+            "relation": "is increased by enhanced",
+            "end_node": "Glutathione synthesis"
+        },
+        {
+            "start_node": "Glutathione synthesis",
+            "relation": "is promoted by increased",
+            "end_node": "GPX4 stability"
+        },
+        {
+            "start_node": "GPX4",
+            "relation": "is prevented by stabilized",
+            "end_node": "ROS-mediated lipid peroxidation"
+        },
+        {
+            "start_node": "Fenton reaction (ROS production)",
+            "relation": "is reduced by mitigation of the",
+            "end_node": "Mitochondrial damage"
+        },
+        {
+            "start_node": "Mitochondrial damage",
+            "relation": "is attenuated by reducing",
+            "end_node": "Hepatocyte death and liver injury"
+        }
+    ]
+}

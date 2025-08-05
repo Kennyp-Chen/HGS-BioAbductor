@@ -1,0 +1,29 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "MAT",
+            "relation": "tumor-specific inhibition of MAT leads to a reduction in",
+            "end_node": "SAM/MTA levels"
+        },
+        {
+            "start_node": "SAM/MTA levels",
+            "relation": "lower SAM/MTA levels result in decreased",
+            "end_node": "methylation-dependent upregulation of immune checkpoint molecules"
+        },
+        {
+            "start_node": "immune checkpoint molecules",
+            "relation": "increased expression of immune checkpoint molecules drives",
+            "end_node": "T cell exhaustion"
+        },
+        {
+            "start_node": "CXCL11/CXCR3 axis",
+            "relation": "active CXCL11/CXCR3 signaling promotes",
+            "end_node": "recruitment of pro-tumor T cell subsets"
+        },
+        {
+            "start_node": "pro-tumor T cell subsets",
+            "relation": "the recruitment of pro-tumor T cell subsets facilitates",
+            "end_node": "CSC renewal"
+        }
+    ]
+}

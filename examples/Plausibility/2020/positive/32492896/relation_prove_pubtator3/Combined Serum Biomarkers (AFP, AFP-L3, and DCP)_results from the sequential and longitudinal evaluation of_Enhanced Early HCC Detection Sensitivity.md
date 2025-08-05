@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I used the minimal MeSH/keyword query "AFP AFP-L3 DCP early HCC detection sensitivity" to capture literature connecting the combined serum biomarkers (AFP, AFP-L3, DCP) with enhanced sensitivity for early HCC detection. I specifically sought abstracts discussing the use of these biomarkers in combination for early detection, longitudinal or sequential evaluation, or comparison of sensitivities. I then selected papers that reported on sensitivity gains for early HCC detection with the combined use of these markers in a prospective or systematic evaluation and reviewed the full abstract for direct evidence, avoiding PMID 32492896 as instructed.
+
+# literature evidence
+## "Multimarker Panels for Detection of Early Stage Hepatocellular Carcinoma: A Prospective, Multicenter, Case-Control Study" (PMID: 34796691)
+"Protein induced by vitamin K absence-II (PIVKA-II; also known as des-gamma-carboxy prothrombin [DCP]) and alpha-fetoprotein (AFP) demonstrated the best clinical performance, both individually and in combination, and the addition of a third biomarker (Lens culinaris agglutinin-reactive fraction of AFP [AFP-L3], cartilage oligomeric matrix protein [COMP], insulin-like growth factor-binding protein 3 [IGFBP3], or matrix metalloproteinase 3 [MMP3]) further increased sensitivity for the detection of both early stage and all-stage HCC. The addition of age and sex to the three-biomarker panel resulted in an improved diagnostic performance."
+
+Answer: True

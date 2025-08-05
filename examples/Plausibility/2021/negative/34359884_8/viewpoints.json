@@ -1,0 +1,64 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "HIF activation",
+            "relation": "drives",
+            "end_node": "Enhanced glycolysis"
+        },
+        {
+            "start_node": "Enhanced glycolysis",
+            "relation": "results in",
+            "end_node": "Elevated lactate production"
+        },
+        {
+            "start_node": "Elevated lactate production",
+            "relation": "leads to",
+            "end_node": "Tumor microenvironment acidification"
+        },
+        {
+            "start_node": "Elevated lactate production",
+            "relation": "is triggered by",
+            "end_node": "GPR81 receptor activation"
+        },
+        {
+            "start_node": "Acidified tumor microenvironment",
+            "relation": "is induced by",
+            "end_node": "Polarization of TAMs towards pro-tumorigenic M2 phenotype"
+        },
+        {
+            "start_node": "GPR81 receptor activation",
+            "relation": "is promoted by",
+            "end_node": "Polarization of TAMs towards pro-tumorigenic M2 phenotype"
+        },
+        {
+            "start_node": "Polarization of TAMs towards pro-tumorigenic M2 phenotype",
+            "relation": "results in",
+            "end_node": "Upregulation of CA12 in macrophages"
+        },
+        {
+            "start_node": "Upregulation of CA12 in macrophages",
+            "relation": "is promoted by",
+            "end_node": "Secretion of chemokine CCL8"
+        },
+        {
+            "start_node": "Secretion of cytokines IL-10 and TGF-β",
+            "relation": "is triggered by",
+            "end_node": "Activation of PHGDH-mediated serine synthesis pathway in tumor cells"
+        },
+        {
+            "start_node": "Activation of PHGDH-mediated serine synthesis pathway in tumor cells",
+            "relation": "results from",
+            "end_node": "Increased NADPH production and enhanced redox balance"
+        },
+        {
+            "start_node": "Increased NADPH production and enhanced redox balance",
+            "relation": "is promoted by",
+            "end_node": "Resistance to targeted therapies (TKIs and ICIs)"
+        },
+        {
+            "start_node": "AMPK-mediated autophagy",
+            "relation": "are augmented by",
+            "end_node": "Metabolic adaptations in tumor cells"
+        }
+    ]
+}

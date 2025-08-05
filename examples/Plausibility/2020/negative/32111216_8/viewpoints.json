@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "NAFLD-induced metabolic stress",
+            "relation": "is induced by",
+            "end_node": "FTO upregulation"
+        },
+        {
+            "start_node": "NAFLD-induced metabolic stress",
+            "relation": "is initiated by",
+            "end_node": "ALKBH5 activity modulation"
+        },
+        {
+            "start_node": "NAFLD-induced metabolic stress",
+            "relation": "is initiated by",
+            "end_node": "WTAP activity modulation"
+        },
+        {
+            "start_node": "Upregulated FTO (and co-regulatory changes in ALKBH5/WTAP)",
+            "relation": "is catalyzed by",
+            "end_node": "Selective removal of m6A modifications on lipid metabolism mRNAs and ncRNAs"
+        },
+        {
+            "start_node": "Selective, motif-driven m6A demethylation",
+            "relation": "results from",
+            "end_node": "Stabilization and enhanced translation of lipid metabolism transcripts"
+        },
+        {
+            "start_node": "Secondary RNF5-mediated oncogenic signaling triggered by fatty acid excess",
+            "relation": "is promoted by",
+            "end_node": "Priming of hepatocytes for malignant transformation and HCC development"
+        }
+    ]
+}

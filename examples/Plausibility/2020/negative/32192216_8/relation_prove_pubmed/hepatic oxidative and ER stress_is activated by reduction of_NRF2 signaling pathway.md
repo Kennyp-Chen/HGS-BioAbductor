@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I searched PubMed using the query: `hepatic oxidative stress AND ER stress AND NRF2 signaling pathway`. This approach targeted the key MeSH-based concepts: hepatic oxidative and endoplasmic reticulum (ER) stress, and the NRF2 signaling pathway, all relevant to liver biology. I carefully screened the abstracts for direct or implied descriptions of the relationship 'NRF2 signaling pathway is activated by reduction of hepatic oxidative and ER stress'. Upon identification of promising results, I reviewed the full text for semantic evidence that specifically demonstrates this activation in response to reduced hepatic oxidative and ER stress.
+
+# literature evidence
+## "Exercise and Metformin Intervention Prevents Lipotoxicity-Induced Hepatocyte Apoptosis by Alleviating Oxidative and ER Stress and Activating the AMPK/Nrf2/HO-1 Signaling Pathway in db/db Mice." PMID: 36120597
+"Compared to MET or exercise intervention alone, the combined exercise and metformin exhibited significant effect on ameliorating hepatic steatosis, inhibiting oxidative and ER stress-induced hepatocyte apoptosis via improving the capacity of the antioxidant defense system and suppression of the PERK-eIF2α-ATF4 pathway. Furthermore, upregulation of AMPK-Nrf2-HO-1 signaling pathway might be a key crosstalk between MET and exercise, which may have additive effects on alleviating hepatic lipid accumulation."
+
+Answer: True

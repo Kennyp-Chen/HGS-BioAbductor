@@ -1,0 +1,59 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Liver neoplasms",
+            "relation": "upregulates",
+            "end_node": "AHNAK2"
+        },
+        {
+            "start_node": "AHNAK2",
+            "relation": "binds directly to",
+            "end_node": "geranylgeranyltransferase enzymes"
+        },
+        {
+            "start_node": "geranylgeranyltransferase enzymes",
+            "relation": "selectively alters the geranylgeranylation of",
+            "end_node": "Rho/Ras GTPases"
+        },
+        {
+            "start_node": "aberrantly geranylgeranylated Rho/Ras GTPases",
+            "relation": "disrupts",
+            "end_node": "plasma membrane targeting"
+        },
+        {
+            "start_node": "AHNAK2",
+            "relation": "alters",
+            "end_node": "RAB-mediated vesicular trafficking"
+        },
+        {
+            "start_node": "AHNAK2 upregulation",
+            "relation": "promotes",
+            "end_node": "enhanced cellular motility"
+        },
+        {
+            "start_node": "AHNAK2 upregulation",
+            "relation": "stimulates",
+            "end_node": "increased angiogenesis"
+        },
+        {
+            "start_node": "AHNAK2 upregulation",
+            "relation": "induces",
+            "end_node": "augmented metastasis"
+        },
+        {
+            "start_node": "AHNAK2-driven alterations",
+            "relation": "synergizes with",
+            "end_node": "NAA40-mediated oncogenic mechanisms"
+        },
+        {
+            "start_node": "AHNAK2-driven alterations",
+            "relation": "synergizes with",
+            "end_node": "NEK2-mediated oncogenic mechanisms"
+        },
+        {
+            "start_node": "AHNAK2-driven alterations",
+            "relation": "synergizes with",
+            "end_node": "circRNA-AHNAK pathway effects"
+        }
+    ]
+}

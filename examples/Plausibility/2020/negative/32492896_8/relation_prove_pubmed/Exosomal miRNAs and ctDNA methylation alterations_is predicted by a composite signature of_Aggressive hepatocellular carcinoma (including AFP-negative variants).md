@@ -1,0 +1,14 @@
+# Search Strategy and Reasoning
+I began with a direct search using the combined minimal MeSH-style keywords: "Exosomal miRNAs AND ctDNA methylation AND hepatocellular carcinoma AND aggressive." No abstracts returned clear evidence. I refined the query to "Exosomal miRNAs AND ctDNA AND hepatocellular carcinoma" to maximize the likelihood of finding papers integrating both markers (miRNAs and ctDNA, especially their methylation/alterations) and their relationship to aggressive HCC subtypes. I focused on abstracts that discuss composite biomarker signatures or combined liquid biopsy modalities (exosomal miRNAs and ctDNA) predicting characteristics of aggressive HCC, including AFP-negative variants. I prioritized literature illustrating composite/panel approaches, as required by the question. I carefully excluded PMID 32492896 as instructed.
+
+# literature evidence
+## "Liquid Biopsy in Hepatocellular Carcinoma: Opportunities and Challenges for Immunotherapy" (PMID: 34503144)
+Extracted from the full text: 
+"In addition to RASSF1A, two abnormally methylated genes (APC and COX2) and one miRNA (miR-203) were combined to establish a predictive model by which nearly 75% of HCC patients were detected, who could not be diagnosed with AFP. … research on biomarker combinations has been performed in order to provide more accurate and valuable information for a future individualized HCC diagnosis and/or prognosis assessment. In this context, liquid biopsy has been explored as a way to monitor cancer prognosis and diagnosis in a non-invasive manner. … Among all liquid biopsy analytes, ctDNA plays an important role in HCC prognosis ... The data of ctDNA include quantitative changes, such as differences in the concentration of ctDNA, as well as qualitative changes, such as gene mutations, DNA copy number variations and DNA methylation [16]… studies based on the detection of somatic single-nucleotide mutations and methylation changes in ctDNA could closely correlate with tumor burden over time in HCC patients and could be used to predict recurrence after surgery [17,88,89]."
+AND
+"In addition to RASSF1A, two abnormally methylated genes (APC and COX2) and one miRNA (miR-203) were combined to establish a predictive model by which nearly 75% of HCC patients were detected, who could not be diagnosed with AFP [92]."
+
+# Final Reasoning
+This review, citing original work, specifically describes composite (model/panel) approaches combining exosomal (serum) miRNAs and ctDNA methylation alterations (e.g., RASSF1A, APC, COX2 methylation + miR-203) as a predictive signature for HCC detection—including AFP-negative variants, a subset of aggressive HCC. This semantically supports the proposed relationship.
+
+Answer: True

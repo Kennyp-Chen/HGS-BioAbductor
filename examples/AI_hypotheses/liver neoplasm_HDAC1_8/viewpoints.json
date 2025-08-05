@@ -1,0 +1,54 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "HDAC1 upregulation",
+            "relation": "catalyzes",
+            "end_node": "histone deacetylation at targeted genomic regions"
+        },
+        {
+            "start_node": "histone deacetylation",
+            "relation": "induces",
+            "end_node": "nucleosome repositioning"
+        },
+        {
+            "start_node": "histone deacetylation",
+            "relation": "reduces",
+            "end_node": "diminished recruitment of DNA repair proteins"
+        },
+        {
+            "start_node": "modified chromatin landscape",
+            "relation": "disrupts",
+            "end_node": "disrupted p53 regulatory interactions with DNA repair pathways"
+        },
+        {
+            "start_node": "modified chromatin landscape",
+            "relation": "disrupts",
+            "end_node": "disrupted MYC regulatory interactions with DNA repair pathways"
+        },
+        {
+            "start_node": "established chromatin hotspots",
+            "relation": "facilitates",
+            "end_node": "preferential hepatitis virus DNA integration"
+        },
+        {
+            "start_node": "accumulated hepatitis virus DNA integration events",
+            "relation": "drives",
+            "end_node": "genomic instability"
+        },
+        {
+            "start_node": "genomic instability",
+            "relation": "triggers",
+            "end_node": "aberrant autophagic responses"
+        },
+        {
+            "start_node": "genomic instability",
+            "relation": "triggers",
+            "end_node": "enhanced metastatic potential"
+        },
+        {
+            "start_node": "genomic instability",
+            "relation": "triggers",
+            "end_node": "increased angiogenesis"
+        }
+    ]
+}

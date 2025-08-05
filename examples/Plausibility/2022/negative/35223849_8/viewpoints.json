@@ -1,0 +1,44 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Nanoparticle-based Drug Delivery System",
+            "relation": "is controllably enhanced by",
+            "end_node": "p62 Phosphorylation"
+        },
+        {
+            "start_node": "p62 Phosphorylation",
+            "relation": "is selectively targeted for degradation by increased",
+            "end_node": "Keap1 (via autophagic degradation)"
+        },
+        {
+            "start_node": "Keap1",
+            "relation": "results from the autophagic degradation of",
+            "end_node": "Nrf2 Activation"
+        },
+        {
+            "start_node": "Nrf2",
+            "relation": "are upregulated by activated",
+            "end_node": "Cytoprotective Antioxidant Genes"
+        },
+        {
+            "start_node": "Cytoprotective Antioxidant Genes",
+            "relation": "is induced by the upregulation of",
+            "end_node": "Reduction in Oxidative Stress"
+        },
+        {
+            "start_node": "Hepatic Stellate Cell Activation",
+            "relation": "is achieved through the inhibition of",
+            "end_node": "Attenuation of Liver Fibrosis"
+        },
+        {
+            "start_node": "Nrf2",
+            "relation": "is ensured by maintaining a controlled activation of",
+            "end_node": "Avoidance of Systemic Oncogenic Risks"
+        },
+        {
+            "start_node": "Nrf2 within a Strict Therapeutic Window",
+            "relation": "is enabled by biomarkers derived from omics analyses and high-resolution imaging that maintain",
+            "end_node": "Real-time Monitoring of Nrf2 Activity"
+        }
+    ]
+}

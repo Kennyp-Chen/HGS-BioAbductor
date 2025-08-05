@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I began by identifying the minimal keywords that capture the two biological entities while maintaining semantic relevance: "exosomes" and "miR-128-3p." I did not include "bioengineered" or "tumor-specific" initially in order to maximize paper retrieval, as artificial or tumor-specific engineering is a subset of natural exosomal delivery and may not frequently appear in titles/abstracts. The search for "exosomes AND miR-128-3p" returned several relevant papers. I specifically looked for instances where miR-128-3p is reported as cargo delivered by exosomes, especially those derived from tumor cells or, at minimum, exosomes delivering miR-128-3p in a cancer setting. The selected evidence must clearly state that exosomes deliver miR-128-3p to target cells.
+
+# literature evidence
+## "Gastric cancer cell-derived exosomal miRNA-128-3p promotes angiogenesis by targeting SASH1." PMID: 39664191
+"Exosomes, key components of the tumour microenvironment, can mediate intercellular communication through the delivery of various signalling molecules, including microribonucleic acids (miRNAs), and ultimately participate in regulating the process of tumour development...Among these miRNAs, microRNA-128-3p (miR-128-3p) was highly expressed in serum exosomes isolated from gastric cancer patients, as confirmed by high-throughput sequencing and subsequent experiments. Coculture of gastric cancer-derived exosomes overexpressing miR-128-3p with human umbilical vein endothelial cells (HUVECs) significantly enhanced HUVEC proliferation, migration and angiogenesis."
+
+Answer: True

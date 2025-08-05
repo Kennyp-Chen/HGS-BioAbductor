@@ -1,0 +1,11 @@
+# Search Strategy and Reasoning
+I used the keywords "hepatocellular carcinoma AND exosomes AND miR-21 AND miR-221" to specifically identify literature addressing the relationship between hepatocellular carcinoma (HCC) and exosomes carrying miR-21 and miR-221. I reviewed abstracts for direct or implied connections regarding secretion of exosomes loaded with miR-21 and miR-221 as a result of HCC (focusing on early/diagnostic contexts as well). One paper, PMID: 26509672, explicitly investigates the secretion mechanisms of exosomal miR-21 and miR-221 by HCC cells and corroborates their presence in exosomal fractions both in vitro and in patient samples with early HCC. I examined the full text to confirm semantic linkage, ensuring careful differentiation from merely elevated levels.
+
+# literature evidence
+
+## "Circulating microRNAs, miR-939, miR-595, miR-519d and miR-494, Identify Cirrhotic Patients with HCC" (PMID: 26509672)
+"To get an insight into possible mechanisms sustaining aberrant circulating miRNA levels, the intracellular expression of these miRNAs was compared with their extracellular expression in cell culture supernatant and in the exosomal fraction in HCC-derived cell lines. A correlation was found between intracellular and exosomal levels of miR-519d (R2 = 0.92; Pearson’s correlation p = 0.001), miR-494 (R2 = 0.59; Pearson’s correlation p = 0.044), miR-221 (R2 = 0.71; Pearson’s correlation p = 0.018) and miR-21 (R2 = 0.61; Pearson’s correlation p = 0.039), suggesting exosomal secretion as a mechanism that contributes to their increased circulating levels."
+
+Additionally, in HCC patient samples: "High expression levels of miR-519d, miR-21, miR-221 and miR-1228 were detected in the exosomal fraction, whereas nearly absent levels were observed in the exosomes-depleted fraction (Student’s t-test p = 0.001, p<0.0001, p<0.0001, p = 0.002 respectively). ... These preliminary data allowed us to hypothesize different mechanisms of release of circulating miRNAs, which appeared to be exosome-mediated for miR-519d, miR-21, miR-221 and miR-1228."
+
+Answer: True

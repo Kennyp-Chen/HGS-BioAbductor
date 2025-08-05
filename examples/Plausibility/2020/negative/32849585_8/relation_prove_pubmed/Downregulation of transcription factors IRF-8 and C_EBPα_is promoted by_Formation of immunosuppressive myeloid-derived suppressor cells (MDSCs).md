@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+The query was split into minimal keywords using MeSH terms and known gene/protein names: "IRF-8", "C/EBPα", and "myeloid-derived suppressor cells". Initial searches combined all terms, then separately queried each transcription factor with MDSCs to maximize evidence detection. Abstract screening revealed relevant associations. The IRF-8 literature shows that downregulation promotes MDSC formation, but combining both IRF-8 and C/EBPα is rare. However, for C/EBPα, a full-text review of PMID: 29070836 revealed direct evidence that downregulation promotes MDSC formation and immunosuppressive function. This matches the relationship type "is promoted by," since inhibition (downregulation) of these transcription factors increases MDSC generation and activity.
+
+# literature evidence
+## "Dual negative roles of C/EBPα in the expansion and pro-tumor functions of MDSCs." PMID: 29070836
+"Consistent with the function of C/EBPα in regulating the balance between proliferation and growth arrest in hematopoietic progenitors, myeloid lineage specific deletion of C/EBPα resulted in significantly enhanced MDSC proliferation and expansion, as well as an increase of myeloid progenitors and a decrease of mature cells. In addition, deletion of C/EBPα in MDSCs enhanced the pro-angiogenic, immune suppressive and pro-tumorigenic behavior of these cells by upregulating the production of iNOS and arginase, as well as MMP-9 and VEGF."
+
+Answer: True

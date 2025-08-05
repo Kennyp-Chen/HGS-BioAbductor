@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I used the minimal MeSH terms for the biological pair: 'Glutathione synthesis' and 'GPX4' (since 'GPX4 stability' is often described in the literature by the expression level or protein activity/stability of GPX4). I searched for co-occurrence and mechanistic links between "glutathione synthesis" and "GPX4". From PubTator, I found a recent paper (PMID: 39408223) that discusses the increase of both glutathione synthesis and GPX4 expression, specifically in the context of protection against ferroptosis. I then reviewed the full text to confirm whether an increased glutathione synthesis promotes or is associated with increased GPX4 stability or expression.
+
+# literature evidence
+## "Green Onion-Derived Exosome-like Nanoparticles Prevent Ferroptotic Cell Death Triggered by Glutamate: Implication for GPX4 Expression." PMID: 39408223
+"Moreover, we investigated the expression of GPX4. Our results demonstrated that GDEN treatment significantly reversed the glutamate-induced decrease in the expression of GPX4, a major antioxidant enzyme involved in ferroptosis (Figure 6D). Furthermore, GDEN treatment significantly increased the synthesis of glutathione, a critical antioxidant that functions as a substrate of GPX4 to prevent lipid peroxidation (Figure 6E). These results suggest that GDEN-mediated protection against glutamate-induced ferroptosis may be mediated, at least in part, by the upregulation of GPX4 expression and increase in glutathione synthesis, thereby decreasing lipid peroxidation and cell death."
+
+Answer: True

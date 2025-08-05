@@ -1,0 +1,69 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "PFKFB2 overexpression",
+            "relation": "intensifies",
+            "end_node": "glycolytic activity"
+        },
+        {
+            "start_node": "PGK1 expression",
+            "relation": "intensifies",
+            "end_node": "glycolytic activity"
+        },
+        {
+            "start_node": "ZEB1-induced PFKM expression",
+            "relation": "intensifies",
+            "end_node": "glycolytic activity"
+        },
+        {
+            "start_node": "augmented glycolytic activity",
+            "relation": "increases",
+            "end_node": "NADPH levels"
+        },
+        {
+            "start_node": "augmented glycolytic activity",
+            "relation": "increases",
+            "end_node": "acetyl-CoA levels"
+        },
+        {
+            "start_node": "elevated NADPH levels",
+            "relation": "modulates",
+            "end_node": "HMGCR activity"
+        },
+        {
+            "start_node": "elevated acetyl-CoA levels",
+            "relation": "modulates",
+            "end_node": "HMGCR activity"
+        },
+        {
+            "start_node": "modulated HMGCR",
+            "relation": "enhances",
+            "end_node": "GGPP production"
+        },
+        {
+            "start_node": "heightened GGPP levels",
+            "relation": "promotes",
+            "end_node": "protein geranylgeranylation"
+        },
+        {
+            "start_node": "enhanced protein geranylgeranylation",
+            "relation": "activates",
+            "end_node": "small GTPases activation"
+        },
+        {
+            "start_node": "activated small GTPases",
+            "relation": "triggers",
+            "end_node": "cytoskeletal remodeling"
+        },
+        {
+            "start_node": "activated small GTPases",
+            "relation": "promotes",
+            "end_node": "cell motility"
+        },
+        {
+            "start_node": "increased cell motility",
+            "relation": "drives",
+            "end_node": "tumor invasiveness and metastasis"
+        }
+    ]
+}

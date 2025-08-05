@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Adenosine-generating enzymes (ENTPD2, CD39, CD73)",
+            "relation": "are lowered when inhibited",
+            "end_node": "Extracellular adenosine levels"
+        },
+        {
+            "start_node": "A2a receptor",
+            "relation": "is diminished by blockade of",
+            "end_node": "Adenosine signaling"
+        },
+        {
+            "start_node": "AMPK-autophagy signaling",
+            "relation": "are reduced through selective modulation of",
+            "end_node": "Extracellular adenosine levels"
+        },
+        {
+            "start_node": "Extracellular adenosine",
+            "relation": "is promoted by",
+            "end_node": "Recruitment and activation of immunosuppressive MDSCs"
+        },
+        {
+            "start_node": "Extracellular adenosine",
+            "relation": "is inhibited by high",
+            "end_node": "CTL function"
+        },
+        {
+            "start_node": "PD-1/PD-L1 checkpoint inhibitors (in the context of lowered extracellular adenosine)",
+            "relation": "are synergistically enhanced when combined with",
+            "end_node": "Antitumor responses in hepatocellular carcinoma"
+        }
+    ]
+}

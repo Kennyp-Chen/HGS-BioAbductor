@@ -1,0 +1,10 @@
+| viewpoints | is proved | proved PMID | proved literature title | proved sentence in the literature |test method |
+|------------|-----------|-------------|-------------------------|-----------------------------------|------------|
+| MAP3K2 phosphorylates Geranylgeranyl transferase complex subunits | False |  |  |  |
+| MAP3K2 cooperates with RAS/RAF kinases | False |  |  |  |
+| Phosphorylated geranylgeranyl transferase complex undergoes aberrant geranylgeranylation due to modification of Rho proteins | False |  |  |  |
+| Aberrantly geranylgeranylated Rho proteins is disrupted by aberrantly modified Cell adhesion and migration | True | 31241783 | Key roles of Rho GTPases, YAP, and Mutant P53 in anti-neoplastic effects of statins. | Reductions of mevalonate or isoprenoids, caused by statins, would further decrease the isoprenylation of Rho GTPases which is the crucial step for Rho GTPases to anchor on inner cellular membrane. Following anchoring, activated Rho GTPases can mediate a series of cellular activities such as cytoskeleton reprogramming, front-rear polarity, and cell-ECM adhesion. These changes not only facilitate tumor cell detachment and migration but also bring great mechanical changes... |
+| Cell adhesion and migration results from disrupted Metastasis-prone phenotype | True | 34944948 | The Autophagic Route of E-Cadherin and Cell Adhesion Molecules in Cancer Progression | "As mentioned above, the disruption of AJs as a consequence of E-cadherin downregulation can trigger EMT and the gaining of disseminative properties... Collectively, these data indicate that the disaggregation of AJs and the gain of a hybrid epithelial-mesenchymal phenotype, typical of pEMT, both foster tumor progression." |
+| synergizes with the MAP3K2-driven mechanism | False |  |  |  |
+| Modest increments in Met RTK expression synergizes with the MAP3K2-driven mechanism to drive tumor initiation | False |  |  |  |
+| MAPT-mediated autophagy inhibition synergizes with the MAP3K2-driven mechanism to amplify tumor aggressiveness | False |  |  |  |

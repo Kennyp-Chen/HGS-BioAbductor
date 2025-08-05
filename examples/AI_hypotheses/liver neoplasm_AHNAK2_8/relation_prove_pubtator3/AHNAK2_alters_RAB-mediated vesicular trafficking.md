@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+My approach started by identifying the minimal MeSH terms: "AHNAK2" (a gene/protein) and "RAB-mediated vesicular trafficking" (a biological pathway/process). Recognizing that "RAB-mediated vesicular trafficking" is not a common MeSH or protein/gene phrase, I refined the queries to combinations such as "AHNAK2 vesicular trafficking", "AHNAK2 RAB", "AHNAK2 vesicle", and "AHNAK2 trafficking". I systematically scanned abstracts for any direct or implied evidence that AHNAK2 alters RAB-mediated vesicular trafficking. Upon review, the returned abstracts associated AHNAK2 primarily with cancer progression, cellular localization (such as to filopodia and vesicles), and c-MET signaling, but none specifically linked AHNAK2 to RAB-mediated pathways or vesicular trafficking at a functional or mechanistic level. Furthermore, searches with "RAB" and with generalized "trafficking" did not yield evidence for a direct or even implied role of AHNAK2 in altering RAB-dependent vesicular trafficking.
+
+# literature evidence
+## No directly relevant article found
+Despite surveying several reviews and primary research articles (e.g., PMID: 39849106, 38033502, 38751848, 32486507), none provided a sentence indicating that AHNAK2 alters, regulates, or acts on RAB-mediated vesicular trafficking. Reports describe vesicular localization or involvement of AHNAK2 in cellular motility and invasion, but without reference to RAB proteins or the mechanistic vesicle trafficking machinery.
+
+Answer: False

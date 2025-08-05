@@ -1,0 +1,10 @@
+# Search Strategy and Reasoning
+My approach began with extracting minimal keywords: "AMPK-mediated autophagy" and "metabolic adaptations in tumor cells." As a refined query for broader coverage, I used close synonyms: "AMPK autophagy tumor metabolism." I reviewed top abstracts from both queries, focusing on direct or implied links where AMPK-mediated autophagy augments metabolic adaptations in tumor cells. I specifically looked for evidence that AMPK activation drives autophagy which in turn enables tumors to adapt metabolically (e.g., survive nutrient stress, increase metabolic plasticity).
+
+# literature evidence
+## "Tumor Cell Glycolysis: At the Crossroad of Epithelial-Mesenchymal Transition and Autophagy" (PMID: 35326492)
+Exact sentence: "In the presence of stimuli and glucose starvation, upregulated glycolysis leads to adenosine monophosphate-activated protein kinase (AMPK) activation and autophagy induction... Thus, glycolysis has been shown to induce EMT and either induce or inhibit autophagy. ... tumor cells respond by upregulating glycolysis, which will then induce EMT and inhibit autophagy. In the presence of stimuli and glucose starvation, upregulated glycolysis leads to adenosine monophosphate-activated protein kinase (AMPK) activation and autophagy induction... upregulated glycolysis leads to AMPK activation and autophagy induction."
+
+Further reasoning from this and related articles: This review describes the integration of AMPK activation and autophagy as crucial metabolic responses in tumor cells, especially under metabolic stress (i.e., low glucose). AMPK is directly involved in sensing cellular energy status and engaging autophagy to maintain energy balance and adaptation. The text explicitly connects AMPK activation and autophagy with metabolic adaptation in tumor cells, indicating that their interplay augments the tumor’s ability to survive and adapt metabolically.
+
+Answer: True

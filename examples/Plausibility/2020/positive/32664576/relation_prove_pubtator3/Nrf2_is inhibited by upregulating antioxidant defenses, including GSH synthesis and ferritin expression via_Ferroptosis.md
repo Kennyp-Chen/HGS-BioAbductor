@@ -1,0 +1,12 @@
+# Search Strategy and Reasoning
+The minimal MeSH terms for this pair are "Nrf2" and "ferroptosis". The relationship to be validated is: "is inhibited by upregulating antioxidant defenses, including GSH synthesis and ferritin expression via"—i.e., does upregulation of Nrf2 inhibit ferroptosis by boosting antioxidant defenses, specifically GSH synthesis and ferritin expression. I searched PubMed for abstracts mentioning both terms and then reviewed the full text of the most detailed, relevant review (PMID: 37760042) for direct mechanistic links.
+
+# literature evidence
+## "NRF2, a Superstar of Ferroptosis" (PMID: 37760042)
+From the full text:  
+"Most importantly, so far, almost all genes that participate in ferroptosis are involved in the transcriptional regulation of NRF2, including glutathione regulation (such as System Xc- and GPX4), iron regulation (such as FTH1 (ferritin heavy chain 1), FTL (ferritin light chain) and FPN1 (ferrous iron exporter ferroportin 1)), NADPH regeneration (such as G6PD (glucose-6-phosphate dehydrogenase), and ME1 (malic enzyme 1)), and so on, which are described in this review too...NRF2 can fight against ferroptosis by regulating its downstream antioxidant genes, but this also means that it maintains the survival of tumor cells while protecting normal cells."  
+
+And specifically:  
+"Two crucial enzymes in GSH biosynthesis are regulated by NRF2: GCL (composed of GCLC/GCLM, glutamate-cysteine ligase catalytic/modulatory subunits) and GSS. SLC7A11, one of the two subunits of system Xc-, is also regulated by NRF2 in GSH metabolism, which is responsible for transporting cystine into the cell, thereby increasing cysteine content and promoting the process of GSH generation... FTH1 and FTL, light and heavy chains of ferritin, respectively, are controlled by NRF2... As an E3 ubiquitin ligase, HERC2 is responsible for the degradation of NCOA4 (ferritin cargo receptor mediating ferritinophagy) and FBXL5 (IRP1/2 regulator mediating ferritin synthesis) and thus downregulates liable iron level. HERC2 is upregulated by NRF2 to fight against ferroptosis. FTL and FTH1, light and heavy chains of ferritin, respectively, are controlled by NRF2."
+
+Answer: True

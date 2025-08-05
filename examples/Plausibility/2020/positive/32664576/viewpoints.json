@@ -1,0 +1,59 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Ferrous iron (Fe2+)",
+            "relation": "catalyzes the formation of via the Fenton reaction",
+            "end_node": "Hydroxyl radicals (OH•)"
+        },
+        {
+            "start_node": "Glutathione (GSH)",
+            "relation": "is prevented by, with its depletion triggering",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "Glutathione Peroxidase 4 (GPX4)",
+            "relation": "is inhibited by detoxifying lipid peroxides to prevent",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "System Xc−",
+            "relation": "is averted by facilitating cystine uptake for GSH synthesis via",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "p53",
+            "relation": "is induced through repression of SLC7A11 that reduces cystine uptake by",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "Iron overload",
+            "relation": "is promoted by increasing lipid peroxidation due to an elevated labile iron pool from",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "Nrf2",
+            "relation": "is inhibited by upregulating antioxidant defenses, including GSH synthesis and ferritin expression via",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "Ferritinophagy",
+            "relation": "is promoted by increasing the cellular labile iron pool through degradation of ferritin via",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "Arachidonate lipoxygenases (ALOXs)",
+            "relation": "is driven by catalyzing the peroxidation of polyunsaturated fatty acids via",
+            "end_node": "Ferroptosis"
+        },
+        {
+            "start_node": "Sorafenib",
+            "relation": "is induced by inhibition of system Xc− when treated with",
+            "end_node": "Ferroptosis in hepatocellular carcinoma"
+        },
+        {
+            "start_node": "NAPQI (acetaminophen metabolite)",
+            "relation": "is triggered by depletion of GSH following its reactive metabolite formation from",
+            "end_node": "Ferroptosis in hepatocytes"
+        }
+    ]
+}

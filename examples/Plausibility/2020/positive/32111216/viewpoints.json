@@ -1,0 +1,29 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "METTL3",
+            "relation": "undergoes m6A modification-mediated degradation caused by overactive",
+            "end_node": "SOCS2 mRNA"
+        },
+        {
+            "start_node": "METTL3",
+            "relation": "has enhanced translation via m6A modification installed by",
+            "end_node": "Snail mRNA"
+        },
+        {
+            "start_node": "FTO",
+            "relation": "is demethylated by FTO, leading to increased translation that promotes liver cancer progression",
+            "end_node": "PKM2 mRNA"
+        },
+        {
+            "start_node": "YTHDF2",
+            "relation": "is targeted for degradation under normal conditions by",
+            "end_node": "IL11 mRNA"
+        },
+        {
+            "start_node": "m6A modification",
+            "relation": "has its stability and oncoprotein expression modulated through m6A modification",
+            "end_node": "HBV RNA"
+        }
+    ]
+}

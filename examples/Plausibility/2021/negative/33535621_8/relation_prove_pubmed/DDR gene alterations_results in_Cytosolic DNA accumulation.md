@@ -1,0 +1,14 @@
+# Search Strategy and Reasoning
+To evaluate the semantic relationship whether 'DDR gene alterations' (DNA Damage Response gene alterations) result in 'Cytosolic DNA accumulation', the minimal keywords identified were "DNA Damage Response" and "cytosolic DNA accumulation." Initial search yielded no direct matches, so queries were expanded to include synonyms for "DDR gene mutation" and "DNA Damage Response gene alteration," paired with "cytosolic DNA".
+
+After identifying several review and primary research papers that discuss the interplay of DDR deficiencies/mutations and the accumulation of cytosolic DNA via micronuclei, cGAS-STING pathway activation, and DNA repair defects, I selected representative review articles and checked the full texts for direct semantic support of the relationship. The cited articles specifically explored whether DDR gene defects or inhibition lead to cytosolic DNA accumulation through mechanistic or experimental findings.
+
+# literature evidence
+
+## "Function and Molecular Mechanism of the DNA Damage Response in Immunity and Cancer Immunotherapy" (PMID: 34970273)
+"DDR deficiency or inhibition can also directly enhance innate immune responses... Emerging data reveal that DNA repair pathways and cytosolic pathological DNA sensing pathways have overlapping effectors that recognize and respond to damaged nuclear DNA, cytosolic endogenous DNA, or foreign DNA... Interference in DDR signaling elicits innate immune responses. One of the most well-studied examples is PARP inhibition. PARP inhibition generates cytosolic chromatin fragments and significantly potentiates cGAS-STING-dependent immune responses... Similarly, DNA damage as a result of cytotoxic chemotherapy, ionizing radiation (IR), metabolism, and deficiency of other DDR elements (including BRCA2, ATM, CHK1, RPA, RAD51, TREX1 and FANCD2), also leads to increased IFN signaling–mediated immune responses."
+
+## "Targeting the DNA damage response in immuno-oncology: developments and opportunities." (PMID: 34376827)
+"DDR deficiency has recently emerged as an important determinant of tumour immunogenicity. A growing body of evidence now supports the concept that DDR-targeted therapies can increase the antitumour immune response by (1) promoting antigenicity through increased mutability and genomic instability, (2) enhancing adjuvanticity through the activation of cytosolic immunity and immunogenic cell death... DDR defects plus the higher mutation load in tumor cells synergistically produce primarily tumor-specific neoantigens... DDR deficiency or inhibition can also directly enhance innate immune responses."
+
+Answer: True

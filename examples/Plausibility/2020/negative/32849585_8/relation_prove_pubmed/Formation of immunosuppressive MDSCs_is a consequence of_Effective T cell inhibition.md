@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I used the minimal MeSH keywords: "Myeloid-Derived Suppressor Cells" AND "T-Lymphocytes" AND immunosuppression AND inhibition. This query directly focuses on the core entities: immunosuppressive MDSCs and T cell inhibition, omitting broader contextual terms but ensuring the search covers both the formation/activity of MDSCs and their effect on T cells. Multiple recent abstracts indicated direct experiments linking MDSC functionality with T cell inhibition, and I selected a 2025 open-access study (PMID: 40307421) for full-text review. From the results section and methods, I verified that not only formation but also functional immunosuppressive activity of MDSCs leads to effective T cell inhibition.
+
+# literature evidence
+## "A novel method for isolation of tumor infiltrating myeloid-derived suppressor cells from human lung tumor tissue" (PMID: 40307421)
+"After 4 days, T-cell proliferation was assessed by flow cytometry, and it was found that activated CD8+ T cells cultured alone showed significantly more proliferation than those cultured with tMDSCs at a ratio 1:2 (57.21% vs 35.03%, p < 0.05, n = 6; ...). Overall, results suggest that the Rosette-MACS protocol does not affect the expression pattern of canonical immunosuppression-related genes and show that tMDSCs remain functional after isolation, at least, in terms of inhibiting CD8+ T-cell proliferation.”
+
+Answer: True

@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+I searched PubMed using minimal keyword logic: "liver damage AND 'liquid biopsy' AND biomarker" to capture literature that semantically links inflammatory/liver damage signaling and liquid biopsy biomarker expression profiles. These terms are carefully chosen as they map directly to MeSH concepts for the biological entities in question. I then reviewed the abstracts for direct or implied evidence that inflammation/liver damage signals modulate liquid biopsy biomarker profiles.
+
+# literature evidence
+## "Liquid Biopsy for the Diagnosis of Viral Hepatitis, Fatty Liver Steatosis, and Alcoholic Liver Diseases." PMID: 32466319
+"During the progression from hepatitis to fibrosis, cirrhosis, and liver failure, the accumulation of stressed/damaged hepatocyte elements associated with liver inflammation is critical. ... Hepatocyte-derived extracellular vesicles (Hep-EVs) released from stressed/damaged hepatocytes are partly responsible for liver disease progression and liver damage because they activate non-parenchymal cells and infiltrate inflammatory cells within the liver, which are in turn are an important source of EVs. ... Accordingly, special emphasis should be placed on liquid biopsy methods for the long-term monitoring of chronic liver diseases. In the present review, we have highlighted various aspects of current liquid biopsy research into chronic liver diseases. We have also reviewed recent progress on liquid biopsies that focus on cell-free DNA (cfDNA), long non-coding RNA (lncRNA), and the proteins in EVs as potential diagnostic tools and novel therapeutic targets in patients with viral hepatitis, fatty liver steatosis, and alcoholic liver diseases."
+
+Answer: True

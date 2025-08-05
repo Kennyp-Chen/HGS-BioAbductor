@@ -1,0 +1,12 @@
+# Search Strategy and Reasoning
+I searched PubMed using the combined minimal MeSH-relevant terms: "MitoNEET AND Labile iron pool" to ensure both the specific protein of interest (CISD1/MitoNEET) and labile iron pool were represented. This approach maximized the likelihood of retrieving literature discussing the functional connection between MitoNEET and the labile iron pool, explicitly or implicitly. I then examined the abstracts for semantic links, and for the most relevant paper (PMID: 36214668), I accessed the full text for explicit evidence connecting enhanced MitoNEET function to a reduced labile iron pool, as required by the pair and relation.
+
+# literature evidence
+## "Mitochondrial Aconitase ACO2 Links Iron Homeostasis with Tumorigenicity in Non-Small Cell Lung Cancer." PMID: 36214668
+Exact sentence from Results section: "mNT is a mitochondrial outer membrane (2Fe-2S) protein that delivers FeS clusters synthesized in the mitochondrion to specific cytosolic acceptor proteins... Knockdown (KD) mNT expression or treatment of cells with the mNT inhibitor pioglitazone also caused increased labile iron like that seen with upregulated ACO2 expression. These data provide mechanistic insight into a previously unrecognized ACO2–Iron axis and a role for ACO2 in the regulation of iron homeostasis and cell proliferation and as a determinant of the aggressive cancer phenotype embodied by tumor engraftment."
+
+Additionally: "Our model predicts that elevated ACO2 leads to inhibition of mNT leading to conversion of ACO1 into IRP1, and consequently a loss of cytosolic aconitase activity. To test this, ACO2 expression was increased over time and cytosolic aconitase activity and labile iron levels were measured in T-Rex 293 cells. In agreement with the model, increased ACO2 was accompanied by a concomitant decrease in cytosolic aconitase activity as a surrogate for conversion of ACO1 into IRP1, and increased iron levels."
+
+Interpretation: Enhanced MitoNEET (CISD1) function (i.e., not inhibited or knocked down) is associated with delivery of FeS clusters, which in turn, based on their models, limits the conversion of ACO1 into IRP1 and thereby prevents excess labile iron. Inhibition or loss of MitoNEET increases the labile iron pool, so enhancement would reduce it.
+
+Answer: True

@@ -1,0 +1,29 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Chronic liver injury",
+            "relation": "is initiated by",
+            "end_node": "Early hepatocellular carcinoma development"
+        },
+        {
+            "start_node": "Early hepatocellular carcinoma",
+            "relation": "are secreted as a result of",
+            "end_node": "Exosomes carrying miR-21 and miR-221"
+        },
+        {
+            "start_node": "Early hepatocellular carcinoma",
+            "relation": "are triggered by",
+            "end_node": "ctDNA methylation alterations in RASSF1A and GSTP1"
+        },
+        {
+            "start_node": "Inflammatory and liver damage signals",
+            "relation": "are modulated by",
+            "end_node": "Liquid biopsy biomarker expression profiles"
+        },
+        {
+            "start_node": "Exosomal miRNAs and ctDNA methylation alterations",
+            "relation": "is predicted by a composite signature of",
+            "end_node": "Aggressive hepatocellular carcinoma (including AFP-negative variants)"
+        }
+    ]
+}

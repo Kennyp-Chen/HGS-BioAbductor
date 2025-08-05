@@ -1,0 +1,7 @@
+# Byte-compiled 
+__pycache__/
+# large files
+data_availability.zip
+data/
+text-embedding-3-small/
+Results/

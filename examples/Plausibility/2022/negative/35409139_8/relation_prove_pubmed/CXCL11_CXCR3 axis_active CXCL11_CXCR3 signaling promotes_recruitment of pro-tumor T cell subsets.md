@@ -1,0 +1,8 @@
+# Search Strategy and Reasoning
+The minimal keywords for this query are "CXCL11 CXCR3 T cell recruitment." This search aims to capture literature where the CXCL11/CXCR3 axis is discussed in the context of T cell recruitment, with a focus on whether this signaling axis promotes recruitment of pro-tumor T cell subsets (which includes regulatory T cells and other phenotypes known to be pro-tumor). I searched for papers discussing both the axis and T cell recruitment, especially in the tumor microenvironment (e.g., glioblastoma, solid tumors). After identifying a comprehensive review (PMID: 38104126), I examined both the abstract and full text, focusing on the paracrine immunoregulatory roles and the results relating to T cell subset polarization under active CXCL11/CXCR3 signaling.
+
+# literature evidence
+## "The duality of CXCR3 in glioblastoma: unveiling autocrine and paracrine mechanisms for novel therapeutic approaches." PMID: 38104126
+From the full text: "The CXCR3 receptor is typically expressed at insignificant levels in naïve T cells. CXCL9 and CXCL10 binding to CXCR3+ naïve CD4+ T cells cause them to differentiate into Type 1T helper (Th1) and T helper 17 (Th17) cells... On the other hand, CXCL11 binding to CXCR3+ naïve CD4+ T cells causes them to polarize to Type 1 regulatory T cells (Tr1) (IL-10 producing regulatory T cells) and Type 2 helper T (Th2) cells through the phosphorylation of STAT 3 and STAT 6 ... This phenomenon, whereby different ligands bind to the same CXCR3 receptor but trigger downstream pathways, is commonly known as ligand bias signaling."
+
+Answer: True

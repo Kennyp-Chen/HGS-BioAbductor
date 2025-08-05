@@ -1,0 +1,49 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "MCM5 overexpression",
+            "relation": "induces",
+            "end_node": "replication origin hyperactivation"
+        },
+        {
+            "start_node": "KMT5C-mediated epigenetic alterations",
+            "relation": "potentiates",
+            "end_node": "replication origin hyperactivation"
+        },
+        {
+            "start_node": "BRUCE-related ATR deficiency",
+            "relation": "exacerbates",
+            "end_node": "replication origin hyperactivation"
+        },
+        {
+            "start_node": "replication origin hyperactivation",
+            "relation": "generates",
+            "end_node": "replication stress beyond a critical threshold"
+        },
+        {
+            "start_node": "replication stress",
+            "relation": "disturbs",
+            "end_node": "disrupted RAD51 and ATR regulation"
+        },
+        {
+            "start_node": "disrupted RAD51 and ATR regulation",
+            "relation": "shifts",
+            "end_node": "DNA repair shift to the error-prone break-induced replication pathway"
+        },
+        {
+            "start_node": "DNA repair via the break-induced replication pathway",
+            "relation": "promotes",
+            "end_node": "accumulation of genomic errors"
+        },
+        {
+            "start_node": "accumulation of genomic errors",
+            "relation": "drives",
+            "end_node": "aggressive tumor phenotypes including increased metastasis and angiogenesis"
+        },
+        {
+            "start_node": "aggressive tumor phenotypes",
+            "relation": "correlates with",
+            "end_node": "poorer patient outcomes"
+        }
+    ]
+}

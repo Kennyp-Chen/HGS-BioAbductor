@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "elevated FASN expression",
+            "relation": "confers vulnerability by increasing reliance on",
+            "end_node": "increased dependence on lipid reserves for membrane synthesis in tumor cells"
+        },
+        {
+            "start_node": "FASN inhibitors",
+            "relation": "reduces the availability of",
+            "end_node": "lipid reserves necessary for membrane synthesis"
+        },
+        {
+            "start_node": "PPARα agonists",
+            "relation": "induces",
+            "end_node": "accelerated fatty acid oxidation leading to a hypermetabolic state"
+        },
+        {
+            "start_node": "accelerated fatty acid oxidation",
+            "relation": "results in the generation of",
+            "end_node": "elevated reactive oxygen species (ROS) levels"
+        },
+        {
+            "start_node": "excess ROS",
+            "relation": "overwhelms",
+            "end_node": "cellular antioxidant defenses, driving metabolic stress"
+        },
+        {
+            "start_node": "metabolic stress",
+            "relation": "triggers",
+            "end_node": "apoptotic cell death in heterogeneous tumor populations including drug-resistant cancer stem cells"
+        }
+    ]
+}

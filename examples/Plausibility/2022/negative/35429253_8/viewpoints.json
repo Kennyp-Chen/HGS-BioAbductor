@@ -1,0 +1,39 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Dual-delivery nanotechnology system",
+            "relation": "are precisely elevated by",
+            "end_node": "Elevated LCA concentrations within the breast tumor microenvironment"
+        },
+        {
+            "start_node": "Elevated LCA concentrations within the breast tumor microenvironment",
+            "relation": "robustly results from increased",
+            "end_node": "Activation of TGR5 on tumor-associated macrophages"
+        },
+        {
+            "start_node": "Activation of TGR5 on tumor-associated macrophages",
+            "relation": "is triggered by",
+            "end_node": "Initiation of a refined cAMP/PKA signaling cascade in tumor-associated macrophages"
+        },
+        {
+            "start_node": "Activation of the cAMP/PKA signaling cascade in tumor-associated macrophages",
+            "relation": "is induced by",
+            "end_node": "Reprogramming of tumor-associated macrophages from an immunosuppressive M2 phenotype to an immunostimulatory M1 phenotype"
+        },
+        {
+            "start_node": "Low doses of LXA4 analogs",
+            "relation": "is promoted by",
+            "end_node": "Supportive anti‐inflammatory signaling that facilitates TAM reprogramming from M2 to M1 phenotype"
+        },
+        {
+            "start_node": "Reprogramming of tumor-associated macrophages from the M2 to M1 phenotype",
+            "relation": "results from the shift of TAMs to the immunostimulatory M1 phenotype",
+            "end_node": "Enhanced local immune surveillance and tumor cell apoptosis"
+        },
+        {
+            "start_node": "Enhanced local immune surveillance and tumor cell apoptosis",
+            "relation": "is achieved through",
+            "end_node": "Improved efficacy of chemotherapeutic regimens"
+        }
+    ]
+}

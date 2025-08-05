@@ -1,0 +1,13 @@
+{
+    "examples/AI_hypotheses/liver neoplasm_HDAC1_8": 0.6,
+    "examples/AI_hypotheses/liver neoplasm_COL1A2_8": 0.6666666666666666,
+    "examples/AI_hypotheses/liver neoplasm_GEMIN5_8": 0.6,
+    "examples/AI_hypotheses/liver neoplasm_PFKFB2_8": 1.0,
+    "examples/AI_hypotheses/liver neoplasm_MAP3K2_8": 0.25,
+    "examples/AI_hypotheses/liver neoplasm_AHNAK2_8": 0.36363636363636365,
+    "examples/AI_hypotheses/liver neoplasm_CIAO2A_8": 0.25,
+    "examples/AI_hypotheses/liver neoplasm_MCM5_8": 0.6666666666666666,
+    "examples/AI_hypotheses/liver neoplasm_PAFAH1B3_8": 0.2857142857142857,
+    "examples/AI_hypotheses/liver neoplasm_RMDN1_8": 0.6,
+    "examples/AI_hypotheses/liver neoplasm_SF3B2_8": 0.6666666666666666
+}

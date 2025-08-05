@@ -1,0 +1,34 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "EGCG-rich green tea catechins",
+            "relation": "bind to",
+            "end_node": "CSC-specific mitochondrial membrane components and enzyme profiles"
+        },
+        {
+            "start_node": "CSC-specific mitochondrial membrane components",
+            "relation": "is impaired through modification of",
+            "end_node": "mitochondrial oxidative phosphorylation in cancer stem cells"
+        },
+        {
+            "start_node": "EGCG-rich green tea catechins",
+            "relation": "is attenuated by",
+            "end_node": "IL-8 signaling pathway in cancer stem cells"
+        },
+        {
+            "start_node": "EGCG-rich green tea catechins",
+            "relation": "is attenuated by",
+            "end_node": "PI3K/AKT pathway in cancer stem cells"
+        },
+        {
+            "start_node": "dual mitochondrial and survival signaling impairment from EGCG action",
+            "relation": "is triggered by severe metabolic stress induced via",
+            "end_node": "intrinsic apoptotic cascade in cancer stem cells"
+        },
+        {
+            "start_node": "severe metabolic stress from EGCG-mediated dual mechanism",
+            "relation": "is inhibited due to",
+            "end_node": "self-renewal capacity of cancer stem cells"
+        }
+    ]
+}

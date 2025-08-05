@@ -1,0 +1,9 @@
+| viewpoints | is proved | proved PMID | proved literature title | proved sentence in the literature |test method |
+|------------|-----------|-------------|-------------------------|-----------------------------------|------------|
+| Accumulated 2-HG in IDH-mutant iCCA inhibited by DNA/histone demethylases | True | 32824685 | IDH1 Targeting as a New Potential Option for Intrahepatic Cholangiocarcinoma Treatment: Current State and Future Perspectives | "Indeed, some IDH1 point mutations induce widespread epigenetic alterations by means of a gain-of-function of the enzyme, which becomes able to produce the oncometabolite 2-hydroxyglutarate, with inhibitory activity on alpha-ketoglutarate-dependent enzymes, such as DNA and histone demethylases." |
+| Inhibition of DNA/histone demethylases promotes increased deposition of activating histone mark H3K4me3 at fibroblast-activating cytokine gene promoters | False |  |  |  |
+| Inhibition of DNA/histone demethylases promotes increased deposition of activating histone mark H3K27ac at fibroblast-activating cytokine gene promoters | False |  |  |  |
+| Inhibition of DNA/histone demethylases leads to decreased deposition of repressive histone mark H3K27me3 at fibroblast-activating cytokine gene promoters | False |  |  |  |
+Targeted epigenetic remodeling (increased H3K4me3/H3K27ac and decreased H3K27me3) at their promoters | False |  |  | 
+Elevated expression and secretion of TGF-β and IL-6 | False |  |  | 
+Activated cancer-associated fibroblasts is induced by extracellular matrix remodeling that establishes a chemoresistant tumor microenvironment | True | 33077325 | Fibroblast heterogeneity in tumor micro-environment: Role in immunosuppression and new therapies. | Specific CAF subpopulations actively influence various aspects of tumor growth, including cancer cell survival and proliferation, angiogenesis, extracellular matrix (ECM) remodeling, metastatic spread and chemoresistance.

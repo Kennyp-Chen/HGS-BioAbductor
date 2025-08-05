@@ -1,0 +1,69 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Oxidative Stress",
+            "relation": "is elevated by",
+            "end_node": "HBXIP"
+        },
+        {
+            "start_node": "HBXIP",
+            "relation": "is upregulated by",
+            "end_node": "METTL3"
+        },
+        {
+            "start_node": "METTL3",
+            "relation": "undergoes increased m6A modification mediated by",
+            "end_node": "HIF-1α mRNA"
+        },
+        {
+            "start_node": "METTL3",
+            "relation": "receive enhanced m6A modifications from",
+            "end_node": "key metabolic transcripts"
+        },
+        {
+            "start_node": "m6A-modified key metabolic transcripts",
+            "relation": "is driven by altered modification of",
+            "end_node": "metabolic reprogramming"
+        },
+        {
+            "start_node": "metabolic reprogramming",
+            "relation": "results from",
+            "end_node": "tumor proliferation"
+        },
+        {
+            "start_node": "Oxidative Stress",
+            "relation": "is directly activated via redox-sensitive modifications by",
+            "end_node": "METTL3/METTL14 complex"
+        },
+        {
+            "start_node": "Activated METTL3/METTL14 complex",
+            "relation": "undergoes selective m6A modification catalyzed by",
+            "end_node": "hypoxia-responsive lncRNA-X"
+        },
+        {
+            "start_node": "m6A-marked lncRNA-X",
+            "relation": "binds more avidly to",
+            "end_node": "IGF2BP2"
+        },
+        {
+            "start_node": "IGF2BP2",
+            "relation": "is stabilized by",
+            "end_node": "HIF-1α mRNA"
+        },
+        {
+            "start_node": "Stabilized HIF-1α mRNA",
+            "relation": "is increased through enhanced translation of",
+            "end_node": "HIF-1α protein"
+        },
+        {
+            "start_node": "Elevated HIF-1α protein",
+            "relation": "is promoted by",
+            "end_node": "angiogenesis"
+        },
+        {
+            "start_node": "Angiogenesis",
+            "relation": "is further elevated as a consequence of",
+            "end_node": "Oxidative Stress"
+        }
+    ]
+}

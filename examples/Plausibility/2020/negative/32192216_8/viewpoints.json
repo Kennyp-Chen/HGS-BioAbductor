@@ -1,0 +1,54 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "personalized antioxidant cocktail (N-acetylcysteine, vitamin E, astaxanthin)",
+            "relation": "is reduced by",
+            "end_node": "hepatic oxidative and ER stress"
+        },
+        {
+            "start_node": "hepatic oxidative and ER stress",
+            "relation": "is activated by reduction of",
+            "end_node": "NRF2 signaling pathway"
+        },
+        {
+            "start_node": "hepatic oxidative and ER stress",
+            "relation": "is activated by reduction of",
+            "end_node": "MAPK signaling pathway"
+        },
+        {
+            "start_node": "hepatic oxidative and ER stress",
+            "relation": "is activated by reduction of",
+            "end_node": "NF‑κB signaling pathway"
+        },
+        {
+            "start_node": "hepatic oxidative and ER stress",
+            "relation": "is activated by reduction of",
+            "end_node": "AMPK signaling pathway"
+        },
+        {
+            "start_node": "activation of NRF2, MAPK, NF‑κB, and AMPK pathways",
+            "relation": "is enhanced by activation of redox-sensitive signaling pathways",
+            "end_node": "PPARα-driven fatty acid β-oxidation"
+        },
+        {
+            "start_node": "activation of NRF2, MAPK, NF‑κB, and AMPK pathways",
+            "relation": "is suppressed by activation of redox-sensitive signaling pathways",
+            "end_node": "PPARγ-mediated lipogenesis"
+        },
+        {
+            "start_node": "PPARα-driven fatty acid β-oxidation",
+            "relation": "is increased by enhanced",
+            "end_node": "secretion of FGF21"
+        },
+        {
+            "start_node": "PPARγ-mediated lipogenesis",
+            "relation": "is increased by suppressed",
+            "end_node": "secretion of adiponectin"
+        },
+        {
+            "start_node": "secretion of FGF21 and adiponectin",
+            "relation": "is improved by increased secretion of beneficial hepatokines (FGF21 and adiponectin)",
+            "end_node": "peripheral fatty acid utilization and systemic insulin sensitivity"
+        }
+    ]
+}

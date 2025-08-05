@@ -1,0 +1,54 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Deregulated regulatory lncRNAs",
+            "relation": "is augmented by",
+            "end_node": "GEMIN5 expression"
+        },
+        {
+            "start_node": "Elevated GEMIN5",
+            "relation": "is directly modulated by",
+            "end_node": "RAD51 transcript splicing"
+        },
+        {
+            "start_node": "Elevated GEMIN5",
+            "relation": "is directly modulated by",
+            "end_node": "MRE11 transcript splicing"
+        },
+        {
+            "start_node": "Alternative noncanonical RAD51 isoforms",
+            "relation": "is compromised by",
+            "end_node": "High-fidelity homologous recombination"
+        },
+        {
+            "start_node": "Alternative noncanonical MRE11 isoforms",
+            "relation": "is compromised by",
+            "end_node": "High-fidelity homologous recombination"
+        },
+        {
+            "start_node": "Compromised high-fidelity homologous recombination",
+            "relation": "is promoted by",
+            "end_node": "Error-prone break-induced replication"
+        },
+        {
+            "start_node": "Error-prone break-induced replication",
+            "relation": "is induced by",
+            "end_node": "Genomic instability"
+        },
+        {
+            "start_node": "Genomic instability",
+            "relation": "is enhanced by",
+            "end_node": "Metastatic potential"
+        },
+        {
+            "start_node": "Genomic instability",
+            "relation": "is enhanced by",
+            "end_node": "Angiogenic potential"
+        },
+        {
+            "start_node": "Enhanced metastatic and angiogenic potential",
+            "relation": "are driven by",
+            "end_node": "Worsened clinical outcomes"
+        }
+    ]
+}

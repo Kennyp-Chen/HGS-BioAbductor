@@ -1,0 +1,11 @@
+# Search Strategy and Reasoning
+I identified the minimal MeSH terms as "tumor-associated macrophages", "M1 phenotype", "M2 phenotype", "immune surveillance", and "apoptosis". I then searched PubTator with the combined terms: "tumor-associated macrophages M1 M2 immune surveillance apoptosis". Among the returned articles, I prioritized those that discussed the reprogramming of TAMs from M2 to M1 and their effects on local immune surveillance or tumor cell apoptosis. I further checked the full text of relevant hits—especially in experimental models clearly showing both the reprogramming phenomenon and its downstream effects on apoptosis and immune surveillance.
+
+# literature evidence
+## "Hyperbaric Oxygen Therapy as a Novel Approach to Modulating Macrophage Polarization for the Treatment of Glioblastoma" (PMID: 39061957)
+"These findings suggest that HBO therapy can shift macrophage polarization toward a tumoricidal M1 state. This can improve GBM cell survival and offers a potential therapeutic strategy. In conclusion, HBO can shift macrophages from a tumor-promoting M2 phenotype to a tumoricidal M1 phenotype in GBM. This can facilitate apoptosis and, in turn, improve treatment outcomes."
+
+And from full text:
+"The increase in CD86 expression indicates a shift towards the M1 macrophage phenotype, which is known for its tumoricidal activity and ability to stimulate anti-tumor immune responses. This transition from the M2 to the M1 phenotype suggests that HBO treatment can reprogram the macrophages from a state that supports tumor progression to a state that actively combats the tumor... After the application of hyperbaric oxygen (HBO) treatment, there was a notable shift in the macrophage polarization...there was a significant decrease in the expression of the M2 marker CD206 and a concomitant increase in the expression of the M1 marker CD86.... This shift in polarization is associated with enhanced pro-inflammatory and anti-tumorigenic responses within the tumor microenvironment."
+
+Answer: True

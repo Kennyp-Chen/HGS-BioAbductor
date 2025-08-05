@@ -1,0 +1,44 @@
+{
+    "viewpoints": [
+        {
+            "start_node": "Heavy alcohol consumption",
+            "relation": "are decreased by",
+            "end_node": "Butyrate-producing bacteria (Faecalibacterium and Roseburia)"
+        },
+        {
+            "start_node": "PNPLA3 risk allele in the context of heavy alcohol consumption",
+            "relation": "are increased by",
+            "end_node": "LPS-producing bacteria (Escherichia coli)"
+        },
+        {
+            "start_node": "Altered gut microbiota composition (decrease in butyrate-producers and increase in LPS-producers)",
+            "relation": "is impaired due to dysbiosis of gut microbiota",
+            "end_node": "Intestinal barrier function (as indicated by permeability biomarkers)"
+        },
+        {
+            "start_node": "Impaired intestinal barrier leading to abnormal endotoxin translocation",
+            "relation": "are elevated due to",
+            "end_node": "Portal circulation endotoxin levels"
+        },
+        {
+            "start_node": "Translocated endotoxin from the gut",
+            "relation": "are activated by",
+            "end_node": "Liver-resident Kupffer cells"
+        },
+        {
+            "start_node": "Activated liver-resident Kupffer cells",
+            "relation": "is triggered by",
+            "end_node": "IL-6/STAT3-mediated inflammatory cascade"
+        },
+        {
+            "start_node": "IL-6/STAT3-mediated inflammatory cascade",
+            "relation": "is fostered by",
+            "end_node": "Liver fibrosis"
+        },
+        {
+            "start_node": "Liver fibrosis",
+            "relation": "develops as a progression from",
+            "end_node": "Hepatocellular carcinoma (HCC)"
+        }
+    ]
+}
