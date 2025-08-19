@@ -253,27 +253,84 @@ def load_data_hier(data_path, H_path, endpoint, Filt_num, e=0, n=0, tfidf=False)
 
     return dataset, data, np.array(H1), G, data_df
 
-
-def data_split(seed, data, dataset: str = None, HD={"knowledge_base": "hcluster", "layer_STRING": 100}, construct_H=False, H_df=False):
-    (label, time) = (data[:, -1], data[:, -2]) if isinstance(data, np.ndarray) else (data.iloc[:, -1], data.iloc[:, -2])
+def data_split(seed,data,dataset:str=None,HD={"type_know":"STRING","layer_STRING":100},construct_H=False,H_df=False,test_df = False):
+    '''
+    
+    '''
+    (label,time) = (data[:,-1],data[:,-2]) if isinstance(data,np.ndarray) else (data.iloc[:,-1],data.iloc[:,-2])
     t_obs = time.max() + 2 
-    data_train_val, data_test, y_train_val, y_test = train_test_split(data, label, test_size=0.2, random_state=seed, shuffle=True, stratify=label)
-    data_train, data_valid, _, _ = train_test_split(data_train_val, y_train_val, test_size=0.25, random_state=seed, shuffle=True, stratify=y_train_val)
-    if construct_H:
+    data_train_val,data_test,y_train_val,y_test = train_test_split(data,label,test_size=0.2,random_state=seed,shuffle=True,stratify=label)
+    data_train,data_valid,_,_ = train_test_split(data_train_val,y_train_val,test_size=0.25,random_state=seed,shuffle=True,stratify=y_train_val)
+    if construct_H:# 是否需要构建H
         if HD["type_know"] == "hcluster":
-            H = Construct_Hierachy_Clust_H(data_train.iloc[:, :-2], method=HD['method'], criterion=HD['criterion'], t=HD['num_clusters'])
+            H = Construct_Hierachy_Clust_H(data_train.iloc[:,:-2],method=HD['method'],criterion=HD['criterion'],t=HD['num_clusters'])
             H = H if H_df else H.values
-            return data_train.values, data_valid.values, data_test.values, t_obs, H
-        elif HD["type_know"] == "STRING":
+            if test_df:
+                return data_train.values,data_valid.values,data_test,t_obs,H
+            return data_train.values,data_valid.values,data_test.values,t_obs,H
+        elif HD["type_know"] == "knn":
+            Hknn_builder = construct_H_knn(data_train.iloc[:,:-2])
+            H,index = Hknn_builder.build_knn_incidence_matrix(K=HD["k"])
+            return data_train.values,data_valid.values,data_test.values,t_obs,H
+        # G = generate_G_from_H(H.T) if HD["edge_pooling"] else generate_G_from_H(H)
+        elif HD["type_know"] == "STRING" :
+            if dataset is None:
+                raise ValueError("dataset must be specified for STRING data")
+            fn_H=f"/Backup/home/chenyupeng/DATA/Graph/{HD['type_know']}/sorted/{HD['method']}/{dataset}-Level{HD['layer_STRING']}-H.csv"
+            gene_set = data_train.columns[:-2]
+            genes_STRING=pd.read_csv("/Backup/home/chenyupeng/DATA/Graph/STRING/clusters.protein.ensg.csv")['protein_id'].to_list()
+            genes_STRING=sorted(list(set(genes_STRING)))# 11171
+            gene_set=gene_set[gene_set.isin(genes_STRING)]# 不会改变顺序
+            if os.path.isfile(fn_H):
+                H=pd.read_csv(fn_H,index_col=0)
+            else:
+                os.makedirs(os.path.dirname(fn_H), exist_ok=True)
+                # for BOTH Knoweledges Checking
+                H=construct_H_STRING(gene_set,layer_STRING=HD['layer_STRING'])
+                edges_sorted = H.columns.sort_values()# keep order same
+                H = H.loc[gene_set,edges_sorted]
+                H.to_csv(fn_H)
+            edges_sorted = H.columns.sort_values()# keep order same
+            H = H.loc[gene_set,edges_sorted]
+            H = H if H_df else H.values
+            return data_train.values,data_valid.values,data_test.values,t_obs,H
+        elif HD["type_know"]=='BOTH':
+            gene_set = data_train.columns[:-2]
+            genes_STRING=pd.read_csv("/Backup/home/chenyupeng/DATA/Graph/STRING/clusters.protein.ensg.csv")['protein_id'].to_list()
+            genes_STRING = sorted(list(set(genes_STRING)))# 11171
+            gene_set=gene_set[gene_set.isin(genes_STRING)]# 不会改变顺序
+            H=construct_H_STRING(gene_set,layer_STRING=HD['layer_STRING'])
 
-            return data_train.values, data_valid.values, data_test.values, t_obs
+            H = H.loc[gene_set,:]
+            H = H if H_df else H.values
+            return data_train.values,data_valid.values,data_test.values,t_obs,H
+
+    else :
+        if isinstance(data,np.ndarray):
+            return data_train,data_valid,data_test,t_obs
+        elif isinstance(data,pd.DataFrame):
+            return data_train.values,data_valid.values,data_test.values,t_obs
+
+# def data_split(seed, data, dataset: str = None, HD={"knowledge_base": "hcluster", "layer_STRING": 100}, construct_H=False, H_df=False):
+#     (label, time) = (data[:, -1], data[:, -2]) if isinstance(data, np.ndarray) else (data.iloc[:, -1], data.iloc[:, -2])
+#     t_obs = time.max() + 2 
+#     data_train_val, data_test, y_train_val, y_test = train_test_split(data, label, test_size=0.2, random_state=seed, shuffle=True, stratify=label)
+#     data_train, data_valid, _, _ = train_test_split(data_train_val, y_train_val, test_size=0.25, random_state=seed, shuffle=True, stratify=y_train_val)
+#     if construct_H:
+#         if HD["type_know"] == "hcluster":
+#             H = Construct_Hierachy_Clust_H(data_train.iloc[:, :-2], method=HD['method'], criterion=HD['criterion'], t=HD['num_clusters'])
+#             H = H if H_df else H.values
+#             return data_train.values, data_valid.values, data_test.values, t_obs, H
+#         elif HD["type_know"] == "STRING":
+
+#             return data_train.values, data_valid.values, data_test.values, t_obs
 
 
-    else:
-        if isinstance(data, np.ndarray):
-            return data_train, data_valid, data_test, t_obs
-        elif isinstance(data, pd.DataFrame):
-            return data_train.values, data_valid.values, data_test.values, t_obs
+#     else:
+#         if isinstance(data, np.ndarray):
+#             return data_train, data_valid, data_test, t_obs
+#         elif isinstance(data, pd.DataFrame):
+#             return data_train.values, data_valid.values, data_test.values, t_obs
 
 
 def construct_Pnet_H_Reactome(H_path, data, layers_list: list = [1, 2, 3, 4]):
