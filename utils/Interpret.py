@@ -310,6 +310,35 @@ class Interpreter:
         borda_scores
         return borda_scores
     
+    # def all_borda_rank(self, layer:nn.Module, baselineTensor:torch.tensor, lr_norm=True, IGsteps=50, GSsamples=50):
+    #     """
+    #     ene to end method to calculate borda ranks.
+    #     baselinetensor: torch.zeros(feature_num)/ means of data train features
+    #     """
+    #     Gradientbaseline = baselineTensor.unsqueeze(0).expand(self.input.shape).cuda()
+    #     DLbaseline = baselineTensor.unsqueeze(0).expand(32, self.input.shape[1]).cuda()
+    #     ## train data mean
+    
+    #     layerIG = self.average_sort_attr(self.layer_integrated_gradients(layer, baseline=Gradientbaseline, l2_norm=lr_norm, n_steps=IGsteps))
+    #     nodeIG = self.average_sort_attr(self.integrated_gradients(l2_norm=True, baseline=Gradientbaseline, n_steps=IGsteps))
+    #     # layerGS =  self.average_sort_attr(self.layer_gradient_shap(layer, baseline = Gradientbaseline, l2_norm=lr_norm, n_samples=GSsamples))
+    #     # nodeGS =  self.average_sort_attr(self.gradient_shap(baseline = Gradientbaseline, l2_norm=lr_norm, n_samples=GSsamples)) 
+    #     layerDL = self.average_sort_attr(self.layer_deeplift_shap(layer, baseline=DLbaseline, l2_norm=lr_norm))
+    #     nodeDL = self.average_sort_attr(self.deeplift_shap(l2_norm=lr_norm, baseline=DLbaseline))
+    #     hyperedge_attr_score = self.attr_score(layerIG, layerDL)
+    #     node_attr_score = self.attr_score(nodeIG, nodeDL)
+    #     return node_attr_score, hyperedge_attr_score
+    # 低显存
+    def hyperedge_attr_score_(self,layer,Gradientbaseline,DLbaseline,lr_norm=True,IGsteps=50):
+        return self.attr_score(
+            self.average_sort_attr(self.layer_integrated_gradients(layer, baseline=Gradientbaseline, l2_norm=lr_norm, n_steps=IGsteps)),
+            self.average_sort_attr(self.layer_deeplift_shap(layer, baseline=DLbaseline, l2_norm=lr_norm))
+        )
+    def node_attr_score_(self,Gradientbaseline,DLbaseline,lr_norm=True,IGsteps=50):
+        return self.attr_score(
+            self.average_sort_attr(self.integrated_gradients(l2_norm=True, baseline=Gradientbaseline, n_steps=IGsteps)),
+            self.average_sort_attr(self.deeplift_shap(l2_norm=lr_norm, baseline=DLbaseline))
+        )
     def all_borda_rank(self, layer:nn.Module, baselineTensor:torch.tensor, lr_norm=True, IGsteps=50, GSsamples=50):
         """
         ene to end method to calculate borda ranks.
@@ -317,18 +346,9 @@ class Interpreter:
         """
         Gradientbaseline = baselineTensor.unsqueeze(0).expand(self.input.shape).cuda()
         DLbaseline = baselineTensor.unsqueeze(0).expand(32, self.input.shape[1]).cuda()
-        ## train data mean
-    
-        layerIG = self.average_sort_attr(self.layer_integrated_gradients(layer, baseline=Gradientbaseline, l2_norm=lr_norm, n_steps=IGsteps))
-        nodeIG = self.average_sort_attr(self.integrated_gradients(l2_norm=True, baseline=Gradientbaseline, n_steps=IGsteps))
-        # layerGS =  self.average_sort_attr(self.layer_gradient_shap(layer, baseline = Gradientbaseline, l2_norm=lr_norm, n_samples=GSsamples))
-        # nodeGS =  self.average_sort_attr(self.gradient_shap(baseline = Gradientbaseline, l2_norm=lr_norm, n_samples=GSsamples)) 
-        layerDL = self.average_sort_attr(self.layer_deeplift_shap(layer, baseline=DLbaseline, l2_norm=lr_norm))
-        nodeDL = self.average_sort_attr(self.deeplift_shap(l2_norm=lr_norm, baseline=DLbaseline))
-        hyperedge_attr_score = self.attr_score(layerIG, layerDL)
-        node_attr_score = self.attr_score(nodeIG, nodeDL)
-        return node_attr_score, hyperedge_attr_score
-    
+        
+        return self.node_attr_score_(Gradientbaseline,DLbaseline,lr_norm,IGsteps), self.hyperedge_attr_score_(layer,Gradientbaseline,DLbaseline,lr_norm,IGsteps)
+
     def hypergraph_borda_rank(self, nodelayer:nn.Module, hyperedgelayer:nn.Module, baselineTensor:torch.tensor, lr_norm=True, IGsteps=50, GSsamples=50):
         """
         ene to end method to calculate borda ranks.
