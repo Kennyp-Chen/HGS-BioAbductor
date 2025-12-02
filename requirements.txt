@@ -12,6 +12,7 @@ configparser
 
 # HGS model
 # XAI explanation
+lifelines==0.27.7
 gprofiler-official
 gseapy
 captum

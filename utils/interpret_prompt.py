@@ -4,11 +4,9 @@ import requests
 from typing import Literal
 import os
 
-client = OpenAI(api_key=os.environ['OPENAI_API_KEY'], 
-                base_url=os.environ['BASE_URL'])
-
-
-
+# client = OpenAI(api_key=os.environ['OPENAI_API_KEY'], 
+#                 base_url=os.environ['BASE_URL'])
+client = None
 class Hypothesis(BaseModel):
     name: str
     reasoning: str

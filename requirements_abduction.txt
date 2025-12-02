@@ -1,0 +1,36 @@
+# ============================================
+# HGS-BioAbductor: Hypothesis Abduction Environment
+# ============================================
+# This environment is for LLM-based hypothesis generation and validation
+# Python 3.10+ recommended
+
+# Core Scientific Computing
+numpy>=1.21.0
+pandas>=1.3.0
+
+# LLM and AI
+openai>=1.0.0
+langchain-openai>=0.0.5
+langchain-core>=0.1.0
+langchain-chroma>=0.1.0
+
+# Async File Operations
+aiofiles>=23.0.0
+
+# Vector Database
+chromadb>=0.4.0
+
+# Hypothesis Validation APIs
+mcp-server-pubtator3>=0.1.0
+fast-agent-mcp>=0.1.0
+
+# Biological Data
+biopython>=1.79
+
+# Utilities
+tqdm>=4.62.0
+pyyaml>=5.4.0
+
+# Optional: For local embedding models
+# sentence-transformers>=2.2.0
+# transformers>=4.30.0

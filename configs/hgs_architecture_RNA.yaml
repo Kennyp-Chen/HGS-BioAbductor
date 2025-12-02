@@ -1,0 +1,84 @@
+# HGS Model Architecture Configuration for RNA Data
+omics_data: RNA
+
+# Base Hyperparameters
+base_hyperparams:
+  n_hid: 200
+  lr: 0.001
+  batch_size: 32
+  AGG: cat
+  ACT: LeakyReLU
+  num_hgat: single
+  depth: 2
+  l2: 0.1
+  glr: 0
+  type_atten: additive
+  gamma: 0.99
+  patience: 5
+  update_freq: 1
+  score: ci
+  metric_update: score
+  train_scheme: final_epoch
+  epochs: 50
+  print_freq: 10
+  cox_num: 400
+  dropout: 0.5
+  pooling_hiddens: []
+  RESNET: false
+  repeat_time: 10
+  end_point: OS_60
+  edge_pooling: true
+  loss_w:
+    a: 1
+    b: 1
+    c1: 1
+    c2: 0
+    d: 1
+  pooling_method: linear
+  num_min: 25
+  HG_BN: true
+
+# Grid Search Space
+grid_search_space:
+  AGG:
+    - cat
+    - noAGG
+  LR:
+    - 0.01
+  GLR:
+    - 0
+    - 0.5
+  L2:
+    - 0.1
+    - 0.005
+  HIDS:
+    - 200
+  PLD:
+    - 2
+  NUM_HGAT:
+    - single
+
+# Prior Knowledge Configurations
+prior_knowledge:
+  Reactome:
+    method: layer_range
+    div_know_minmax:
+      - 5
+      - 10
+      - 1
+      - 12
+  STRING:
+    method: layer_range
+    div_know_minmax:
+      - 5
+      - 10
+      - 24
+      - 104
+  hcluster:
+    method: weighted
+    criterion: maxclust
+    div_know_minmax:
+      - 5
+      - 10
+      - 40
+      - 150

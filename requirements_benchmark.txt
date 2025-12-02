@@ -1,0 +1,49 @@
+# ============================================
+# HGS-BioAbductor: Benchmark & XAI Environment
+# ============================================
+# This environment is for model training, benchmarking, and XAI explanation
+# Python 3.9+ recommended
+
+# Core Scientific Computing
+numpy>=1.21.0
+pandas>=1.3.0
+scipy>=1.7.0
+scikit-learn>=1.0.0
+
+# Deep Learning
+torch>=1.10.0
+torchvision>=0.11.0
+
+# Survival Analysis
+lifelines==0.27.7
+scikit-survival>=0.17.0
+
+# Visualization
+matplotlib>=3.4.0
+seaborn>=0.11.0
+plotly>=5.0.0
+
+# Progress Bar
+tqdm>=4.62.0
+
+# Configuration Management
+pyyaml>=5.4.0
+configparser>=5.0.0
+
+# XAI (Explainable AI)
+captum>=0.5.0
+
+# Biological Pathway Analysis
+gprofiler-official>=1.0.0
+gseapy>=0.10.0
+biopython>=1.79
+
+# Hyperparameter Optimization
+optuna>=3.0.0
+optunahub>=0.1.0
+
+# Statistical Analysis
+statsmodels>=0.13.0
+
+# Utilities
+joblib>=1.1.0

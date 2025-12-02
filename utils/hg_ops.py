@@ -389,30 +389,21 @@ def dataFrame_gen(df:pd.DataFrame, columns:list):
     for i, row in df.iterrows():
         yield tuple(row[col] for col in columns)
 
-def construct_H_STRING(gene_list:list, layer_STRING:int, config=None):
+def construct_H_STRING(gene_list:list,layer_STRING:int  ):
     '''
     layer_STRING:1-104
     '''
-    if config is None:
-        raise ValueError("config parameter is required for construct_H_STRING")
-    
-    # Get paths from config
-    paths = config.get_paths()
-    
-    # Read STRING data files
-    clusters_relation = pd.read_table(paths['cluster_relation_file'], sep='\t')    
-    gene_cluster_relation = pd.read_csv(paths['string_gene_list'])
-    
+    clusters_relation = pd.read_table('./data/PriorKnow/STRING/9606.clusters.tree.v12.0.txt', sep='\t')
+    gene_cluster_relation=pd.read_csv("./data/PriorKnow/STRING/clusters.protein.ensg.csv")
     Gclusters_relation = dataFrame_gen(clusters_relation, ['parent_cluster_id', 'child_cluster_id'])
     Ggene_cluster_relation = dataFrame_gen(gene_cluster_relation, ['protein_id', 'cluster_id', 'best_described_by'])
-    
     STRING = ReactomeNet(Gclusters_relation, Ggene_cluster_relation)
     STRING.prune_to_genes(set(gene_list))
     STRING.prune_to_level(layer_STRING)
-    H = STRING.incidence_mat(layer_STRING, layer_STRING-1)
-    H = H.loc[H.sum(axis=1)>0, H.sum(axis=0)>0]
-    print("H_String shape:", H.shape)
-    return H.values
+    H = STRING.incidence_mat(layer_STRING,layer_STRING-1)
+    H=H.loc[H.sum(axis=1)>0,H.sum(axis=0)>0]
+    print("H_String shape:",H.shape)
+    return H
 
 def construct_H_list_STRING(gene_list,layer_STRING_list:list=[104,74,59,24],H_path=None):
     H_masks = []
@@ -425,8 +416,8 @@ def construct_H_list_STRING(gene_list,layer_STRING_list:list=[104,74,59,24],H_pa
             gene_list=H.columns.tolist()
     else:
         os.makedirs(H_path, exist_ok=True)
-        clusters_relation = pd.read_table('/Backup/home/chenyupeng/DATA/Graph/STRING/9606.clusters.tree.v12.0.txt', sep='\t')
-        gene_cluster_relation=pd.read_csv("/Backup/home/chenyupeng/DATA/Graph/STRING/clusters.protein.ensg.csv")
+        clusters_relation = pd.read_table('./data/PriorKnow/STRING/9606.clusters.tree.v12.0.txt', sep='\t')
+        gene_cluster_relation=pd.read_csv("./data/PriorKnow/STRING/clusters.protein.ensg.csv")
         Gclusters_relation = dataFrame_gen(clusters_relation, ['parent_cluster_id', 'child_cluster_id'])
         Ggene_cluster_relation = dataFrame_gen(gene_cluster_relation, ['protein_id', 'cluster_id', 'best_described_by'])
         STRING = ReactomeNet(Gclusters_relation, Ggene_cluster_relation)

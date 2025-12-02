@@ -4,8 +4,9 @@ from typing import KeysView
 from typing import List
 from utils.data_utils import *
 import numpy as np
-from models.Models_interpret import HGS
-from models.Models import HGMLP
+# from models.Models_interpret import HGS
+# from models.HGS import HGS
+from models.Models import HGS
 import torch.optim as optim
 import optuna
 from optuna.pruners import PercentilePruner,BasePruner
@@ -13,6 +14,9 @@ from optuna.study._study_direction import StudyDirection
 from optuna.trial._state import TrialState
 from utils.hg_ops import *
 from utils.data_utils import load_data_general
+
+
+
 
 class DuplicateIterationPruner(BasePruner):
     """
@@ -154,44 +158,48 @@ def load_params_hist(study):
             param_history.append(study.get_trials()[i].params)
     return param_history
 
-def KNOW_Opt_SC(DATA,PK_D,HD,out_path,fn_data,logger,config):
+
+def KNOW_Search(DATA,PK_D,HD,out_path,fn_data,logger,Sampler = optuna.samplers.RandomSampler(seed=0)):
     '''
     for single chohrt or cacner dataset
     '''
-    HD_cp = HD.copy()
-    HD_cp['out_path']=out_path
+    HD['out_path']=str(out_path)
     method = PK_D['method']
-    KNOW=PK_D['DataDrive']
-    JM=HD['JM']
-    study_name=f"{DATA}-SC-{HD['dataset']}-{KNOW}-{method}"
-    # 如果没有则自己创建
-    os.makedirs(out_path, exist_ok=True)
-    storage = optuna.storages.RDBStorage(url=f"sqlite:///{out_path}/{study_name}.db")
-    
-    logger.info(f"Study Name:{study_name}")
+    KNOW=PK_D['type_know']
+    FEAT=HD['feature_base']
+    study_name=f"{DATA}-{KNOW}-{HD['dataset']}-{method}"
+
+
+    if KNOW == 'hcluster':
+        storage=f"sqlite:///{out_path}/{study_name}-divminmax-{'_'.join(map(str,PK_D['div_know_minmax']))}.db"
+        study_name+=f"-dkminmax-{PK_D['div_know_minmax']}"
+    else:
+        storage=f"sqlite:///{out_path}/{study_name}.db"
 
     study = optuna.create_study(
         direction='maximize',
-        sampler=optuna.samplers.TPESampler(seed=0),
-        pruner=DuplicateIterationPruner(),
+        sampler=Sampler,
+        pruner=DuplicateIterationPruner(), 
         storage=storage,
         study_name=study_name,
         load_if_exists=True,
     )
-    logger.info(f"Study Trial Nums{len(study.get_trials())}")
+    logger.info(f"Using {HD['OptType']} Sampler!\nStudy Trial Nums{len(study.get_trials())}")
     if len(study.get_trials())>=HD['n_trials']:
         logger.info(f"{study_name} Optimization Already Done...")
+
     else:
+        # define objective function
         def objective(trial):
-            out_path=HD_cp['out_path']
+            out_path=HD['out_path']
             study_hist = optuna.load_study(
                 study_name=study_name,
                 storage=storage,
             )
             param_history = load_params_hist(study_hist)
-
-            n=1 if HD_cp['AGG'][0]=='noAGG' else 2 
-            HD['predict_hiddens']=build_deep_hiddens(num_ini=n*HD['n_hid'],divisor=2,num_min=100,depth=2)
+            
+            n=1
+            HD['predict_hiddens']=build_deep_hiddens(num_ini=n*HD['n_hid'],divisor=2,num_min=HD['num_min'],depth=2)
 
             if KNOW=='hcluster':
                 PK_D['criterion']="maxclust"
@@ -200,59 +208,122 @@ def KNOW_Opt_SC(DATA,PK_D,HD,out_path,fn_data,logger,config):
             os.makedirs(out_path,exist_ok=True)
 
             fn_results = f'{out_path}/results.csv'
-            #BO
-            if PK_D['DataDrive'] == "STRING" or PK_D['DataDrive'] == "Reactome" :
-                PK_D["divisor"] = trial.suggest_int("divisor",2,10)
-                (num_buttom,num_top)=(20,104) if  PK_D['DataDrive'] == "STRING" else (2,6)
-                layer_KNOW = trial.suggest_int(f"layer_{PK_D['DataDrive']}",num_buttom,num_top)
-                PK_D[f"layer_{PK_D['DataDrive']}"]=layer_KNOW
-                param_dic = {f"layer_{PK_D['DataDrive']}":layer_KNOW,"divisor":PK_D["divisor"]}
-            elif PK_D['DataDrive'] == "hcluster":
-                PK_D["divisor"] = trial.suggest_int("divisor",2,10)
-                PK_D["num_clusters"] = trial.suggest_int("max_cluster_num0",2,150)
-                param_dic = {"max_cluster_num0":PK_D["num_clusters"],"divisor":PK_D["divisor"]}
+            
+            # 知识优化空间
+            if PK_D['type_know'] == "STRING" or PK_D['type_know'] == "Reactome" :
+                dmin,dmax,kmin,kmax = PK_D["div_know_minmax"]# divisor min max and knowledge para min max
+
+                if PK_D['method']=='layer_all':
+                    PK_D["divisor"] = trial.suggest_int("divisor",2,20)
+                    (num_buttom,num_top,step)=(20,104,1) if  PK_D['type_know'] == "STRING" else (1,12,1)
+                elif PK_D['method']=='layer':
+                    PK_D["divisor"] = trial.suggest_int("divisor",2,10 if PK_D['type_know'] == "STRING" else 15)
+                    (num_buttom,num_top,step)=(19,104,5) if  PK_D['type_know'] == "STRING" else (1,12,1)
+                elif PK_D['method']=='layer_range':
+                    dmin,dmax,kmin,kmax = PK_D["div_know_minmax"]
+                    PK_D["divisor"] = trial.suggest_int("divisor",dmin,dmax)
+                    (num_buttom,num_top,step)=(kmin,kmax,2) if  PK_D['type_know'] == "STRING" else (kmin,kmax,1)
+
+                logger.info(f"{KNOW} layer space (num_buttom,num_top,step):{(num_buttom,num_top,step)}")
+                layer_KNOW = trial.suggest_int(f"layer_{PK_D['type_know']}",num_buttom,num_top,step=step)
+                PK_D[f"layer_{PK_D['type_know']}"]=layer_KNOW
+                param_dic = {f"layer_{PK_D['type_know']}":layer_KNOW,"divisor":PK_D["divisor"]}
+            elif PK_D['type_know'] == "hcluster" or PK_D['type_know'] == "STRING_hcluster":
+                # 由于聚类的超边数量一般较少，divisor大小可以减小
+                dmin,dmax,kmin,kmax = PK_D["div_know_minmax"]
+                if dmin>dmax:
+                    HD['pooling_hiddens']=[50,10]
+                    PK_D["divisor"] = False
+                else:
+                    # PK_D["divisor"] = trial.suggest_int("divisor",2,10)
+                    PK_D["divisor"] = trial.suggest_int("divisor",dmin,dmax,step=10)
+
+                # PK_D["num_clusters"] = trial.suggest_int("num_clusters",2,150)# 调整较小的聚类数可以让超边度更高，同时ward是最均匀的聚类方法
+                PK_D["num_clusters"] = trial.suggest_int("num_clusters",kmin,kmax)# 调整较小的聚类数可以让超边度更高，同时ward是最均匀的聚类方法
+                param_dic = {"num_clusters":PK_D["num_clusters"],"divisor":PK_D["divisor"]}
+            elif PK_D['type_know'] == "BOTH":
+                PK_D["divisor"] = trial.suggest_int("divisor",2,20)
+                PK_D["layer_Reactome"] = trial.suggest_int("layer_Reactome",1,12)
+                PK_D["layer_STRING"] = trial.suggest_int("layer_STRING",19,104,5)
+                param_dic = {
+                    "layer_STRING":PK_D["layer_STRING"],
+                    "layer_Reactome":PK_D["layer_Reactome"],
+                    "divisor":PK_D["divisor"]
+                    }
 
             if param_dic in param_history:
                 raise optuna.exceptions.TrialPruned()
+            logger.info(f"PK_D trial {trial.number}: {PK_D}")
+            logger.info(f"{HD['cox_num']} features are selected for Train-Valid-Test...")
 
-            # 统一数据加载
-            data, H = load_data_general(DATA, PK_D, HD, fn_data, config=config)
+            if DATA=='PRO':
+                if KNOW=='Reactome':
+                    fn_H = f"./data/PriorKnow/Reactome/reactome_P{PK_D['layer_Reactome']}/H1.csv" 
+                    data,H = load_cohort_data(fn_H,fn_data,HD['cox_num'],DF=False) 
+                else: # STRING or hcluster
+                    data,H = load_cohort_data(None,fn_data,HD['cox_num'],DF=True) 
 
+            elif DATA=='RNA':# RNA
+                if PK_D["type_know"]=='hcluster':
+                    if FEAT=='ReactomeP12':
+                        data,H= load_cohort_data(None,fn_data,HD['cox_num'],DF=True) 
+                    elif FEAT=='Reactome':
+                        data = load_TCGA_data(fn_data,HD["end_point"],Filt_num=HD["cox_num"])
+                    elif FEAT=='ReactomeTop':
+                        data,H = load_opt_data(data_path=fn_data,H_path=H_path,endpoint=HD["end_point"],Filt_num=HD['cox_num'],DF=False) 
+
+                elif PK_D["type_know"]=='Reactome':
+                    H_path = f"./data/PriorKnow/Reactome/reactome_P{PK_D['layer_Reactome']}/" 
+                    # data,H= load_opt_data(data_path=fn_data,H_path=H_path,endpoint=HD["end_point"],Filt_num=HD['cox_num'],DF=False) 
+                    if FEAT=='ReactomeP12':
+                        fn_H = H_path+f"H1.csv"
+                        data,H= load_cohort_data(fn_H,fn_data,HD['cox_num'],DF=False) 
+                    elif FEAT=='Reactome':
+                        data,H = load_TCGA_H_data(H_path,fn_data,Filt_num=HD['cox_num'])
+                    elif FEAT=='ReactomeTop':
+                        data,H = load_opt_data(data_path=fn_data,H_path=H_path,endpoint=HD["end_point"],Filt_num=HD['cox_num'],DF=False) 
+                elif PK_D["type_know"]=='STRING':
+                    data = load_TCGA_data(fn_data,HD["end_point"],Filt_num=-1)
+                    data = Know_features_filt(data)
             fres = open(fn_results, 'w')
             fres.write(f"PK_D trial {trial.number}: {PK_D}\n")
+            fres.write(f"{HD}\n")
+
             fres.write(f'seed,eval_ci,eval_loss,test_ci\n')
             eval_list,eval_loss_list,test_list = [],[],[]
             for seed in range(HD["repeat_time"]):
-                fn_ckpt = f"{out_path}/seed{seed}.ckpt"
-                if os.path.isfile(f'{fn_ckpt}'):
+                fn_ckpt = f"{out_path}/seed{seed}"
+                if os.path.isfile(f'{fn_ckpt}.ckpt'):
                     logger.info(f'Using existing {fn_ckpt}.ckpt')                
                 else: 
-                    if PK_D['DataDrive'] =='hcluster':
+                    if PK_D['type_know']!='Reactome':
                         data_train,data_valid,data_test,t_obs,H = data_split(seed=seed,dataset=HD['dataset'],data=data,HD=PK_D,construct_H=True)
                     else:
                         data_train,data_valid,data_test,t_obs= data_split(seed=seed,dataset=HD['dataset'],data=data,HD=PK_D,construct_H=False)
                     G = generate_G_from_H(H.T) if HD["edge_pooling"] else generate_G_from_H(H)
-
-                    HD['pooling_hiddens']=build_hiddens(H.shape[1],divisor=PK_D["divisor"])
-                    HD_cp['AGG']=HD_cp['AGG'][0] if isinstance(HD_cp['AGG'], list) else HD_cp['AGG']
-                    HD_cp['lr']=HD_cp['lr'][0] if isinstance(HD_cp['lr'], list) else HD_cp['lr']
-                    
-                    model = HGS(HD_cp,data_train=data_train,data_eval=data_valid,data_test=data_test,H=H,fn_ckpt=fn_ckpt,t_obs=t_obs,G=G,seed=seed,H_list=None)                    
+                    if PK_D['divisor']:
+                        HD['pooling_hiddens']=build_hiddens(H.shape[1],divisor=PK_D["divisor"])
+                    logger.info(f"Pooling_hiddens:{HD['pooling_hiddens']}; Data Shape:{data.shape}\n")
+                    model = HGS(HD,data_train=data_train,data_eval=data_valid,data_test=data_test,H=H,fn_ckpt=fn_ckpt,t_obs=t_obs,G=G,seed=seed,H_list=None,node_idx=[])
                     model = model.cuda()
-                    optimizer = optim.Adam(model.parameters(), lr=HD_cp["lr"],weight_decay=HD_cp["l2"])
+                    optimizer = optim.Adam(model.parameters(), lr=HD["lr"],weight_decay=HD["l2"])
                     model = model.fit(optimizer=optimizer,logger=logger,
-                    num_epochs=HD_cp['epochs'],batch_size=HD_cp["batch_size"],loss_dict=HD_cp['loss_w'])
+                    num_epochs=HD['epochs'],batch_size=HD["batch_size"],loss_dict=HD['loss_w'])
 
-                ckpt = torch.load(fn_ckpt)
-                eval_ci     = ckpt[f'{JM}_eval_ci'] 
-                eval_loss   = ckpt[f'{JM}_eval_loss']
-                test_ci    = ckpt[f'test_ci']
+                ckpt = torch.load(f'{fn_ckpt}.ckpt',map_location={"cuda:0":"cuda:1"})
+                eval_ci     = ckpt[f'final_eval_ci'] 
+                eval_loss   = ckpt[f'final_eval_loss']
+                test_ci	   = ckpt[f'final_test_ci']
+                # record results
                 fres = open(fn_results, 'a')
                 fres.write(f"{seed},{eval_ci},{eval_loss},{test_ci}\n")
+                
+                # compute mean std 
                 eval_list.append(eval_ci)
                 eval_loss_list.append(eval_loss)
                 test_list.append(test_ci)
                 logger.info(f"{DATA} seed,val_ci,val_loss:{seed},{eval_ci},{eval_loss}")
+            # Result Diction Write
             test_mean=np.mean(test_list)
             test_std=np.std(test_list)
             eval_mean=(np.mean(eval_list))
@@ -260,9 +331,10 @@ def KNOW_Opt_SC(DATA,PK_D,HD,out_path,fn_data,logger,config):
             loss_mean = (np.mean(eval_loss_list))
             eval_ms=f'{round(eval_mean,4)}±{round(eval_std,4)}'
             test_ms=f'{round(test_mean,4)}±{round(test_std,4)}'
-            fres.write(f"{JM} valid Cindex mean±std = {eval_ms}\n")
-            fres.write(f"{JM} test Cindex mean±std = {test_ms}\n")
+            fres.write(f"final valid Cindex mean±std = {eval_ms}\n")
+            fres.write(f"final test Cindex mean±std = {test_ms}\n")
             fres.write(f"Test cindex mean±std = {test_ms}\n")
+            
             trial.set_user_attr('test_ci',round(float(test_mean),4))
             trial.set_user_attr('test_std', round(float(test_std),4))
             trial.set_user_attr('val_std', round(float(eval_std),4))
@@ -270,23 +342,25 @@ def KNOW_Opt_SC(DATA,PK_D,HD,out_path,fn_data,logger,config):
             trial.set_user_attr('test_ms', test_ms)
             trial.set_user_attr('eval_ms', eval_ms)
             trial.set_user_attr('IncdenceMatrixShape', H.shape)
+            
             return eval_mean
-        if len(study.get_trials()) == 0:
-            if PK_D['DataDrive']=='hcluster':
-                study.enqueue_trial({"max_cluster_num0":100,"divisor":3})
-            elif PK_D['DataDrive']=='STRING':
-                study.enqueue_trial({"layer_STRING":100,"divisor":5})
         study.optimize(objective, n_trials=HD['n_trials'])
-    logger.info(f'Best trail:{study.best_trial}')
-    logger.info(f'Best value:{study.best_value}')
-    logger.info(f'Best params: {study.best_params}')
 
-    PK_D['divisor'] = study.best_params['divisor']
-    if PK_D['DataDrive'] == "hcluster":
-        PK_D['num_clusters'] = study.best_params['max_cluster_num0']
-    else:
-        PK_D[f"layer_{PK_D['DataDrive']}"] = study.best_params[f"layer_{PK_D['DataDrive']}"]
+        logger.info(f'Best trail:{study.best_trial}')
+        logger.info(f'Best value:{study.best_value}')
+        logger.info(f'Best params: {study.best_params}')
+    
+    trials = study.get_trials()[:HD['n_trials']]
+    # 尝试识别已有的最优秀，并且存储，都是fail则跳过
+    try:
+        best_trial = max(filter(lambda t: t.value is not None, trials), key=lambda t: t.value)
+        PK_D.update(best_trial.params)
+        if 'max_cluster_num0' in best_trial.params.keys():
+            PK_D['num_clusters'] = best_trial.params['max_cluster_num0']
+            PK_D.pop('max_cluster_num0')
+    except:
+        pass
 
-    # fix mistake
+    logger.info(f"Best trial params: {PK_D}")
 
     return study,PK_D

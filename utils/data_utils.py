@@ -21,6 +21,19 @@ from utils.hg_ops import construct_H_STRING
 # 全局加载config
 config = ConfigLoader("config.yaml")
 
+def load_H_G(data,H_path):
+    '''
+    for SHINE graph
+    '''
+    H = pd.read_csv(H_path,index_col=0)
+    H=H.loc[H.sum(axis=1)!=	0,H.sum(axis=0)!=0]# purne nodes and edges without any connection
+    data=data.loc[:,data.columns[:-2].isin(H.index).tolist()+[True,True]]
+    H=H.loc[data.columns[:-2],:]
+    H=H.loc[H.sum(axis=1)!=	0,H.sum(axis=0)!=0]# purne nodes and edges without any connection
+    assert H.index.equals(data.columns[:-2])
+    G = generate_G_from_H(H)
+    return data,H.values,G
+
 def read_config(config_file):
     ''' 
     Performs read config file and return a 2-layer dict.
@@ -38,53 +51,21 @@ def read_config(config_file):
 
     return config
 
-# def load_TCGA_data(data_path, endpoint, Filt_num):
-#     # get RNAseq matrix
-#     data_df = pd.read_csv(
-#         os.path.join(data_path +  '/features.csv'), 
-#         index_col= 0,
-#     )
+def Know_features_filt(data_df,Filt_num=400,
+    Know_path="./data/PriorKnow/STRING/clusters.protein.ensg.csv",
+    feature_col = "protein_id"):
+    '''
+    '''
+    genes_Know=pd.read_csv(Know_path)[feature_col].to_list()
+    gene_in_Know = data_df.columns.isin(genes_Know)
+    label_df = data_df.iloc[:,-2:]
+    data_df = data_df.loc[:,gene_in_Know]
+    data_df = data_df.iloc[:,:Filt_num]
+    data_df = pd.concat([data_df,label_df],axis=1)
+    return data_df
 
-#     # get survival info
-#     survival_df = pd.read_csv(
-#         "/Backup/home/chenyupeng/DATA/COX_Selection/ClinicalDataFrame_DiscreteTime-Cut15Years.csv",
-#         index_col= 0,
-#     )
 
-#     # get gene info
-#     gene_info_df = pd.read_csv(
-#         os.path.join(data_path + '/genes_list.csv'),
-#         index_col= 0,
-#     )
-#     # Pats Filt
-#     sdf=survival_df.loc[survival_df["PatientID"].isin(data_df.columns,),:]
-#     survival_df = sdf.loc[~sdf.duplicated(),:]
-#     # FS Filt
-#     data_df=data_df.iloc[:Filt_num,:]
-#     gene_info_df=gene_info_df.iloc[:Filt_num,:]
-   
-#     print(endpoint)
-#     # transfer to numpy format
-#     data = data_df.to_numpy().transpose()
-#     patients = survival_df["PatientID"].to_numpy()
-#     # gene_id = gene_info_df["Gene_ID"].to_numpy()
-#     # gene_symbol = gene_info_df["Gene_symbol"].to_numpy()
-#     # event_status = survival_df[endpoint + ' Status'].to_numpy()
-#     event_status = survival_df['OS Status'].to_numpy()
-#     event_time = survival_df[endpoint].to_numpy()
 
-#     # wrap to a dataset dictionary
-#     dataset = {
-#         'data': data,
-#         'patients': patients,
-#         # 'gene_id': gene_id,
-#         # 'gene_symbol': gene_symbol,
-#         'event_status': event_status,
-#         'event_time': event_time,
-#     }
-#     data = np.c_[data,event_time,event_status]
-
-#     return dataset, data
 
 
 def load_TCGA_data(fn_data, endpoint, Filt_num):
@@ -276,9 +257,9 @@ def data_split(seed,data,dataset:str=None,HD={"type_know":"STRING","layer_STRING
         elif HD["type_know"] == "STRING" :
             if dataset is None:
                 raise ValueError("dataset must be specified for STRING data")
-            fn_H=f"/Backup/home/chenyupeng/DATA/Graph/{HD['type_know']}/sorted/{HD['method']}/{dataset}-Level{HD['layer_STRING']}-H.csv"
+            fn_H=f"data/PriorKnow/{HD['type_know']}/sorted/{HD['method']}/{dataset}-Level{HD['layer_STRING']}-H.csv"
             gene_set = data_train.columns[:-2]
-            genes_STRING=pd.read_csv("/Backup/home/chenyupeng/DATA/Graph/STRING/clusters.protein.ensg.csv")['protein_id'].to_list()
+            genes_STRING=pd.read_csv("data/PriorKnow/STRING/clusters.protein.ensg.csv")['protein_id'].to_list()
             genes_STRING=sorted(list(set(genes_STRING)))# 11171
             gene_set=gene_set[gene_set.isin(genes_STRING)]# 不会改变顺序
             if os.path.isfile(fn_H):
@@ -294,13 +275,7 @@ def data_split(seed,data,dataset:str=None,HD={"type_know":"STRING","layer_STRING
             H = H.loc[gene_set,edges_sorted]
             H = H if H_df else H.values
             return data_train.values,data_valid.values,data_test.values,t_obs,H
-        elif HD["type_know"]=='BOTH':
-            gene_set = data_train.columns[:-2]
-            genes_STRING=pd.read_csv("/Backup/home/chenyupeng/DATA/Graph/STRING/clusters.protein.ensg.csv")['protein_id'].to_list()
-            genes_STRING = sorted(list(set(genes_STRING)))# 11171
-            gene_set=gene_set[gene_set.isin(genes_STRING)]# 不会改变顺序
-            H=construct_H_STRING(gene_set,layer_STRING=HD['layer_STRING'])
-
+            
             H = H.loc[gene_set,:]
             H = H if H_df else H.values
             return data_train.values,data_valid.values,data_test.values,t_obs,H
@@ -369,104 +344,66 @@ def construct_Pnet_H_Reactome(H_path, data, layers_list: list = [1, 2, 3, 4]):
         pathway_masks.append(H)
     return pathway_masks, data
 
-# def load_TCGA_data(data_path,H_path,Filt_num,endpoint,DF=False,pathway_mask=False):
-    # '''
-    # For loading P3-P12 layers Reactome H ; select root in 29 differents root path ;  
-    # Add Computed Prior Knowledges; Pearson+Hcluster
-    # e standards for use edge_loss or no, 0 for no
-    # '''
-    # # get RNAseq expression matrix
-    # data_df = pd.read_csv(os.path.join(data_path + '/feature_matrix.csv'), index_col= 0,)
 
-    # # get patients' survival data
-    # survival_df = pd.read_csv("/Backup/home/chenyupeng/DATA/TCGA-RNAseq/COX_Selection/ClinicalDataFrame_DiscreteTime-Cut15Years.csv",index_col= 0,)
+def load_opt_data(data_path,H_path,Filt_num,endpoint,DF=False,pathway_mask=False):
+    '''
+    For loading P3-P12 layers Reactome H ; select root in 29 differents root path ;  
+    Add Computed PriorKnow Knowledges; Peason+Hcluster
+    e standards for use edge_loss or no, 0 for no
+    '''
+    # get RNAseq expression matrix
+    data_df = pd.read_csv(os.path.join(data_path + '/feature_matrix.csv'), index_col= 0,)
 
-    # # get gene info; which selected by cox uni reg
-    # gene_info_df = pd.read_csv(os.path.join(data_path +  '/genes_list.csv'),index_col= 0,)
-    # # gene_info_df = pd.read_csv(os.path.join(data_path +  '/genes_information.csv'),index_col= 1,)
+    # get patients' survival data
+    survival_df = pd.read_csv("data/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv",index_col= 0,)
+
+    # get gene info; which selected by cox uni reg
+    gene_info_df = pd.read_csv(os.path.join(data_path +  '/genes_list.csv'),index_col= 0,)
+    # gene_info_df = pd.read_csv(os.path.join(data_path +  '/genes_information.csv'),index_col= 1,)
     
-    # H = pd.read_csv(H_path+"/H1.csv",index_col=0)
+    H = pd.read_csv(H_path+"/H1.csv",index_col=0)
 
-    # # SurData Pats Filt
-    # sdf=survival_df.loc[survival_df["PatientID"].isin(data_df.columns,),:]
-    # survival_df = sdf.loc[~sdf.duplicated(),:]
+    # SurData Pats Filt
+    sdf=survival_df.loc[survival_df["PatientID"].isin(data_df.columns,),:]
+    survival_df = sdf.loc[~sdf.duplicated(),:]
 
-    # # 取reactome 与feature matrix 交集
-    # data_df = data_df.loc[data_df.index.isin(H.index),:]
-    # # 排序
-    # gene_info_df=gene_info_df.loc[data_df.index,:]
-    # H = H.loc[data_df.index,:]
+    # 取reactome 与feature matrix 交集
+    data_df = data_df.loc[data_df.index.isin(H.index),:]
+    # 排序
+    gene_info_df=gene_info_df.loc[data_df.index,:]
+    H = H.loc[data_df.index,:]
 
-    # # Reactome cox fil
-    # H = H.iloc[:Filt_num,:]#gene purne
-    # H = H.loc[:,H.sum(axis=0)!=0]#path purne
+    # Reactome cox fil
+    H = H.iloc[:Filt_num,:]#gene purne
+    H = H.loc[:,H.sum(axis=0)!=0]#path purne
 
-    # # FS Filt
-    # data_df = data_df.iloc[:Filt_num,:]
-    # gene_info_df=gene_info_df.iloc[:Filt_num,:]
-    # if (data_df.index != H.index).sum()+(H.index != gene_info_df.index).sum()>0:
-    #     raise
-    # H_df=H
-    # H=H.values
-    # data = data_df.to_numpy().transpose()
-    # event_status = survival_df['OS Status'].to_numpy()
-    # event_time = survival_df[endpoint].to_numpy()
-    # data = np.c_[data,event_time,event_status]
-    # if pathway_mask:
-    #     pathway_masks=[]
-    #     pathway_masks.append(H_df)
-    #     for i in range(3):
-    #         # 2-4
-    #         Hn=pd.read_csv(H_path+f"/H{i+2}.csv",index_col=0)
-    #         H_df=Hn.loc[H_df.columns,:]
-    #         H_df = H_df.loc[:,H_df.sum(axis=0)!=0]#path purne
-    #         pathway_masks.append(H_df)
-    #     return data,pathway_masks
-    # print(f"After Preprocess: DATA shape - {data.shape} H shape : {H.shape}")
-    # if DF:
-    #     data_df =  pd.DataFrame(data=data,index=data_df.columns,columns=data_df.index.to_list()+["time","event"],)
-    #     return data_df,H_df
-    # else:
-    #     return data,H
-                
-def load_opt_data(data_path, H_path, Filt_num, endpoint, DF=False, pathway_mask=False):
-    data_df = pd.read_csv(os.path.join(data_path, 'feature_matrix.csv'), index_col=0)
-    survival_path = config.get_paths()['survival_data_template']
-    survival_df = pd.read_csv(survival_path, index_col=0)
-    gene_info_df = pd.read_csv(os.path.join(data_path, 'genes_list.csv'), index_col=0)
-    H = pd.read_csv(os.path.join(H_path, 'H.csv'), index_col=0)
-    sdf = survival_df.loc[survival_df["Patient"].isin(data_df.columns,), :]
-    survival_df = sdf.loc[~sdf.duplicated(), :]
-    data_df = data_df.loc[data_df.index.isin(H.index), :]
-    gene_info_df = gene_info_df.loc[data_df.index, :]
-    H = H.loc[data_df.index, :]
-    H = H.iloc[:Filt_num, :]
-    H = H.loc[:, H.sum(axis=0) != 0]
-    data_df = data_df.iloc[:Filt_num, :]
-    gene_info_df = gene_info_df.iloc[:Filt_num, :]
-    if (data_df.index != H.index).sum() + (H.index != gene_info_df.index).sum() > 0:
+    # FS Filt
+    data_df = data_df.iloc[:Filt_num,:]
+    gene_info_df=gene_info_df.iloc[:Filt_num,:]
+    if (data_df.index != H.index).sum()+(H.index != gene_info_df.index).sum()>0:
         raise
-    H_df = H
-    H = H.values
+    H_df=H
+    H=H.values
     data = data_df.to_numpy().transpose()
     event_status = survival_df['OS Status'].to_numpy()
     event_time = survival_df[endpoint].to_numpy()
-    data = np.c_[data, event_time, event_status]
+    data = np.c_[data,event_time,event_status]
     if pathway_mask:
-        pathway_masks = []
+        pathway_masks=[]
         pathway_masks.append(H_df)
         for i in range(3):
-            Hn = pd.read_csv(os.path.join(H_path, f"H{i+2}.csv"), index_col=0)
-            H_df = Hn.loc[H_df.columns, :]
-            H_df = H_df.loc[:, H_df.sum(axis=0) != 0]
+            # 2-4
+            Hn=pd.read_csv(H_path+f"/H{i+2}.csv",index_col=0)
+            H_df=Hn.loc[H_df.columns,:]
+            H_df = H_df.loc[:,H_df.sum(axis=0)!=0]#path purne
             pathway_masks.append(H_df)
-        return data, pathway_masks
+        return data,pathway_masks
     print(f"After Preprocess: DATA shape - {data.shape} H shape : {H.shape}")
     if DF:
-        data_df = pd.DataFrame(data=data, index=data_df.columns, columns=data_df.index.to_list() + ["time", "event"])
-        return data_df, H_df
+        data_df =  pd.DataFrame(data=data,index=data_df.columns,columns=data_df.index.to_list()+["time","event"],)
+        return data_df,H_df
     else:
-        return data, H
+        return data,H
 
 
 def load_opt_hier_data(data_path, H_path, Filt_num, endpoint, e=0, n=0):
@@ -524,14 +461,17 @@ def load_data_general(DATA, PK_D, HD, fn_data, config=None):
             # Load PRO data for STRING
             data, H = load_cohort_data(None, fn_data, HD['cox_num'], DF=True)
             
-            # Get gene list from data
-            gene_list = data.columns[:-2].tolist()  # Exclude time and event columns
+            # # Get gene list from data
+            # gene_list = data.columns[:-2].tolist()  # Exclude time and event columns
             
-            # Import construct_H_STRING function
+            # # Import construct_H_STRING function
+            # fn_H = config.get_paths()['string_graph_template'].format(method='layer', dataset='HCC', layer=PK_D['layer_STRING'])
+            # if os.path.isfile(fn_H):
+            #     H = pd.read_csv(fn_H, index_col=0)
+            # else:
+            #     # Construct H matrix for STRING
+            #     H = construct_H_STRING(gene_list, PK_D['layer_STRING'], config)
 
-            
-            # Construct H matrix for STRING
-            H = construct_H_STRING(gene_list, PK_D['layer_STRING'], config)
         else:
             data, H = load_cohort_data(None, fn_data, HD['cox_num'], DF=True)
         

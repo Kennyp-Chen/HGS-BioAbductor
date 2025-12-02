@@ -1,6 +1,7 @@
 import torch
 import numpy as np
-from models.Models_interpret import *
+# from models.Models_interpret import *
+from models.Models import HGS_Interpret
 import os,torch
 import numpy as np
 import torch.optim as optim
@@ -134,7 +135,7 @@ def train_and_explain_model(HD, PK_D, dataset, data, Model, DATA, out_path, fn_c
     logger.info(f"Pooling_hiddens:{HD['pooling_hiddens']}\n")
     
     # Initialize and train model
-    model = HGS(HD, data_train=data_train, data_eval=data_valid, data_test=data_test,
+    model = HGS_Interpret(HD, data_train=data_train, data_eval=data_valid, data_test=data_test,
                 H=H, fn_ckpt=fn_ckpt, t_obs=t_obs, G=G, seed=seed)
     model = model.cuda()
     

@@ -25,12 +25,9 @@ class triplet(BaseModel):
 class Viewpoint(BaseModel):
     viewpoints: List[triplet] = Field(description="The list of the viewpoint between two biological entities")
 
-
-
 class Evaluator(BaseModel):
     Analysis: str = Field(description="Comparison between the two hypotheses")
     Choice: int = Field(description="Preference of the two hypotheses")
-
 
 
 class RefinedHypothesis(BaseModel):

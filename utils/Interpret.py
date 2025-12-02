@@ -1220,6 +1220,7 @@ def get_HRs(
     return HRs
 
 
+
 def get_death_CDF_sum(model,data):
     if isinstance(data,pd.DataFrame):
         data = data.values
@@ -1608,15 +1609,15 @@ class TripletsAnalysis:
                     if self.H_df.loc[:,hsa].sum()==1:
                         logger.info(f"pathway {pathway_name} only has one gene!")
                 else:
-                    expr_path = data_es.loc[:,[pathway_name,'time','event']]#此时已经小写化
-                    expr_path.columns = ['ES','time','event']
+                    expr_pathway = data_es.loc[:,[pathway_name,'time','event']]#此时已经小写化,通路表达矩阵
+                    expr_pathway.columns = ['ES','time','event']
                     ##  cox uni for pathwat expression
                     logger.info(f"calculating HRs for {pathway_name} pathways by cox univariate regression")
-                    HR_pathway = get_HRs(expr_path,'time','event',1)
+                    HR_pathway = get_HRs(expr_pathway,'time','event',1)
                     p_path_cox,hr_path = HR_pathway.values[0,:]
                     ts[f"pathway '{pathway_name}' bioinformatics statistics indicators"]=\
                     f"Cox hazard ratio for enrichment score: {hr_path}; Cox p value for enrichment score: {p_path_cox}; "
-                    diff_es,(t_statistic,p_value) = self.get_regulation_diff(expr_path)
+                    diff_es,(t_statistic,p_value) = self.get_regulation_diff(expr_pathway)
 
                     ts[f"pathway '{pathway_name}' bioinformatics statistics indicators"]+=\
                     f"The difference between the sum of {name_hyperedge} enrichment scores of high-risk and low-risk populations of {cancer_name} cancer: {diff_es}; The ttest information (t_statistic, p_value) of between the {name_hyperedge} enrichment scores of high-risk and low-risk populations of {cancer_name} cancer: {((t_statistic,p_value))};"

@@ -59,7 +59,7 @@ loss_weights:
 
 # Knowledge Base Parameters
 knowledge_params:
-  data_drive: "STRING"  # Will be set based on knowledge_base
+  type_know: "STRING"  # Will be set based on knowledge_base
   method: "layer"  # Will be set based on knowledge_base
   criterion: "maxclust"  # Only for hcluster
   divisor: 3  # For pooling layers
@@ -76,9 +76,9 @@ paths:
   proteomic_data_template: "{data_root}/PRO/{dataset}/dataset.csv"
   rna_data_template: "{data_root}/RNA/{dataset}/feature_matrix.csv"
   reactome_graph_template: "{data_root}/RNA/HCC/ReactomeGraph/reactome_P{layer}/"
-  string_graph_template: "{data_root}/PRO/STRING/{method}/{dataset}-Level{layer}-H.csv"
-  string_gene_list: "{data_root}/PRO/STRING/clusters.protein.ensg.csv"
-  cluster_relation_file: "{data_root}/PRO/STRING/9606.clusters.tree.v12.0.txt"
+  string_graph_template: "{data_root}/PriorKnow/STRING/{method}/{dataset}-Level{layer}-H.csv"
+  string_gene_list: "{data_root}/PriorKnow/STRING/clusters.protein.ensg.csv"
+  cluster_relation_file: "{data_root}/PriorKnow/STRING/9606.clusters.tree.v12.0.txt"
   # survival_data_template: "{data_root}/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv"
   survival_data_template: "{data_root}/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv"
   mart_export: "{data_root}/mart_export.txt"
