@@ -99,13 +99,14 @@ nohup.out
 origin_scripts/
 .kiro/
 other_experiments/
+requirements.txt
 
 # Keep important files (exceptions)
-!requirements*.txt
 !README.md
 !LICENSE
 !.gitignore
 !configs/*.yaml
 !examples/**/*.json
 !examples/**/*.csv
-logs/
+
+
