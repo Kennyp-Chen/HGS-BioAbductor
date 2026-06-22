@@ -7,7 +7,6 @@ from torch.nn.parameter import Parameter
 from torch.autograd import Variable
 from torch.nn.utils import prune as prune
 import numpy as np, scipy.sparse as sp
-import lightning.pytorch as pl
 import collections
 
 class AttentionPoolingLayer(nn.Module):
@@ -1664,7 +1663,7 @@ class GraphConvolution(nn.Module):
         return out
 
 
-class PathwayNet(pl.LightningModule):
+class PathwayNet(nn.Module):
     def __init__(
         self,mask,
         activation: str = "tanh",

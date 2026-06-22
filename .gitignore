@@ -112,4 +112,13 @@ requirements.txt
 # Review/revision documents
 docs/
 
+# AI Agent workspace files
+.sisyphus/
+AGENTS.md
+TODO_Cyp.md
+
+# Generated notebook execution outputs and plots
+notebook/*_executed.ipynb
+notebook/*.svg
+
 
