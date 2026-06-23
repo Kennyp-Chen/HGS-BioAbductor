@@ -7,6 +7,9 @@
 - 尽量不改动其他地方，除非修改本身需要连带调整
 - 如果有不确定的修改，先问 Cyp，确认后再执行
 
+### 审稿回复信路径
+- 回复信文件：`docs/HGS_latex/review/npj_precision_oncology_review.md`
+
 ### 原子化本地提交
 - 每个逻辑完整的改动作为一个独立 commit
 - 不要混装不相关的改动到同一个 commit
