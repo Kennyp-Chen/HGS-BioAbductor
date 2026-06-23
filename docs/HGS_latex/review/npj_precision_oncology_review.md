@@ -23,7 +23,7 @@ Could the authors provide further justification for key preprocessing decisions,
 
 **Response.** We thank the reviewer for this important question and have conducted two complementary analyses:
 
-**1. Preprocessing sensitivity analysis (Cox p-value threshold).** The script `other_experiments/preprocessing_sensitivity.py` systematically tested four Cox p-value thresholds for feature selection: [0.01, 0.05, 0.1, top400]. The results showed that the default top-400 selection strikes a robust balance between retaining informative features and maintaining model stability across datasets. Full results are available in `Results/preprocessing_sensitivity/`.
+**1. Preprocessing sensitivity analysis (Cox p-value threshold).** The script `review_experiments/preprocessing_sensitivity.py` systematically tested four Cox p-value thresholds for feature selection: [0.01, 0.05, 0.1, top400]. The results showed that the default top-400 selection strikes a robust balance between retaining informative features and maintaining model stability across datasets. Full results are available in `Results/preprocessing_sensitivity/`.
 
 **2. PCA before and after Z-score normalization.** To justify the Z-score normalization step, we generated PCA comparison figures demonstrating the effect of Z-score normalization on the feature space. The figure at `Results/preprocessing_sensitivity/pca_before_after.png` illustrates this transformation.
 
@@ -36,7 +36,7 @@ While the reported performance improvements appear consistent, could the authors
 > *Annotation (CID #4, by Linhai Xie):* May require new experimental design (cyp)
 > *Annotation (CID #7, by Linhai Xie):* Add statistical tests (cyp)
 
-**Response.** We performed paired t-tests across all 18 datasets, comparing each of the three HGS variants (STRING, Reactome, hcluster) against four baseline models (DeepHit, DeepSurv, DRSA, PNet). The script `other_experiments/statistical_test_18_datasets.py` computes per-dataset paired t-tests over 10 cross-validation repeats on C-index values.
+**Response.** We performed paired t-tests across all 18 datasets, comparing each of the three HGS variants (STRING, Reactome, hcluster) against four baseline models (DeepHit, DeepSurv, DRSA, PNet). The script `review_experiments/statistical_test_18_datasets.py` computes per-dataset paired t-tests over 10 cross-validation repeats on C-index values.
 
 **Key findings:**
 | Comparison | HGS variant | Significant (p<0.05) |
@@ -89,7 +89,7 @@ This work proposes HGS-BioAbductor, a novel approach that exploits graph neural 
 
 > *Annotation (CID #8, by Linhai Xie):* Compare random perturbation with importance-based perturbation (using the bidirectional masking experiment results). This will show that random perturbation indeed has limited impact, while importance-based perturbation causes significant degradation, indicating that only a small subset of hyperedges are functionally critical (cyp)
 
-**Response.** The script `other_experiments/perturbation_comparison_plot.py` produces a comparison of random perturbation versus Borda importance-based masking for both hyperedges and nodes. Two views are generated for each entity type:
+**Response.** The script `review_experiments/perturbation_comparison_plot.py` produces a comparison of random perturbation versus Borda importance-based masking for both hyperedges and nodes. Two views are generated for each entity type:
 - **Absolute C-index** view (`random_vs_importance_{entity}.png`): raw C-index values as a function of perturbation/masking level.
 - **Relative ΔC-index** view (`random_vs_importance_{entity}_delta.png`): each curve is normalized to its own baseline (level=0), compensating for the fact that the random perturbation and Borda masking experiments use different sets of random seeds (and therefore different absolute baselines).
 
@@ -171,7 +171,7 @@ This contrasts with the proteomics data where BO showed a significant advantage,
 
 > *Annotation (CID #11, by Linhai Xie):* cyp
 
-**Response.** We have performed a PCA analysis of the three HCC proteomic cohorts (Gao, Jiang, Xing) using the script `other_experiments/hcc_batch_effect_pca.py`. Critically, the data source and normalization method are aligned with the actual preprocessing pipeline used by our model:
+**Response.** We have performed a PCA analysis of the three HCC proteomic cohorts (Gao, Jiang, Xing) using the script `review_experiments/hcc_batch_effect_pca.py`. Critically, the data source and normalization method are aligned with the actual preprocessing pipeline used by our model:
 
 - **Data source**: Each cohort is loaded independently from `ProteinCohorts_0.8nafilter_CoxSort/ALL/{cohort}/dataset.csv` (pre-filtered at 80% NaN threshold, Cox p-value sorted), then concatenated row-wise --- matching the exact input seen by the trained model.
 - **Normalization**: Per-sample Z-score normalization (`scipy.stats.zscore(axis=1)`), applied to the (412 samples × 4412 genes) merged matrix. This is the same Z-score operation used in the model preprocessing pipeline, rather than a per-gene `StandardScaler` which would not reflect the actual data seen by the model.

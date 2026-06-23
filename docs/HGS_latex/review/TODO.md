@@ -31,10 +31,10 @@
 
 | # | 审稿意见 | CID | 内容 | 负责人 | 细节 | 状态 |
 |--|---------|-----|------|--------|------|------|
-| #1/#2 | R1 Q2 | 1,2 | **预处理敏感性分析 + HCC PCA/UMAP** | cyp | 脚本 `preprocessing_sensitivity.py` 已创建，Z-score 前后 PCA 对比图已输出到 `Results/preprocessing_sensitivity/` | ✅ 完成 |
-| #3/#4/#7 | R1 Q3, R2 #2 | 3,4,7 | **统计检验** | cyp | 脚本 `statistical_test_18_datasets.py` 已创建，paired t-test 结果输出到 `Results/statistical_tests/` | ✅ 完成 |
-| #8 | R2 #3 | 8 | **随机 vs 按重要性扰动对比** | cyp | 脚本 `perturbation_comparison_plot.py` 已创建，生成绝对 C-index + ΔC-index 两套图（超边 + 节点各两张），已提交到回复信 | ✅ 完成 |
-| #11 | R2 #6 | 11 | **HCC 整合批次效应 PCA 可视化** | cyp | 脚本 `hcc_batch_effect_pca.py` 已修复（cohorts 类型 bug + per-sample Z-score 对齐实际 pipeline），3 队列 PCA 图已生成，回复信已更新 | ✅ 完成 |
+| #1/#2 | R1 Q2 | 1,2 | **预处理敏感性分析 + HCC PCA/UMAP** | cyp | 脚本 `review_experiments/preprocessing_sensitivity.py` 已创建，Z-score 前后 PCA 对比图已输出到 `Results/preprocessing_sensitivity/` | ✅ 完成 |
+| #3/#4/#7 | R1 Q3, R2 #2 | 3,4,7 | **统计检验** | cyp | 脚本 `review_experiments/statistical_test_18_datasets.py` 已创建，paired t-test 结果输出到 `Results/statistical_tests/` | ✅ 完成 |
+| #8 | R2 #3 | 8 | **随机 vs 按重要性扰动对比** | cyp | 脚本 `review_experiments/perturbation_comparison_plot.py` 已创建，生成绝对 C-index + ΔC-index 两套图（超边 + 节点各两张），已提交到回复信 | ✅ 完成 |
+| #11 | R2 #6 | 11 | **HCC 整合批次效应 PCA 可视化** | cyp | 脚本 `review_experiments/hcc_batch_effect_pca.py` 已修复（cohorts 类型 bug + per-sample Z-score 对齐实际 pipeline），3 队列 PCA 图已生成，回复信已更新 | ✅ 完成 |
 | #18 | R2 #12 | 18 | **HCC 每个种子只训练集内特征筛选** [🏃 进行中] | cyp | **实验任务**: 在 HCC 数据上（转录组 + 蛋白组），对每个种子重新只在训练集内做特征筛选，验证结果一致性 | ⏳ 进行中 |
 | #25 | R2 #19 | 25 | **三元组增强数据范围确认** | cyp | 代码确认: 统计关联使用全数据计算 `self.expr = data.iloc[:,:-2]`，非仅训练集。回复信已更新 | ✅ 完成 |
 
