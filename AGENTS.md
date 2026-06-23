@@ -33,3 +33,27 @@
 3. 执行修改/实验
 4. `git add -A && git commit -m "描述"`
 5. 如果要推送：列出 commits → 等确认 → 推送
+
+---
+
+## 实验进度
+
+### R2 #12 — Per-fold 特征选择验证实验
+
+**状态**: 脚本已完成，冒烟测试通过
+
+**脚本**: `DataPreprocess/per_fold_feature_selection_experiment.py`
+
+**已知问题**:
+- LIHC RNA 8559 基因下 Cox 回归极慢（疑似个别基因挂起），冒烟测试用 `--max_cox_genes 200`
+- STRING H 只有 ~308/400 PRO 基因有对应，数据分片需同步过滤
+
+**冒烟测试结果**:
+| Dataset | Knowledge | Seed | Epochs | Original C-index | Per-fold C-index | Δ |
+|---------|-----------|------|--------|----------------:|----------------:|--------:|
+| HCC PRO | STRING | 0 | 5 | 0.6715 | 0.7020 | **+0.0304** |
+| LIHC RNA | Reactome | 0 | 5 | 0.7330 | 0.5379 | -0.1951* |
+
+\* RNA 冒烟仅用 200 基因，结果不可靠，需全量运行
+
+**下一步**: Cyp 确认后执行全量 10 seeds × 50 epochs 实验
