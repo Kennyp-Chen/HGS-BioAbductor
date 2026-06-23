@@ -4,7 +4,8 @@ All-Cohorts Per-Fold Feature Selection Validation Experiment (R2 #12)
 =====================================================================
 
 Extends the per-fold feature selection validation from individual datasets
-to all 18 cohorts (8 proteomic + 10 transcriptomic).
+to all 18 cohorts (8 proteomic + 10 transcriptomic), across all benchmark
+models (HGS with STRING/Reactome/hcluster knowledge + DeepSurv/DeepHit/DRSA/Pnet).
 
 核心问题 (R2 #12)
 ------------------
@@ -15,58 +16,63 @@ to all 18 cohorts (8 proteomic + 10 transcriptomic).
 
 关键设计
 ---------
-1. 自动从 benchmark Results-nt20.csv 中解析每个 cohort 的最优超参数（AutoML 搜索结果）
+1. 自动从 benchmark Results-nt20.csv / Results.csv 中解析每个 cohort × model 的超参
 2. 复用单数据集脚本 (per_fold_feature_selection_experiment.py) 的核心函数
-3. 每 cohort 独立保存结果，支持断点续跑
+3. 每 cohort × model 独立保存结果，支持断点续跑
 4. 基因选择缓存：每 seed 的 Cox 选出基因保存到文件，中断后自动跳过已完成 seed
+5. 通过 --models 参数支持 HGS 多知识类型和 DeepSurv/DeepHit/DRSA/Pnet 基线模型
 
 数据流
 -------
-PRO (STRING):
+PRO (e.g., HGS-STRING):
   data/PRO/{cohort}/dataset.csv
     → split train/valid/test (60/20/20)
     → Cox on TRAIN → rank → top 400
-    → STRING gene filter → STRING H → generate_G → HGS train → test C-index
+    → STRING/Reactome/hcluster H → generate_G → HGS train → test C-index
 
-RNA (Reactome):
+RNA (e.g., HGS-Reactome):
   data/RNA/{cohort}/feature_matrix.csv  (genes × patients)
   data/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv  (shared survival)
     → Reactome gene intersection
     → transpose → split train/valid/test
     → Cox on TRAIN → rank → top 400
-    → Reactome H filter → generate_G → HGS train → test C-index
+    → STRING/Reactome/hcluster H → generate_G → HGS train → test C-index
+
+Baseline models (DeepSurv/DeepHit/DRSA/Pnet):
+  共享 per-fold Cox 的 top 400 基因，直接用 train_baseline() 训练
 
 用法
 -----
-    # Full experiment on all cohorts
-    python DataPreprocess/per_fold_fs_all_cohorts.py
+    # Full experiment on all cohorts (default HGS knowledge per omics)
+    python review_experiments/per_fold_fs_all_cohorts.py
+
+    # Run specific models on all cohorts
+    python review_experiments/per_fold_fs_all_cohorts.py --models HGS-STRING HGS-Reactome DeepSurv
 
     # PRO only
-    python DataPreprocess/per_fold_fs_all_cohorts.py --omics PRO
+    python review_experiments/per_fold_fs_all_cohorts.py --omics PRO
 
-    # RNA only
-    python DataPreprocess/per_fold_fs_all_cohorts.py --omics RNA
+    # Single cohort, single model
+    python review_experiments/per_fold_fs_all_cohorts.py --omics PRO --cohort HCC --models HGS-STRING
 
     # Smoke test (1 seed, 5 epochs)
-    python DataPreprocess/per_fold_fs_all_cohorts.py --smoke_test
+    python review_experiments/per_fold_fs_all_cohorts.py --smoke_test
 
-    # Resume a specific cohort that was interrupted
-    python DataPreprocess/per_fold_fs_all_cohorts.py --omics PRO --cohort HCC
+    # Resume interrupted run
+    python review_experiments/per_fold_fs_all_cohorts.py --skip_existing
 
     # Limit Cox genes (for fast testing / avoiding hang)
-    python DataPreprocess/per_fold_fs_all_cohorts.py --max_cox_genes 2000
+    python review_experiments/per_fold_fs_all_cohorts.py --max_cox_genes 2000
 
 输出
 -----
 Results/per_fold_fs/all_cohorts/
-├── PRO_{cohort}_results.csv       # Per-seed results per cohort
-├── PRO_{cohort}_summary.csv       # Summary stats per cohort
-├── RNA_{cohort}_results.csv
-├── RNA_{cohort}_summary.csv
-├── selected_genes/                 # Per-seed gene selection cache
-│   ├── PRO_{cohort}_seed{n}.csv
-│   └── RNA_{cohort}_seed{n}.csv
-└── master_results.csv             # All cohorts combined (final)
+├── {Omics}_{Cohort}_{Model}_results.csv   # Per-seed results per cohort × model
+├── {Omics}_{Cohort}_{Model}_summary.csv   # Summary stats per cohort × model
+├── selected_genes/                        # Per-seed gene selection cache
+│   ├── PRO_{cohort}_{model}_seed{n}.csv
+│   └── RNA_{cohort}_{model}_seed{n}.csv
+└── master_results.csv                     # All cohorts × models combined
 """
 
 import os
@@ -92,18 +98,28 @@ warnings.filterwarnings("ignore")
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from models.Models import HGS
+from models.Models import HGS, DeepSurv, DeepHit, DRSA, Pnet
 from utils.hg_ops import generate_G_from_H, construct_H_STRING
 from utils.data_utils import build_hiddens
 from Preprocess.DATA_preprocess import cox_feature_selection
 
 # Reuse shared functions from single-dataset experiment script
-from DataPreprocess.per_fold_feature_selection_experiment import (
+from review_experiments.per_fold_feature_selection_experiment import (
     build_STRING_H,
     build_Reactome_H,
     save_selected_genes,
     load_selected_genes,
     setup_logger,
+)
+
+from review_experiments.per_fold_fs_all_models import (
+    train_hgs,
+    train_baseline,
+    parse_baseline_best_hp,
+    parse_baseline_original_results,
+    build_STRING_H_from_genes,
+    build_Reactome_H_from_genes,
+    build_hcluster_H,
 )
 
 
@@ -122,6 +138,12 @@ REACTOME_H1_TPL = "data/PriorKnow/Reactome/reactome_P{layer}/H1.csv"
 
 BENCHMARK_PRO_TPL = "Results/Benchmark/PRO/HGS-STRING/Auto/{cohort}/Results-nt20.csv"
 BENCHMARK_RNA_TPL = "Results/Benchmark/RNA/HGS-Reactome/Auto/{cohort}/Results-nt20.csv"
+BENCHMARK_DL_TPL = "Results/Benchmark/{omics}/{model}/{cohort}/Results.csv"
+
+HGS_KNOWLEDGE_TYPES = ["STRING", "Reactome", "hcluster"]
+BASELINE_MODELS = ["DeepSurv", "DeepHit", "DRSA", "Pnet"]
+ALL_MODELS = [f"HGS-{k}" for k in HGS_KNOWLEDGE_TYPES] + BASELINE_MODELS
+HCLUSTER_DIVISOR = 8
 
 # Default GPU memory threshold (fraction of total memory)
 GPU_MEM_FRACTION = 0.9
@@ -298,7 +320,7 @@ def parse_original_seed_results(fn_results: str, cfg: dict) -> Dict[int, float]:
     }
 
     # Import the shared parser
-    from DataPreprocess.per_fold_feature_selection_experiment import \
+    from review_experiments.per_fold_feature_selection_experiment import \
         parse_original_seed_results as _parse_func
 
     return _parse_func(fn_results, target_hp)
@@ -318,6 +340,7 @@ def run_pro_cohort(
     max_cox_genes: int = 0,
     smoke_test: bool = False,
     logger: Optional[logging.Logger] = None,
+    model_name: str = "HGS-STRING",
 ) -> pd.DataFrame:
     """
     Run per-fold feature selection experiment for a single PRO cohort.
@@ -332,6 +355,7 @@ def run_pro_cohort(
         max_cox_genes: If >0, limit Cox to N random genes for speed.
         smoke_test: If True, run only seed=0 with 5 epochs.
         logger: Logger instance.
+        model_name: Model to run (e.g. "HGS-STRING", "HGS-Reactome", "DeepSurv").
 
     Returns:
         DataFrame with per-seed comparison results.
@@ -339,13 +363,15 @@ def run_pro_cohort(
     if logger is None:
         logger = setup_logger(f"pro_{cohort.lower()}")
 
-    # Override epochs for smoke test
     actual_epochs = 5 if smoke_test else epochs
-    cfg = dict(cfg)  # shallow copy to avoid mutating original
+    cfg = dict(cfg)
     cfg['epochs'] = actual_epochs
 
+    is_hgs = model_name.startswith("HGS-")
+    knowledge = model_name[len("HGS-"):] if is_hgs else None
+
     logger.info("=" * 60)
-    logger.info(f"PRO {cohort} STRING — Per-fold Feature Selection")
+    logger.info(f"PRO {cohort} {model_name} — Per-fold Feature Selection")
     logger.info("=" * 60)
 
     # ---------------------------------------------------------------
@@ -363,13 +389,22 @@ def run_pro_cohort(
     # ---------------------------------------------------------------
     # Step 2: Parse original benchmark results for comparison
     # ---------------------------------------------------------------
-    fn_original = BENCHMARK_PRO_TPL.format(cohort=cohort)
-    if not os.path.isfile(fn_original):
-        logger.warning(f"Original results not found: {fn_original}")
-        original_results = {}
+    if is_hgs:
+        fn_original = BENCHMARK_PRO_TPL.format(cohort=cohort)
+        if not os.path.isfile(fn_original):
+            logger.warning(f"Original HGS benchmark not found: {fn_original}")
+            original_results = {}
+        else:
+            original_results = parse_original_seed_results(fn_original, cfg)
+            logger.info(f"Parsed {len(original_results)} original HGS seed results")
     else:
-        original_results = parse_original_seed_results(fn_original, cfg)
-        logger.info(f"Parsed {len(original_results)} original seed results")
+        fn_original = BENCHMARK_DL_TPL.format(omics="PRO", model=model_name, cohort=cohort)
+        best_l2, best_lr, best_nl = parse_baseline_best_hp(fn_original, model_name)
+        if best_l2 is None:
+            logger.warning(f"No benchmark config for PRO {model_name}, skipping")
+            return pd.DataFrame()
+        original_results = parse_baseline_original_results(fn_original, best_l2, best_lr, best_nl)
+        logger.info(f"Parsed {len(original_results)} original {model_name} seed results")
 
     # ---------------------------------------------------------------
     # Step 3: Run per-fold experiment for each seed
@@ -377,13 +412,38 @@ def run_pro_cohort(
     os.makedirs(OUT_DIR, exist_ok=True)
     os.makedirs(GENES_CACHE_DIR, exist_ok=True)
 
-    # PK config for STRING H construction
-    pk_config = {
-        'method': cfg['knowledge_method'],
-        'type_know': 'STRING',
-        'divisor': cfg['divisor'],
-        'layer_STRING': cfg['layer_STRING'],
-    }
+    if is_hgs and knowledge == "STRING":
+        pk_config = {
+            'method': cfg['knowledge_method'],
+            'type_know': 'STRING',
+            'divisor': cfg['divisor'],
+            'layer_STRING': cfg['layer_STRING'],
+        }
+    elif is_hgs and knowledge == "Reactome":
+        pk_config = {
+            'method': cfg['knowledge_method'],
+            'type_know': 'Reactome',
+            'divisor': cfg.get('divisor', 8),
+            'layer_Reactome': cfg.get('layer_Reactome', 8),
+        }
+    elif is_hgs and knowledge == "hcluster":
+        pk_config = {
+            'type_know': 'hcluster',
+            'divisor': cfg.get('divisor', HCLUSTER_DIVISOR),
+        }
+    else:
+        pk_config = None
+
+    H_reactome = None
+    if is_hgs and knowledge == "Reactome":
+        layer_r = pk_config['layer_Reactome']
+        fn_h1 = REACTOME_H1_TPL.format(layer=layer_r)
+        if os.path.isfile(fn_h1):
+            H_reactome = pd.read_csv(fn_h1, index_col=0)
+            logger.info(f"Loaded Reactome H1: {H_reactome.shape}")
+        else:
+            logger.error(f"Reactome H1 not found: {fn_h1}, cannot run HGS-Reactome on PRO")
+            return pd.DataFrame()
 
     results = []
     seeds_to_run = [0] if smoke_test else range(num_seeds)
@@ -393,7 +453,7 @@ def run_pro_cohort(
         logger.info(f"Seed {seed}/{max(seeds_to_run)}")
 
         # --- Step 3a: Split ---
-        label = data_df.iloc[:, -1]  # "death" column
+        label = data_df.iloc[:, -1]
         data_train_val, data_test, y_train_val, y_test = train_test_split(
             data_df, label, test_size=0.2, random_state=seed,
             shuffle=True, stratify=label,
@@ -406,18 +466,17 @@ def run_pro_cohort(
                      f"Test: {data_test.shape[0]}")
 
         # --- Step 3b: Per-fold Cox on TRAINING ONLY ---
-        seed_label = f"PRO_{cohort}_seed{seed}"
+        seed_label = f"PRO_{cohort}_{model_name}_seed{seed}"
         selected_genes = load_selected_genes(seed_label)
 
         if selected_genes is not None:
             logger.info(f"Loaded {len(selected_genes)} cached genes (skipping Cox)")
             top_400 = selected_genes
-            has_cox_result = False  # already cached
+            has_cox_result = False
         else:
             feat_train = data_train.iloc[:, :-2]
             te_train = data_train.iloc[:, -2:]
 
-            # Optional gene sampling for speed
             if max_cox_genes > 0 and feat_train.shape[1] > max_cox_genes:
                 rng = np.random.default_rng(42)
                 sampled = rng.choice(feat_train.columns, max_cox_genes, replace=False)
@@ -444,70 +503,107 @@ def run_pro_cohort(
         data_valid_filt = data_valid[top_400 + ["OS time", "death"]]
         data_test_filt = data_test[top_400 + ["OS time", "death"]]
 
-        # --- Step 3d: Build STRING H ---
-        try:
-            H, valid_genes = build_STRING_H(data_train_filt, cohort, pk_config)
-        except Exception as e:
-            logger.error(f"STRING H construction failed: {e}")
-            continue
+        if is_hgs:
+            # --- Build H for HGS ---
+            if knowledge == "STRING":
+                try:
+                    H, valid_genes = build_STRING_H_from_genes(top_400, cohort, pk_config)
+                except Exception as e:
+                    logger.error(f"STRING H construction failed: {e}")
+                    continue
+                logger.info(f"Built STRING H: {H.shape}")
 
-        logger.info(f"Built STRING H: {H.shape}")
+                n_dropped = len(top_400) - len(valid_genes)
+                if n_dropped > 0:
+                    logger.info(f"Filtering to {len(valid_genes)} STRING-available genes")
+                    data_train_filt = data_train_filt[valid_genes + ["OS time", "death"]]
+                    data_valid_filt = data_valid_filt[valid_genes + ["OS time", "death"]]
+                    data_test_filt = data_test_filt[valid_genes + ["OS time", "death"]]
 
-        if has_cox_result and max_cox_genes == 0:
-            save_selected_genes(seed_label, valid_genes)
+            elif knowledge == "Reactome":
+                common = [g for g in top_400 if g in H_reactome.index]
+                H = build_Reactome_H_from_genes(common, H_reactome)
+                logger.info(f"Built Reactome H: {H.shape} (from {len(common)} common genes)")
+                if H.shape[1] == 0:
+                    logger.error("Empty Reactome H, skipping seed")
+                    continue
 
-        n_dropped = len(top_400) - len(valid_genes)
-        if n_dropped > 0:
-            logger.info(f"Filtering to {len(valid_genes)} STRING-available genes")
-            data_train_filt = data_train_filt[valid_genes + ["OS time", "death"]]
-            data_valid_filt = data_valid_filt[valid_genes + ["OS time", "death"]]
-            data_test_filt = data_test_filt[valid_genes + ["OS time", "death"]]
+            elif knowledge == "hcluster":
+                H = build_hcluster_H(top_400, cohort, "PRO")
+                if H is None or H.shape[0] == 0 or H.shape[1] == 0:
+                    logger.error("Empty hcluster H, skipping seed")
+                    continue
+                logger.info(f"Built hcluster H: {H.shape}")
 
-        # --- Step 3e: Build graph G ---
-        G = generate_G_from_H(H.T) if cfg["edge_pooling"] else generate_G_from_H(H)
-
-        # --- Step 3f: t_obs ---
-        t_obs = data_train_filt["OS time"].max() + 2
-
-        # --- Step 3g: pooling_hiddens ---
-        cfg['pooling_hiddens'] = build_hiddens(H.shape[1], pk_config['divisor'])
-        logger.info(f"pooling_hiddens: {cfg['pooling_hiddens']}")
-
-        # --- Step 3h: Train HGS ---
-        fn_ckpt = os.path.join(OUT_DIR, f"PRO_{cohort}_seed{seed}")
-        logger.info(f"Training HGS (epochs={cfg['epochs']})...")
-
-        try:
-            model = HGS(
-                cfg,
-                data_train=data_train_filt.values,
-                data_eval=data_valid_filt.values,
-                data_test=data_test_filt.values,
-                H=H, fn_ckpt=fn_ckpt, t_obs=t_obs, G=G, seed=seed,
-            )
-            model = model.cuda()
-
-            optimizer = optim.Adam(
-                model.parameters(), lr=cfg['lr'], weight_decay=cfg['l2'],
-            )
-
-            model.fit(
-                optimizer=optimizer, logger=logger,
-                num_epochs=cfg["epochs"], batch_size=cfg["batch_size"],
-                loss_dict=cfg['loss_w'],
-            )
-        except Exception as e:
-            logger.error(f"Training failed for seed {seed}: {e}")
-            per_fold_ci = float('nan')
-        else:
-            # --- Extract test C-index from checkpoint ---
-            ckpt_path = f'{fn_ckpt}.ckpt'
-            if os.path.isfile(ckpt_path):
-                ckpt = torch.load(ckpt_path, map_location=device)
-                per_fold_ci = ckpt['final_test_ci']
             else:
-                logger.error(f"Checkpoint not found: {ckpt_path}")
+                logger.error(f"Unknown knowledge type: {knowledge}")
+                continue
+
+            # Build graph G
+            G = generate_G_from_H(H.T) if cfg.get("edge_pooling", True) else generate_G_from_H(H)
+
+            # t_obs
+            t_obs = data_train_filt["OS time"].max() + 2
+
+            # pooling_hiddens
+            divisor = pk_config.get('divisor', 8)
+            cfg['pooling_hiddens'] = build_hiddens(H.shape[1], divisor)
+
+            # Train HGS
+            fn_ckpt = os.path.join(OUT_DIR, f"PRO_{cohort}_{model_name}_seed{seed}")
+            logger.info(f"Training {model_name} (epochs={cfg['epochs']})...")
+
+            try:
+                per_fold_ci = train_hgs(
+                    cfg, data_train_filt, data_valid_filt, data_test_filt,
+                    H, G, t_obs, device, fn_ckpt, seed, logger,
+                )
+            except Exception as e:
+                logger.error(f"Training failed for seed {seed}: {e}")
                 per_fold_ci = float('nan')
+
+            if has_cox_result and max_cox_genes == 0:
+                save_selected_genes(seed_label, top_400)
+
+            knowledge_label = knowledge
+
+        else:
+            # Baseline model training
+            fn_original = BENCHMARK_DL_TPL.format(omics="PRO", model=model_name, cohort=cohort)
+            best_l2, best_lr, best_nl = parse_baseline_best_hp(fn_original, model_name)
+            if best_l2 is None:
+                logger.warning(f"No benchmark config for {model_name}, skipping seed")
+                continue
+
+            t_obs = data_train_filt["OS time"].max() + 2
+            fn_ckpt = os.path.join(OUT_DIR, f"PRO_{cohort}_{model_name}_seed{seed}")
+            batch_size = 64
+
+            pathway_mask = None
+            if model_name == "Pnet":
+                try:
+                    from utils.data_utils import get_BINN_Pathways
+                    data_tmp = data_train_filt.copy()
+                    pathway_mask, _ = get_BINN_Pathways(data_tmp, 4)
+                    pathway_mask = pathway_mask[:best_nl]
+                except Exception as e:
+                    logger.error(f"Failed to build PNET pathways: {e}, skipping seed")
+                    continue
+
+            try:
+                per_fold_ci = train_baseline(
+                    model_name, data_train_filt, data_valid_filt, data_test_filt,
+                    num_layers=best_nl, lr=best_lr, l2=best_l2,
+                    batch_size=batch_size,
+                    device=device, fn_ckpt=fn_ckpt, seed=seed,
+                    t_obs=t_obs, pathway_mask=pathway_mask,
+                    logger=logger,
+                )
+            except Exception as e:
+                logger.error(f"Training failed for seed {seed}: {e}")
+                per_fold_ci = float('nan')
+
+            knowledge_label = '-'
 
         original_ci = original_results.get(seed, None)
         delta = (per_fold_ci - original_ci) if original_ci else None
@@ -521,7 +617,8 @@ def run_pro_cohort(
         results.append({
             'Omics': 'PRO',
             'Cohort': cohort,
-            'Knowledge': 'STRING',
+            'Model': model_name,
+            'Knowledge': knowledge_label,
             'Seed': seed,
             'Original_CIndex': original_ci,
             'PerFold_CIndex': per_fold_ci,
@@ -533,8 +630,7 @@ def run_pro_cohort(
 
     results_df = pd.DataFrame(results)
 
-    # Save per-cohort results
-    fn_out = os.path.join(OUT_DIR, f"PRO_{cohort}_results.csv")
+    fn_out = os.path.join(OUT_DIR, f"PRO_{cohort}_{model_name}_results.csv")
     results_df.to_csv(fn_out, index=False)
     logger.info(f"Results saved to {fn_out}")
 
@@ -555,6 +651,7 @@ def run_rna_cohort(
     max_cox_genes: int = 0,
     smoke_test: bool = False,
     logger: Optional[logging.Logger] = None,
+    model_name: str = "HGS-Reactome",
 ) -> pd.DataFrame:
     """
     Run per-fold feature selection experiment for a single RNA cohort.
@@ -569,6 +666,7 @@ def run_rna_cohort(
         max_cox_genes: If >0, limit Cox to N random genes for speed.
         smoke_test: If True, run only seed=0 with 5 epochs.
         logger: Logger instance.
+        model_name: Model to run (e.g. "HGS-Reactome", "HGS-STRING", "DeepSurv").
 
     Returns:
         DataFrame with per-seed comparison results.
@@ -580,8 +678,11 @@ def run_rna_cohort(
     cfg = dict(cfg)
     cfg['epochs'] = actual_epochs
 
+    is_hgs = model_name.startswith("HGS-")
+    knowledge = model_name[len("HGS-"):] if is_hgs else None
+
     logger.info("=" * 60)
-    logger.info(f"RNA {cohort} Reactome — Per-fold Feature Selection")
+    logger.info(f"RNA {cohort} {model_name} — Per-fold Feature Selection")
     logger.info("=" * 60)
 
     # ---------------------------------------------------------------
@@ -607,50 +708,48 @@ def run_rna_cohort(
     logger.info(f"Survival data: {len(survival_df)} patients")
 
     # ---------------------------------------------------------------
-    # Step 2: Load Reactome H1 and intersect genes
+    # Pre-load knowledge (Reactome H1 for HGS-Reactome)
     # ---------------------------------------------------------------
-    layer_r = cfg.get('layer_Reactome')
-    if layer_r is None:
-        # Fallback: use a reasonable default
-        layer_r = 8
-        cfg['layer_Reactome'] = 8
+    H_reactome = None
+    if is_hgs and knowledge == "Reactome":
+        layer_r = cfg.get('layer_Reactome') or 8
+        cfg['layer_Reactome'] = layer_r
+        fn_H_path = REACTOME_H1_TPL.format(layer=layer_r)
+        if not os.path.isfile(fn_H_path):
+            logger.error(f"Reactome H1 not found: {fn_H_path}")
+            return pd.DataFrame()
+        H_reactome = pd.read_csv(fn_H_path, index_col=0)
+        logger.info(f"Full Reactome H1: {H_reactome.shape}")
 
-    fn_H_path = REACTOME_H1_TPL.format(layer=layer_r)
-    if not os.path.isfile(fn_H_path):
-        logger.error(f"Reactome H1 not found: {fn_H_path}")
-        return pd.DataFrame()
-
-    H_reactome = pd.read_csv(fn_H_path, index_col=0)
-    logger.info(f"Full Reactome H1: {H_reactome.shape}")
-
-    # Intersect genes present in both expression data and Reactome
-    common_genes = feature_matrix.index.intersection(H_reactome.index)
-    feature_matrix = feature_matrix.loc[common_genes]
-    logger.info(f"After Reactome intersection: {feature_matrix.shape[0]} genes")
+        common_genes = feature_matrix.index.intersection(H_reactome.index)
+        feature_matrix = feature_matrix.loc[common_genes]
+        logger.info(f"After Reactome intersection: {feature_matrix.shape[0]} genes")
 
     # ---------------------------------------------------------------
     # Step 3: Parse original benchmark results
     # ---------------------------------------------------------------
-    fn_original = BENCHMARK_RNA_TPL.format(cohort=cohort)
-    if not os.path.isfile(fn_original):
-        logger.warning(f"Original results not found: {fn_original}")
-        original_results = {}
+    if is_hgs:
+        fn_original = BENCHMARK_RNA_TPL.format(cohort=cohort)
+        if not os.path.isfile(fn_original):
+            logger.warning(f"Original HGS benchmark not found: {fn_original}")
+            original_results = {}
+        else:
+            original_results = parse_original_seed_results(fn_original, cfg)
+            logger.info(f"Parsed {len(original_results)} original HGS seed results")
     else:
-        original_results = parse_original_seed_results(fn_original, cfg)
-        logger.info(f"Parsed {len(original_results)} original seed results")
+        fn_original = BENCHMARK_DL_TPL.format(omics="RNA", model=model_name, cohort=cohort)
+        best_l2, best_lr, best_nl = parse_baseline_best_hp(fn_original, model_name)
+        if best_l2 is None:
+            logger.warning(f"No benchmark config for RNA {model_name}, skipping")
+            return pd.DataFrame()
+        original_results = parse_baseline_original_results(fn_original, best_l2, best_lr, best_nl)
+        logger.info(f"Parsed {len(original_results)} original {model_name} seed results")
 
     # ---------------------------------------------------------------
     # Step 4: Run per-fold experiment for each seed
     # ---------------------------------------------------------------
     os.makedirs(OUT_DIR, exist_ok=True)
     os.makedirs(GENES_CACHE_DIR, exist_ok=True)
-
-    pk_config = {
-        'method': cfg['knowledge_method'],
-        'type_know': 'Reactome',
-        'divisor': cfg['divisor'],
-        'layer_Reactome': layer_r,
-    }
 
     results = []
     seeds_to_run = [0] if smoke_test else range(num_seeds)
@@ -659,7 +758,7 @@ def run_rna_cohort(
         logger.info(f"\n{'─' * 50}")
         logger.info(f"Seed {seed}/{max(seeds_to_run)}")
 
-        # --- Step 4a: Build patient DataFrame ---
+        # Build patient DataFrame
         data_df = feature_matrix.T.copy()
         surv_subset = survival_df.set_index("PatientID")
         surv_subset = surv_subset.loc[surv_subset.index.isin(data_df.index)]
@@ -669,7 +768,7 @@ def run_rna_cohort(
 
         logger.info(f"Patient DataFrame: {data_df.shape}")
 
-        # --- Step 4b: Split ---
+        # --- Split ---
         label = data_df["event"]
         data_train_val, data_test, y_train_val, y_test = train_test_split(
             data_df, label, test_size=0.2, random_state=seed,
@@ -682,8 +781,8 @@ def run_rna_cohort(
         logger.info(f"Train: {data_train.shape[0]}, Valid: {data_valid.shape[0]}, "
                      f"Test: {data_test.shape[0]}")
 
-        # --- Step 4c: Per-fold Cox on TRAINING ONLY ---
-        seed_label = f"RNA_{cohort}_seed{seed}"
+        # --- Per-fold Cox on TRAINING ONLY ---
+        seed_label = f"RNA_{cohort}_{model_name}_seed{seed}"
         selected_genes = load_selected_genes(seed_label)
 
         if selected_genes is not None:
@@ -716,61 +815,105 @@ def run_rna_cohort(
             if max_cox_genes == 0:
                 save_selected_genes(seed_label, top_400)
 
-        # --- Step 4d: Filter splits ---
+        # --- Filter splits ---
         data_train_filt = data_train[top_400 + ["time", "event"]]
         data_valid_filt = data_valid[top_400 + ["time", "event"]]
         data_test_filt = data_test[top_400 + ["time", "event"]]
 
-        # --- Step 4e: Build Reactome H ---
-        H = build_Reactome_H(top_400, H_reactome)
-        logger.info(f"Built Reactome H: {H.shape}")
+        if is_hgs:
+            # --- Build H for HGS ---
+            if knowledge == "Reactome":
+                H = build_Reactome_H_from_genes(top_400, H_reactome)
+                logger.info(f"Built Reactome H: {H.shape}")
+                if H.shape[1] == 0:
+                    logger.error("Empty Reactome H, skipping seed")
+                    continue
+                divisor = cfg.get('divisor', 8)
 
-        if H.shape[1] == 0:
-            logger.error("Empty Reactome H — no pathways contain selected genes. Skipping seed.")
-            continue
+            elif knowledge == "STRING":
+                pk_hgs = {
+                    'method': cfg.get('knowledge_method', 'layer_range'),
+                    'type_know': 'STRING',
+                    'divisor': cfg.get('divisor', 8),
+                    'layer_STRING': cfg.get('layer_STRING', 1),
+                }
+                H, valid_genes = build_STRING_H_from_genes(top_400, cohort, pk_hgs)
+                logger.info(f"Built STRING H: {H.shape}")
+                n_dropped = len(top_400) - len(valid_genes)
+                if n_dropped > 0:
+                    logger.info(f"Filtering to {len(valid_genes)} STRING-available genes")
+                    data_train_filt = data_train_filt[valid_genes + ["time", "event"]]
+                    data_valid_filt = data_valid_filt[valid_genes + ["time", "event"]]
+                    data_test_filt = data_test_filt[valid_genes + ["time", "event"]]
+                divisor = pk_hgs['divisor']
 
-        # --- Step 4f: Build graph G ---
-        G = generate_G_from_H(H.T) if cfg["edge_pooling"] else generate_G_from_H(H)
-        t_obs = data_train_filt["time"].max() + 2
+            elif knowledge == "hcluster":
+                H = build_hcluster_H(top_400, cohort, "RNA")
+                if H is None or H.shape[0] == 0 or H.shape[1] == 0:
+                    logger.error("Empty hcluster H, skipping seed")
+                    continue
+                logger.info(f"Built hcluster H: {H.shape}")
+                divisor = HCLUSTER_DIVISOR
 
-        # --- Step 4g: pooling_hiddens ---
-        cfg['pooling_hiddens'] = build_hiddens(H.shape[1], pk_config['divisor'])
-        logger.info(f"pooling_hiddens: {cfg['pooling_hiddens']}")
-
-        # --- Step 4h: Train HGS ---
-        fn_ckpt = os.path.join(OUT_DIR, f"RNA_{cohort}_seed{seed}")
-        logger.info(f"Training HGS (epochs={cfg['epochs']})...")
-
-        try:
-            model = HGS(
-                cfg,
-                data_train=data_train_filt.values,
-                data_eval=data_valid_filt.values,
-                data_test=data_test_filt.values,
-                H=H, fn_ckpt=fn_ckpt, t_obs=t_obs, G=G, seed=seed,
-            )
-            model = model.cuda()
-
-            optimizer = optim.Adam(
-                model.parameters(), lr=cfg['lr'], weight_decay=cfg['l2'],
-            )
-
-            model.fit(
-                optimizer=optimizer, logger=logger,
-                num_epochs=cfg["epochs"], batch_size=cfg["batch_size"],
-                loss_dict=cfg['loss_w'],
-            )
-        except Exception as e:
-            logger.error(f"Training failed for seed {seed}: {e}")
-            per_fold_ci = float('nan')
-        else:
-            ckpt_path = f'{fn_ckpt}.ckpt'
-            if os.path.isfile(ckpt_path):
-                ckpt = torch.load(ckpt_path, map_location=device)
-                per_fold_ci = ckpt['final_test_ci']
             else:
-                logger.error(f"Checkpoint not found: {ckpt_path}")
+                logger.error(f"Unknown knowledge type: {knowledge}")
+                continue
+
+            G = generate_G_from_H(H.T) if cfg.get("edge_pooling", True) else generate_G_from_H(H)
+            t_obs = data_train_filt["time"].max() + 2
+            cfg['pooling_hiddens'] = build_hiddens(H.shape[1], divisor)
+
+            fn_ckpt = os.path.join(OUT_DIR, f"RNA_{cohort}_{model_name}_seed{seed}")
+            logger.info(f"Training {model_name} (epochs={cfg['epochs']})...")
+
+            try:
+                per_fold_ci = train_hgs(
+                    cfg, data_train_filt, data_valid_filt, data_test_filt,
+                    H, G, t_obs, device, fn_ckpt, seed, logger,
+                )
+            except Exception as e:
+                logger.error(f"Training failed for seed {seed}: {e}")
                 per_fold_ci = float('nan')
+
+            knowledge_label = knowledge
+
+        else:
+            # Baseline model training
+            fn_original = BENCHMARK_DL_TPL.format(omics="RNA", model=model_name, cohort=cohort)
+            best_l2, best_lr, best_nl = parse_baseline_best_hp(fn_original, model_name)
+            if best_l2 is None:
+                logger.warning(f"No benchmark config for {model_name}, skipping seed")
+                continue
+
+            t_obs = data_train_filt["time"].max() + 2
+            fn_ckpt = os.path.join(OUT_DIR, f"RNA_{cohort}_{model_name}_seed{seed}")
+            batch_size = 64
+
+            pathway_mask = None
+            if model_name == "Pnet":
+                try:
+                    from utils.data_utils import get_BINN_Pathways
+                    data_tmp = data_train_filt.copy()
+                    pathway_mask, _ = get_BINN_Pathways(data_tmp, 4)
+                    pathway_mask = pathway_mask[:best_nl]
+                except Exception as e:
+                    logger.error(f"Failed to build PNET pathways: {e}, skipping seed")
+                    continue
+
+            try:
+                per_fold_ci = train_baseline(
+                    model_name, data_train_filt, data_valid_filt, data_test_filt,
+                    num_layers=best_nl, lr=best_lr, l2=best_l2,
+                    batch_size=batch_size,
+                    device=device, fn_ckpt=fn_ckpt, seed=seed,
+                    t_obs=t_obs, pathway_mask=pathway_mask,
+                    logger=logger,
+                )
+            except Exception as e:
+                logger.error(f"Training failed for seed {seed}: {e}")
+                per_fold_ci = float('nan')
+
+            knowledge_label = '-'
 
         original_ci = original_results.get(seed, None)
         delta = (per_fold_ci - original_ci) if original_ci else None
@@ -784,7 +927,8 @@ def run_rna_cohort(
         results.append({
             'Omics': 'RNA',
             'Cohort': cohort,
-            'Knowledge': 'Reactome',
+            'Model': model_name,
+            'Knowledge': knowledge_label,
             'Seed': seed,
             'Original_CIndex': original_ci,
             'PerFold_CIndex': per_fold_ci,
@@ -796,7 +940,7 @@ def run_rna_cohort(
 
     results_df = pd.DataFrame(results)
 
-    fn_out = os.path.join(OUT_DIR, f"RNA_{cohort}_results.csv")
+    fn_out = os.path.join(OUT_DIR, f"RNA_{cohort}_{model_name}_results.csv")
     results_df.to_csv(fn_out, index=False)
     logger.info(f"Results saved to {fn_out}")
 
@@ -808,45 +952,44 @@ def run_rna_cohort(
 # ============================================================
 
 def compute_summary(results_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Compute summary statistics (mean ± std) per (Omics, Cohort).
-
-    Args:
-        results_df: Per-seed results DataFrame with columns
-                    ['Omics', 'Cohort', 'Seed', 'Original_CIndex',
-                     'PerFold_CIndex', 'Delta'].
-
-    Returns:
-        Summary DataFrame with mean/std per cohort.
-    """
+    """Compute summary statistics per (Omics, Cohort, Model)."""
     if results_df.empty:
         return pd.DataFrame()
 
+    group_cols = ['Omics', 'Cohort']
+    if 'Model' in results_df.columns:
+        group_cols.append('Model')
+
     summary_rows = []
 
-    for (omics, cohort), group in results_df.groupby(['Omics', 'Cohort']):
+    for keys, group in results_df.groupby(group_cols):
+        if isinstance(keys, tuple):
+            omics, cohort = keys[0], keys[1]
+            model = keys[2] if len(keys) > 2 else None
+        else:
+            omics = keys[0] if isinstance(keys, tuple) else results_df['Omics'].iloc[0]
+            cohort = keys if not isinstance(keys, tuple) else keys[1]
+            model = None
+
         orig = group['Original_CIndex'].dropna()
         per_fold = group['PerFold_CIndex'].dropna()
 
         paired = group.dropna(subset=['Original_CIndex', 'PerFold_CIndex'])
         deltas = paired['PerFold_CIndex'].values - paired['Original_CIndex'].values
 
-        knowledge = group['Knowledge'].iloc[0]
-
-        summary_rows.append({
+        row = {
             'Omics': omics,
             'Cohort': cohort,
-            'Knowledge': knowledge,
             'N_Seeds': len(group),
-            'Original_Mean': f"{orig.mean():.4f}" if len(orig) > 0 else "N/A",
-            'Original_Std': f"{orig.std():.4f}" if len(orig) > 0 else "N/A",
-            'PerFold_Mean': f"{per_fold.mean():.4f}" if len(per_fold) > 0 else "N/A",
-            'PerFold_Std': f"{per_fold.std():.4f}" if len(per_fold) > 0 else "N/A",
-            'Delta_Mean': f"{deltas.mean():.4f}" if len(deltas) > 0 else "N/A",
-            'Delta_Std': f"{deltas.std():.4f}" if len(deltas) > 0 else "N/A",
-            'Delta_Min': f"{deltas.min():.4f}" if len(deltas) > 0 else "N/A",
-            'Delta_Max': f"{deltas.max():.4f}" if len(deltas) > 0 else "N/A",
-        })
+            'Original_Mean±Std': f"{orig.mean():.4f}±{orig.std():.4f}" if len(orig) > 0 else "N/A",
+            'PerFold_Mean±Std': f"{per_fold.mean():.4f}±{per_fold.std():.4f}" if len(per_fold) > 0 else "N/A",
+            'Δ_Mean±Std': f"{deltas.mean():.4f}±{deltas.std():.4f}" if len(deltas) > 0 else "N/A",
+            'Δ_Min': f"{deltas.min():.4f}" if len(deltas) > 0 else "N/A",
+            'Δ_Max': f"{deltas.max():.4f}" if len(deltas) > 0 else "N/A",
+        }
+        if model is not None:
+            row['Model'] = model
+        summary_rows.append(row)
 
     return pd.DataFrame(summary_rows)
 
@@ -931,12 +1074,18 @@ def parse_args():
         "--skip_existing", action="store_true",
         help="Skip cohorts whose results file already exists (resume mode)",
     )
+    parser.add_argument(
+        "--models", type=str, nargs="+", default=None,
+        help=f"Models to run (default: HGS for each omics). "
+             f"HGS models: {[f'HGS-{k}' for k in HGS_KNOWLEDGE_TYPES]}. "
+             f"Baseline: {BASELINE_MODELS}",
+    )
     return parser.parse_args()
 
 
-def is_cohort_complete(omics: str, cohort: str) -> bool:
-    """Check if a cohort's full results file exists."""
-    fn = os.path.join(OUT_DIR, f"{omics}_{cohort}_results.csv")
+def is_cohort_complete(omics: str, cohort: str, model_name: str) -> bool:
+    """Check if a cohort's results file exists for a given model."""
+    fn = os.path.join(OUT_DIR, f"{omics}_{cohort}_{model_name}_results.csv")
     return os.path.isfile(fn)
 
 
@@ -949,12 +1098,21 @@ def main():
 
     all_results = []
 
-    # Determine which cohorts to run
+    # Determine which omics to run
     target_omics = []
     if args.omics in ("PRO", "all"):
         target_omics.append("PRO")
     if args.omics in ("RNA", "all"):
         target_omics.append("RNA")
+
+    if args.models is not None:
+        target_models = args.models
+        for m in target_models:
+            if m not in ALL_MODELS:
+                logger.error(f"Unknown model: {m}. Valid: {ALL_MODELS}")
+                return
+    else:
+        target_models = None
 
     for omics in target_omics:
         cohorts = PRO_COHORTS if omics == "PRO" else RNA_COHORTS
@@ -964,81 +1122,100 @@ def main():
                 continue
             cohorts = [args.cohort]
 
-        for cohort in cohorts:
-            # Skip if already completed (resume mode)
-            if args.skip_existing and is_cohort_complete(omics, cohort):
-                logger.info(f"[SKIP] {omics} {cohort} — results file exists")
-                fn_existing = os.path.join(OUT_DIR, f"{omics}_{cohort}_results.csv")
-                df_existing = pd.read_csv(fn_existing)
-                if not df_existing.empty:
-                    all_results.append(df_existing)
-                continue
-
-            # Parse best config from benchmark results
+        omics_models = target_models
+        if omics_models is None:
             if omics == "PRO":
-                fn_benchmark = BENCHMARK_PRO_TPL.format(cohort=cohort)
+                omics_models = ["HGS-STRING"]
             else:
-                fn_benchmark = BENCHMARK_RNA_TPL.format(cohort=cohort)
+                omics_models = ["HGS-Reactome"]
 
-            hp_dict, pk_dict = parse_best_config(fn_benchmark)
+        for model_name in omics_models:
 
-            if hp_dict is None or pk_dict is None:
-                logger.warning(f"[SKIP] {omics} {cohort} — no benchmark config found at {fn_benchmark}")
-                continue
+            for cohort in cohorts:
+                if args.skip_existing and is_cohort_complete(omics, cohort, model_name):
+                    logger.info(f"[SKIP] {omics} {cohort} {model_name} — results file exists")
+                    fn_existing = os.path.join(OUT_DIR, f"{omics}_{cohort}_{model_name}_results.csv")
+                    df_existing = pd.read_csv(fn_existing)
+                    if not df_existing.empty:
+                        all_results.append(df_existing)
+                    continue
 
-            cfg = extract_experiment_config(hp_dict, pk_dict)
-            logger.info(f"[CONFIG] {omics} {cohort}: "
-                        f"n_hid={cfg['n_hid']}, lr={cfg['lr']}, l2={cfg['l2']}, "
-                        f"glr={cfg['glr']}, AGG={cfg['AGG']}, "
-                        f"div={cfg['divisor']}, "
-                        f"layer={cfg.get('layer_STRING') or cfg.get('layer_Reactome')}")
+                # Parse config
+                is_hgs = model_name.startswith("HGS-")
 
-            # Run experiment
-            try:
-                if omics == "PRO":
-                    df_cohort = run_pro_cohort(
-                        cohort=cohort, cfg=cfg,
-                        device=args.device,
-                        cox_processes=args.cox_processes,
-                        num_seeds=args.num_seeds,
-                        epochs=args.epochs,
-                        max_cox_genes=args.max_cox_genes,
-                        smoke_test=args.smoke_test,
-                        logger=logger,
-                    )
+                if is_hgs:
+                    fn_benchmark = (BENCHMARK_PRO_TPL if omics == "PRO" else BENCHMARK_RNA_TPL).format(cohort=cohort)
+                    hp_dict, pk_dict = parse_best_config(fn_benchmark)
+                    if hp_dict is None or pk_dict is None:
+                        logger.warning(f"[SKIP] {omics} {cohort} {model_name} — no HGS benchmark at {fn_benchmark}")
+                        continue
+                    cfg = extract_experiment_config(hp_dict, pk_dict)
                 else:
-                    df_cohort = run_rna_cohort(
-                        cohort=cohort, cfg=cfg,
-                        device=args.device,
-                        cox_processes=args.cox_processes,
-                        num_seeds=args.num_seeds,
-                        epochs=args.epochs,
-                        max_cox_genes=args.max_cox_genes,
-                        smoke_test=args.smoke_test,
-                        logger=logger,
-                    )
-            except Exception as e:
-                logger.error(f"Experiment failed for {omics} {cohort}: {e}")
-                import traceback
-                logger.error(traceback.format_exc())
-                continue
+                    fn_benchmark = BENCHMARK_DL_TPL.format(omics=omics, model=model_name, cohort=cohort)
+                    best_l2, best_lr, best_nl = parse_baseline_best_hp(fn_benchmark, model_name)
+                    if best_l2 is None:
+                        logger.warning(f"[SKIP] {omics} {cohort} {model_name} — no DL benchmark at {fn_benchmark}")
+                        continue
+                    cfg = {
+                        'lr': best_lr,
+                        'l2': best_l2,
+                        'nl': best_nl,
+                        'epochs': 50,
+                        'batch_size': 64,
+                    }
 
-            if not df_cohort.empty:
-                all_results.append(df_cohort)
+                if is_hgs and cfg:
+                    logger.info(f"[CONFIG] {omics} {cohort} {model_name}: "
+                                f"n_hid={cfg.get('n_hid')}, lr={cfg.get('lr')}, l2={cfg.get('l2')}, "
+                                f"glr={cfg.get('glr')}, AGG={cfg.get('AGG')}, "
+                                f"div={cfg.get('divisor')}, "
+                                f"layer={cfg.get('layer_STRING') or cfg.get('layer_Reactome')}")
 
-            # Save per-cohort summary
-            summary_df = compute_summary(df_cohort)
-            fn_summary = os.path.join(OUT_DIR, f"{omics}_{cohort}_summary.csv")
-            summary_df.to_csv(fn_summary, index=False)
-            logger.info(f"Summary saved to {fn_summary}")
+                try:
+                    if omics == "PRO":
+                        df_cohort = run_pro_cohort(
+                            cohort=cohort, cfg=cfg,
+                            device=args.device,
+                            cox_processes=args.cox_processes,
+                            num_seeds=args.num_seeds,
+                            epochs=args.epochs,
+                            max_cox_genes=args.max_cox_genes,
+                            smoke_test=args.smoke_test,
+                            logger=logger,
+                            model_name=model_name,
+                        )
+                    else:
+                        df_cohort = run_rna_cohort(
+                            cohort=cohort, cfg=cfg,
+                            device=args.device,
+                            cox_processes=args.cox_processes,
+                            num_seeds=args.num_seeds,
+                            epochs=args.epochs,
+                            max_cox_genes=args.max_cox_genes,
+                            smoke_test=args.smoke_test,
+                            logger=logger,
+                            model_name=model_name,
+                        )
+                except Exception as e:
+                    logger.error(f"Experiment failed for {omics} {cohort} {model_name}: {e}")
+                    import traceback
+                    logger.error(traceback.format_exc())
+                    continue
 
-    # Save master combined results
+                if not df_cohort.empty:
+                    all_results.append(df_cohort)
+
+                    summary_df = compute_summary(df_cohort)
+                    fn_summary = os.path.join(OUT_DIR, f"{omics}_{cohort}_{model_name}_summary.csv")
+                    summary_df.to_csv(fn_summary, index=False)
+                    logger.info(f"Summary saved to {fn_summary}")
+
     if all_results:
         save_master_results(all_results, logger)
     else:
         logger.warning("No results generated.")
 
-    logger.info("\n Experiment completed.")
+    logger.info("\nExperiment completed.")
 
 
 if __name__ == "__main__":
