@@ -3,25 +3,96 @@
 Per-Fold Feature Selection Validation Experiment (R2 #12)
 ========================================================
 
-Compares per-fold (training-set-only) Cox feature selection with the original
-full-data selection approach.
+对比实验：per-fold（仅在训练集上）Cox 特征选择 vs. 原始全数据特征选择。
 
-Datasets:
-  - HCC PRO  (STRING knowledge)  — 2259 genes, 412 patients
-  - LIHC RNA (Reactome knowledge) — ~7305 genes (Reactome-filtered), ~370 patients
+背景（R2 #12 审稿意见）
+-----------------------
+原始流程中，Cox 回归在全 cohort 上排序基因 p-value → 取 top 400 → 再 split，
+导致 test set 的生存信息间接参与了特征选择，造成数据泄漏。
 
-Method per dataset:
-  1. Load ALL genes (skip the existing Cox pre-filtering)
-  2. For each seed (0-9):
-     a. Split patients into train/val/test (60/20/20)
-     b. On TRAINING SET ONLY: run Cox univariate regression → rank by p-value → pick top 400
-     c. Filter all splits to those 400 genes
-     d. Build hypergraph H from training-set-selected genes
-     e. Train HGS model using the best hyperparameters (from existing benchmark results)
-     f. Record test C-index
-  3. Compare with original full-data C-index per seed
+本脚本修复该问题：先 split，再仅在 TRAINING SET 上做 Cox 排序。
 
-Usage:
+数据集信息
+-----------
+Dataset 1: HCC PRO + STRING knowledge
+  - 数据文件: data/PRO/HCC/dataset.csv
+  - 样本: 412 位 HCC 患者 (train 246 / valid 83 / test 83, 60/20/20 split)
+  - 特征: 2257 个蛋白编码基因的表达值 (ENSG ID)
+  - 标签: "OS time" (总生存时间), "death" (事件指示)
+  - 先验知识: STRING 蛋白质交互网络 (layer=42, 构建 21 个超边)
+  - 最优超参数: n_hid=100, lr=0.01, l2=0.005, glr=0.1, agg='noAGG'
+
+Dataset 2: LIHC RNA + Reactome knowledge
+  - 数据文件: data/RNA/LIHC/feature_matrix.csv + ClinicalDataFrame_DiscreteTime-Cut15Years.csv
+  - 样本: ~321 位 LIHC 患者 (train ~192 / valid ~64 / test ~65)
+  - 特征: 8559 个 Reactome 通路基因的表达值 (ENSG ID, 已与 Reactome H1 交集)
+  - 标签: "OS_60" (离散化总生存时间), "OS Status" (事件指示)
+  - 先验知识: Reactome 通路数据库 (level=8, 1859 条通路)
+  - 最优超参数: n_hid=200, lr=0.01, l2=0.1, glr=0, agg='noAGG'
+
+实验流程（每个数据集独立执行）
+-------------------------------
+Step 1: 加载全量基因（跳过原始 Cox 预过滤），加载最优超参数
+Step 2: 解析原始 benchmark 结果文件，提取每个 seed 的 C-index（用于对比）
+Step 3: 对每个 seed (0-9)：
+
+  a. 数据划分
+     - 分层抽样 (stratified by event)，60% train / 20% valid / 20% test
+     - 保证各 split 中 event 比例与原数据一致
+
+  b. Per-fold Cox 特征选择（只在 TRAINING SET 上）
+     - 输入: training set 的基因表达矩阵 + 生存标签
+     - 方法: 单变量 CoxPHFitter 回归，每个基因独立计算 p-value
+     - 并行: multiprocessing.Pool (默认 60 进程)
+     - 输出: 按 p-value 升序排列的基因排名
+     - 选择: p-value 最小的前 400 个基因
+
+  c. 同步过滤所有数据分片
+     - 将 train/valid/test 的基因列限制为 Step 3b 选出的 top 400
+     - PRO STRING: 还需进一步过滤（部分基因不在 STRING H 矩阵中），
+       取 400 基因与 STRING H index 的交集（实际约 308 个），
+       同步更新数据分片和 H 矩阵
+
+  d. 构建超图 H
+     - PRO STRING: 加载/构建 STRING H，过滤到选定基因，删除空通路
+     - RNA Reactome: 从预加载的 Reactome H1 中筛选选定基因，删除空通路
+
+  e. 构建图投影 G (hypergraph → graph via generate_G_from_H)
+     - edge_pooling=True 时使用 H.T（边 × 节点）
+     - edge_pooling=False 时使用 H（节点 × 边）
+
+  f. 计算池化层维度 pooling_hiddens = build_hiddens(H.shape[1], divisor)
+
+  g. 训练 HGS 模型
+     - 使用已知最优超参数（不做 grid search）
+     - Adam 优化器 + L2 正则化
+     - 学习率调度: gamma=0.99, patience=5
+     - 评价指标: C-index (concordance index)
+     - early stopping: 基于 validation C-index
+
+  h. 记录结果: 从 checkpoint 提取 final_test_ci
+
+Step 4: 汇总与对比
+  - 每个 seed 输出: Original C-index vs Per-fold C-index vs Δ
+  - 汇总: 每个数据集输出均值 ± 标准差
+  - 保存: Results/per_fold_fs/comparison.csv (per-seed) + summary.csv (汇总)
+
+数据流概要
+-----------
+PRO STRING:
+  2257 genes
+    → Cox on TRAIN (246 patients) → rank → top 400
+    → STRING gene filter → ~308 genes in STRING
+    → STRING H (308 genes × 21 edges) → generate_G → HGS train → test C-index
+
+RNA Reactome:
+  8559 genes (Reactome-intersected)
+    → Cox on TRAIN (192 patients) → rank → top 400
+    → Reactome H filter (全部 400 基因都在 Reactome 中) → 0 drop
+    → Reactome H (400 genes × N pathways) → generate_G → HGS train → test C-index
+
+用法
+-----
     # Full experiment (all seeds, both datasets)
     python DataPreprocess/per_fold_feature_selection_experiment.py
 
@@ -33,6 +104,9 @@ Usage:
 
     # Custom seeds / epochs
     python DataPreprocess/per_fold_feature_selection_experiment.py --num_seeds 3 --epochs 20
+
+    # 限制 Cox 基因数（RNA 8559 基因可能挂起时用）
+    python DataPreprocess/per_fold_feature_selection_experiment.py --max_cox_genes 2000
 """
 
 import os
@@ -41,8 +115,6 @@ import argparse
 import logging
 import warnings
 import time
-import re
-from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Tuple, Optional
 
@@ -263,7 +335,46 @@ def build_Reactome_H(selected_genes: List[str],
 
 
 # ============================================================
-# Section 3: Original Results Parser
+# Section 3: Gene Selection Cache (save/load per seed)
+# ============================================================
+# Cox 回归是最耗时步骤（PRO ~163s/seed, RNA 可能更久）。
+# 将每 seed 选出的基因列表保存到文件，方便：
+#   - 中断后恢复（跳过 Cox 直接训练）
+#   - 跨 seed 分析哪些基因被稳定选中
+
+GENES_CACHE_DIR = "Results/per_fold_fs/selected_genes"
+
+
+def save_selected_genes(seed_label: str, genes: List[str]) -> None:
+    """Save per-seed selected gene list to CSV.
+
+    Args:
+        seed_label: Unique identifier, e.g. "HCC_PRO_STRING_seed0".
+        genes: List of gene ENSG IDs selected by Cox (after STRING filtering).
+    """
+    os.makedirs(GENES_CACHE_DIR, exist_ok=True)
+    fn = os.path.join(GENES_CACHE_DIR, f"{seed_label}.csv")
+    pd.DataFrame({"gene": genes}).to_csv(fn, index=False)
+
+
+def load_selected_genes(seed_label: str) -> Optional[List[str]]:
+    """Load per-seed selected gene list if previously saved.
+
+    Args:
+        seed_label: Unique identifier, e.g. "HCC_PRO_STRING_seed0".
+
+    Returns:
+        List of gene ENSG IDs, or None if no saved file found.
+    """
+    fn = os.path.join(GENES_CACHE_DIR, f"{seed_label}.csv")
+    if not os.path.isfile(fn):
+        return None
+    df = pd.read_csv(fn)
+    return df["gene"].tolist()
+
+
+# ============================================================
+# Section 4: Original Results Parser
 # ============================================================
 
 def parse_original_seed_results(fn_results: str,
@@ -531,27 +642,36 @@ def run_pro_string_experiment(
                     f"Test: {data_test.shape[0]}")
         
         # --- Step 5b: Per-fold Cox feature selection on TRAINING ONLY ---
-        # Use all genes from training patients to compute Cox p-values
-        feat_train = data_train.iloc[:, :-2]   # patients × 2259 genes (expression)
-        te_train = data_train.iloc[:, -2:]      # patients × ["OS time", "death"]
+        seed_label = f"HCC_PRO_STRING_seed{seed}"
+        selected_genes = load_selected_genes(seed_label)
         
-        logger.info(f"Cox regression on training set: "
-                    f"{feat_train.shape[1]} genes × {feat_train.shape[0]} patients")
-        start_time = time.time()
-        _, p_values = cox_feature_selection(
-            time_col="OS time",
-            event_col="death",
-            feature_matrix=feat_train,
-            label_matrix=te_train,
-            process_num=cox_processes,
-        )
-        elapsed = time.time() - start_time
-        logger.info(f"Cox completed in {elapsed:.1f}s")
-        
-        # Sort genes by p-value (ascending → most significant first)
-        gene_ranking = pd.Series(p_values, index=feat_train.columns).sort_values()
-        top_400 = gene_ranking.index[:400].tolist()
-        logger.info(f"Selected top 400 genes (lowest Cox p-values from training set)")
+        if selected_genes is not None:
+            logger.info(f"Loaded {len(selected_genes)} cached genes (skipping Cox)")
+            top_400 = selected_genes
+            has_cox_result = False
+        else:
+            # Use all genes from training patients to compute Cox p-values
+            feat_train = data_train.iloc[:, :-2]   # patients × 2259 genes (expression)
+            te_train = data_train.iloc[:, -2:]      # patients × ["OS time", "death"]
+            
+            logger.info(f"Cox regression on training set: "
+                        f"{feat_train.shape[1]} genes × {feat_train.shape[0]} patients")
+            start_time = time.time()
+            _, p_values = cox_feature_selection(
+                time_col="OS time",
+                event_col="death",
+                feature_matrix=feat_train,
+                label_matrix=te_train,
+                process_num=cox_processes,
+            )
+            elapsed = time.time() - start_time
+            logger.info(f"Cox completed in {elapsed:.1f}s")
+            
+            # Sort genes by p-value (ascending → most significant first)
+            gene_ranking = pd.Series(p_values, index=feat_train.columns).sort_values()
+            top_400 = gene_ranking.index[:400].tolist()
+            logger.info(f"Selected top 400 genes (lowest Cox p-values from training set)")
+            has_cox_result = True
         
         # --- Step 5c: Filter all splits to the selected top 400 genes ---
         data_train_filt = data_train[top_400 + ["OS time", "death"]]
@@ -563,6 +683,9 @@ def run_pro_string_experiment(
         # --- Step 5d: Build STRING H from training-set-selected genes ---
         H, valid_genes = build_STRING_H(data_train_filt, "HCC", pk_config)
         logger.info(f"Built STRING H: {H.shape}")
+        
+        if has_cox_result:
+            save_selected_genes(seed_label, valid_genes)
         
         n_dropped = len(top_400) - len(valid_genes)
         if n_dropped > 0:
@@ -791,32 +914,43 @@ def run_rna_reactome_experiment(
                     f"Test: {data_test.shape[0]}")
         
         # --- Step 6c: Per-fold Cox on TRAINING SET ONLY ---
-        feat_train = data_train.iloc[:, :-2]  # all Reactome-filtered genes
-        te_train = data_train.iloc[:, -2:]     # time + event
+        seed_label = f"LIHC_RNA_Reactome_seed{seed}"
+        selected_genes = load_selected_genes(seed_label)
         
-        if max_cox_genes > 0 and feat_train.shape[1] > max_cox_genes:
-            rng = np.random.default_rng(42)
-            sampled = rng.choice(feat_train.columns, max_cox_genes, replace=False)
-            feat_train = feat_train[sampled]
-            logger.info(f"Limited to {max_cox_genes} random genes for Cox regression")
-        
-        logger.info(f"Cox regression on training set: "
-                    f"{feat_train.shape[1]} genes × {feat_train.shape[0]} patients")
-        start_time = time.time()
-        _, p_values = cox_feature_selection(
-            time_col="time",
-            event_col="event",
-            feature_matrix=feat_train,
-            label_matrix=te_train,
-            process_num=cox_processes,
-        )
-        elapsed = time.time() - start_time
-        logger.info(f"Cox completed in {elapsed:.1f}s")
-        
-        # Sort by p-value, select top 400
-        gene_ranking = pd.Series(p_values, index=feat_train.columns).sort_values()
-        top_400 = gene_ranking.index[:400].tolist()
-        logger.info(f"Selected top 400 genes from training-set Cox ranking")
+        if selected_genes is not None:
+            logger.info(f"Loaded {len(selected_genes)} cached genes (skipping Cox)")
+            top_400 = selected_genes
+        else:
+            feat_train = data_train.iloc[:, :-2]  # all Reactome-filtered genes
+            te_train = data_train.iloc[:, -2:]     # time + event
+            
+            if max_cox_genes > 0 and feat_train.shape[1] > max_cox_genes:
+                rng = np.random.default_rng(42)
+                sampled = rng.choice(feat_train.columns, max_cox_genes, replace=False)
+                feat_train = feat_train[sampled]
+                logger.info(f"Limited to {max_cox_genes} random genes for Cox regression")
+            
+            logger.info(f"Cox regression on training set: "
+                        f"{feat_train.shape[1]} genes × {feat_train.shape[0]} patients")
+            start_time = time.time()
+            _, p_values = cox_feature_selection(
+                time_col="time",
+                event_col="event",
+                feature_matrix=feat_train,
+                label_matrix=te_train,
+                process_num=cox_processes,
+            )
+            elapsed = time.time() - start_time
+            logger.info(f"Cox completed in {elapsed:.1f}s")
+            
+            # Sort by p-value, select top 400
+            gene_ranking = pd.Series(p_values, index=feat_train.columns).sort_values()
+            top_400 = gene_ranking.index[:400].tolist()
+            logger.info(f"Selected top 400 genes from training-set Cox ranking")
+            
+            # Cache the selected genes (skip for sampled subsets since they're not representative)
+            if max_cox_genes == 0:
+                save_selected_genes(seed_label, top_400)
         
         # --- Step 6d: Filter data splits to top 400 ---
         data_train_filt = data_train[top_400 + ["time", "event"]]
