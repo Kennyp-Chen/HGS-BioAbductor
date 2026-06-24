@@ -1,6 +1,6 @@
 # 审稿修改 TODO 总表
 
-> 更新于 2026-06-23，新增实验完成（R2 #3 扰动对比 + R2 #6 PCA 批次效应），统计更新
+> 更新于 2026-06-24，R2 #12 特征筛选实验完成，全部 6 个代码实验 ✅
 >
 > **回复主文档**: `docs/HGS_latex/review/npj_precision_oncology_review.md` — 所有回复写在此文件
 
@@ -15,6 +15,7 @@
 - [x] Review docs + AGENTS.md 入 git
 - [x] **R2 #3** (cid #8) 随机 vs 按重要性扰动对比 — cyp (图+回复已提交)
 - [x] **R2 #6** (cid #11) HCC 批次效应 PCA 可视化 — cyp (per-sample Z-score 对齐 pipeline)
+- [x] **R2 #12** (cid #18) 每种子训练集内特征筛选 — cyp (HCC PRO +0.006; LIHC RNA -0.051)
 
 ---
 
@@ -35,7 +36,7 @@
 | #3/#4/#7 | R1 Q3, R2 #2 | 3,4,7 | **统计检验** | cyp | 脚本 `review_experiments/statistical_test_18_datasets.py` 已创建，paired t-test 结果输出到 `Results/statistical_tests/` | ✅ 完成 |
 | #8 | R2 #3 | 8 | **随机 vs 按重要性扰动对比** | cyp | 脚本 `review_experiments/perturbation_comparison_plot.py` 已创建，生成绝对 C-index + ΔC-index 两套图（超边 + 节点各两张），已提交到回复信 | ✅ 完成 |
 | #11 | R2 #6 | 11 | **HCC 整合批次效应 PCA 可视化** | cyp | 脚本 `review_experiments/hcc_batch_effect_pca.py` 已修复（cohorts 类型 bug + per-sample Z-score 对齐实际 pipeline），3 队列 PCA 图已生成，回复信已更新 | ✅ 完成 |
-| #18 | R2 #12 | 18 | **HCC 每个种子只训练集内特征筛选** [🏃 进行中] | cyp | **实验任务**: 在 HCC 数据上（转录组 + 蛋白组），对每个种子重新只在训练集内做特征筛选，验证结果一致性 | ⏳ 进行中 |
+| #18 | R2 #12 | 18 | **HCC 每个种子只训练集内特征筛选** | cyp | **已完成**: HCC PRO (STRING) Δ=+0.0060±0.0171 (ns); LIHC RNA (Reactome) Δ=-0.0509±0.0279. 回复信已更新，分析图见 `Results/per_split_fs/analysis/` | ✅ 完成 |
 | #25 | R2 #19 | 25 | **三元组增强数据范围确认** | cyp | 代码确认: 统计关联使用全数据计算 `self.expr = data.iloc[:,:-2]`，非仅训练集。回复信已更新 | ✅ 完成 |
 
 ---
@@ -79,9 +80,9 @@
 | 类别 | 总计 | 已完成 | 进行中 | 待处理 | 待确认 |
 |------|------|--------|--------|--------|--------|
 | 论文补充 (LaTeX) | 2 | 0 | 1 | 1 | 1 |
-| 代码实验 (HGS repo) | 6 | 4 | 1 | 1 | 0 |
+| 代码实验 (HGS repo) | 6 | 5 | 0 | 1 | 0 |
 | 回复编写 | 2 | 2 | 0 | 0 | 0 |
-| **合计** | **10** | **6** | **2** | **2** | **1** |
+| **合计** | **10** | **7** | **1** | **2** | **1** |
 
 > 已完成的不计入：XAI 定义（R2 #1）、1-PCC（R2 #15）、INSTALLATION 英文化（R2 #22）— 这些已在 ✅ 区体现。
 >
