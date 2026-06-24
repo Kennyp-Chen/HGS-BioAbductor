@@ -97,6 +97,7 @@ warnings.filterwarnings("ignore")
 
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "DataPreprocess"))
 
 from models.Models import HGS, DeepSurv, DeepHit, DRSA, Pnet
 from utils.hg_ops import generate_G_from_H, construct_H_STRING
@@ -543,7 +544,7 @@ def run_pro_cohort(
             G = generate_G_from_H(H.T) if cfg.get("edge_pooling", True) else generate_G_from_H(H)
 
             # t_obs
-            t_obs = data_train_filt["OS time"].max() + 2
+            t_obs = max(data_train_filt["OS time"].max(), data_valid_filt["OS time"].max(), data_test_filt["OS time"].max()) + 2
 
             # pooling_hiddens
             divisor = pk_config.get('divisor', 8)
@@ -575,7 +576,7 @@ def run_pro_cohort(
                 logger.warning(f"No benchmark config for {model_name}, skipping seed")
                 continue
 
-            t_obs = data_train_filt["OS time"].max() + 2
+            t_obs = max(data_train_filt["OS time"].max(), data_valid_filt["OS time"].max(), data_test_filt["OS time"].max()) + 2
             fn_ckpt = os.path.join(OUT_DIR, f"PRO_{cohort}_{model_name}_seed{seed}")
             batch_size = 64
 
@@ -860,7 +861,7 @@ def run_rna_cohort(
                 continue
 
             G = generate_G_from_H(H.T) if cfg.get("edge_pooling", True) else generate_G_from_H(H)
-            t_obs = data_train_filt["time"].max() + 2
+            t_obs = max(data_train_filt["time"].max(), data_valid_filt["time"].max(), data_test_filt["time"].max()) + 2
             cfg['pooling_hiddens'] = build_hiddens(H.shape[1], divisor)
 
             fn_ckpt = os.path.join(OUT_DIR, f"RNA_{cohort}_{model_name}_seed{seed}")
@@ -885,7 +886,7 @@ def run_rna_cohort(
                 logger.warning(f"No benchmark config for {model_name}, skipping seed")
                 continue
 
-            t_obs = data_train_filt["time"].max() + 2
+            t_obs = max(data_train_filt["time"].max(), data_valid_filt["time"].max(), data_test_filt["time"].max()) + 2
             fn_ckpt = os.path.join(OUT_DIR, f"RNA_{cohort}_{model_name}_seed{seed}")
             batch_size = 64
 

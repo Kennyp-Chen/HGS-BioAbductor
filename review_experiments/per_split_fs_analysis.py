@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 """
-Per-Fold Feature Selection: Results Compilation & Visualization (R2 #12)
-========================================================================
+Per-Split Feature Selection: Results Compilation & Visualization (R2 #12)
+=========================================================================
 
-读取 per-fold 实验的结果，生成：
-1. 主汇总表（所有 cohort 的 Original vs Per-fold C-index, Δ）
-2. 对比柱状图（每 cohort 双柱：Original / Per-fold）
-3. Delta 柱状图（含误差棒）
-4. 散点图（Original vs Per-fold，每点一个 cohort）
-5. 每 cohort 的逐 seed 对比图
+读取 per-split 实验的结果，生成：
+1. 主汇总表（所有 cohort 的 Original vs Per-split C-index, Δ）
+2. 对比柱状图（每 cohort 双柱：Original / Per-split，PRO+RNA 合图）
+3. Delta 柱状图（含误差棒，PRO+RNA 合图）
+4. 可选：散点图、逐 seed 对比图、分 omics 子图（--all_plots）
 
 数据来源
 ---------
@@ -49,7 +48,7 @@ OUTPUT_DIR = "Results/per_split_fs/analysis"
 
 # Color scheme
 COLOR_ORIGINAL = "#4C72B0"  # blue
-COLOR_PERFOLD = "#DD8452"   # orange
+COLOR_PERSPLIT = "#DD8452"  # orange
 COLOR_DELTA_POS = "#55A868" # green (improvement)
 COLOR_DELTA_NEG = "#C44E52" # red (degradation)
 
@@ -192,7 +191,7 @@ def compute_summary_table(df: pd.DataFrame) -> pd.DataFrame:
 
     for (omics, cohort), group in df.groupby(['Omics', 'Cohort']):
         orig = group['Original_CIndex'].dropna()
-        per_fold = group['PerFold_CIndex'].dropna()
+        per_split = group['PerFold_CIndex'].dropna()
 
         paired = group.dropna(subset=['Original_CIndex', 'PerFold_CIndex'])
         deltas = paired['PerFold_CIndex'].values - paired['Original_CIndex'].values
@@ -206,8 +205,8 @@ def compute_summary_table(df: pd.DataFrame) -> pd.DataFrame:
             '#Seeds': len(group),
             'Original (mean±std)': (f"{orig.mean():.4f}±{orig.std():.4f}"
                                      if len(orig) > 0 else "N/A"),
-            'PerFold (mean±std)': (f"{per_fold.mean():.4f}±{per_fold.std():.4f}"
-                                    if len(per_fold) > 0 else "N/A"),
+            'PerSplit (mean±std)': (f"{per_split.mean():.4f}±{per_split.std():.4f}"
+                                     if len(per_split) > 0 else "N/A"),
             'Δ mean±std': (f"{deltas.mean():.4f}±{deltas.std():.4f}"
                             if len(deltas) > 0 else "N/A"),
             'Δ min/max': (f"[{deltas.min():.4f}, {deltas.max():.4f}]"
@@ -283,11 +282,11 @@ def compute_stats_for_plotting(df: pd.DataFrame) -> pd.DataFrame:
 
 def plot_grouped_bar(
     stats: pd.DataFrame,
-    title: str = "Original vs Per-Fold C-index by Cohort",
+    title: str = "Original vs Per-Split C-index by Cohort",
     fn_save: str = "grouped_bar.png",
 ):
     """
-    Grouped bar chart: for each cohort, two bars (Original / Per-fold).
+    Grouped bar chart: for each cohort, two bars (Original / Per-split).
 
     Args:
         stats: DataFrame from compute_stats_for_plotting().
@@ -298,10 +297,10 @@ def plot_grouped_bar(
     if n == 0:
         return
 
-    fig, ax = plt.subplots(figsize=(max(10, n * 0.5), 6))
+    fig, ax = plt.subplots(figsize=(max(5, n * 0.5), 5.5))
 
     x = np.arange(n)
-    width = 0.35
+    width = 0.18  # thinner bars for cleaner look
 
     # Bars
     bars1 = ax.bar(x - width / 2, stats['orig_mean'].values, width,
@@ -310,7 +309,7 @@ def plot_grouped_bar(
                    error_kw={'linewidth': 1.5})
     bars2 = ax.bar(x + width / 2, stats['pf_mean'].values, width,
                    yerr=stats['pf_std'].values, capsize=3,
-                   label='Per-fold (train-only FS)', color=COLOR_PERFOLD,
+                   label='Per-split (train-only FS)', color=COLOR_PERSPLIT,
                    error_kw={'linewidth': 1.5})
 
     # Labels
@@ -327,13 +326,13 @@ def plot_grouped_bar(
     for bar, val in zip(bars1, stats['orig_mean'].values):
         if not np.isnan(val):
             ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.01,
-                    f"{val:.3f}", ha='center', va='bottom', fontsize=7,
+                    f"{val:.3f}", ha='center', va='bottom', fontsize=6.5,
                     color=COLOR_ORIGINAL)
     for bar, val in zip(bars2, stats['pf_mean'].values):
         if not np.isnan(val):
             ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.01,
-                    f"{val:.3f}", ha='center', va='bottom', fontsize=7,
-                    color=COLOR_PERFOLD)
+                    f"{val:.3f}", ha='center', va='bottom', fontsize=6.5,
+                    color=COLOR_PERSPLIT)
 
     plt.tight_layout()
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -345,12 +344,12 @@ def plot_grouped_bar(
 
 def plot_delta_bar(
     stats: pd.DataFrame,
-    title: str = "C-index Change (Δ) from Per-Fold Feature Selection",
+    title: str = "C-index Change (Δ) from Per-Split Feature Selection",
     fn_save: str = "delta_bar.png",
 ):
     """
     Bar chart of Δ per cohort, with error bars (SE).
-    Positive = per-fold better, Negative = original better.
+    Positive = per-split better, Negative = original better.
 
     Args:
         stats: DataFrame from compute_stats_for_plotting().
@@ -361,7 +360,7 @@ def plot_delta_bar(
     if n == 0:
         return
 
-    fig, ax = plt.subplots(figsize=(max(10, n * 0.5), 6))
+    fig, ax = plt.subplots(figsize=(max(5, n * 0.5), 5.5))
 
     x = np.arange(n)
     deltas = stats['delta_mean'].values
@@ -369,13 +368,14 @@ def plot_delta_bar(
 
     colors = [COLOR_DELTA_POS if d >= 0 else COLOR_DELTA_NEG for d in deltas]
 
-    bars = ax.bar(x, deltas, yerr=errors, capsize=4, color=colors,
+    width = 0.25
+    bars = ax.bar(x, deltas, width, yerr=errors, capsize=4, color=colors,
                   error_kw={'linewidth': 1.5})
 
     xlabels = [f"{r['Omics']}-{r['Cohort']}" for _, r in stats.iterrows()]
     ax.set_xticks(x)
     ax.set_xticklabels(xlabels, rotation=45, ha='right', fontsize=9)
-    ax.set_ylabel("Δ C-index (Per-fold − Original)")
+    ax.set_ylabel("Δ C-index (Per-split − Original)")
     ax.set_title(title, fontweight='bold')
     ax.axhline(y=0, color='black', linewidth=0.8)
 
@@ -385,7 +385,7 @@ def plot_delta_bar(
             y_pos = bar.get_height() + (0.005 if val >= 0 else -0.015)
             va = 'bottom' if val >= 0 else 'top'
             ax.text(bar.get_x() + bar.get_width() / 2, y_pos,
-                    f"{val:+.4f}", ha='center', va=va, fontsize=7,
+                    f"{val:+.4f}", ha='center', va=va, fontsize=6.5,
                     color='black')
 
     plt.tight_layout()
@@ -398,11 +398,11 @@ def plot_delta_bar(
 
 def plot_scatter(
     stats: pd.DataFrame,
-    title: str = "Original vs Per-Fold C-index",
+    title: str = "Original vs Per-Split C-index",
     fn_save: str = "scatter.png",
 ):
     """
-    Scatter plot: Original C-index vs Per-fold C-index, one point per cohort.
+    Scatter plot: Original C-index vs Per-split C-index, one point per cohort.
     Colors: PRO = blue, RNA = orange.
 
     Args:
@@ -416,7 +416,7 @@ def plot_scatter(
     fig, ax = plt.subplots(figsize=(7, 7))
 
     for omics, color, marker in [('PRO', COLOR_ORIGINAL, 'o'),
-                                  ('RNA', COLOR_PERFOLD, 's')]:
+                                  ('RNA', COLOR_PERSPLIT, 's')]:
         subset = stats[stats['Omics'] == omics]
         if subset.empty:
             continue
@@ -437,7 +437,7 @@ def plot_scatter(
     ax.plot(lims, lims, 'k--', alpha=0.3, linewidth=1, label='y = x')
 
     ax.set_xlabel("Original C-index (full-data FS)")
-    ax.set_ylabel("Per-fold C-index (train-only FS)")
+    ax.set_ylabel("Per-split C-index (train-only FS)")
     ax.set_title(title, fontweight='bold')
     ax.legend(fontsize=10)
     ax.set_aspect('equal')
@@ -456,7 +456,7 @@ def plot_per_seed_comparison(
     fn_save: str = "per_seed_comparison.png",
 ):
     """
-    Per-seed line plot for each (Omics, Cohort): original vs per-fold C-index.
+    Per-seed line plot for each (Omics, Cohort): original vs per-split C-index.
 
     Args:
         df: Full results DataFrame.
@@ -467,11 +467,11 @@ def plot_per_seed_comparison(
     if n_groups == 0:
         return
 
-    n_cols = 4
+    n_cols = min(n_groups, 4)
     n_rows = (n_groups + n_cols - 1) // n_cols
 
     fig, axes = plt.subplots(n_rows, n_cols,
-                             figsize=(n_cols * 4, n_rows * 3.5),
+                             figsize=(min(n_groups, 4) * 4, n_rows * 3.5),
                              squeeze=False)
 
     for idx, ((omics, cohort), group) in enumerate(groups):
@@ -484,7 +484,7 @@ def plot_per_seed_comparison(
         ax.plot(seeds, group['Original_CIndex'].values, 'o-',
                 color=COLOR_ORIGINAL, label='Original', markersize=4, linewidth=1)
         ax.plot(seeds, group['PerFold_CIndex'].values, 's-',
-                color=COLOR_PERFOLD, label='Per-fold', markersize=4, linewidth=1)
+                color=COLOR_PERSPLIT, label='Per-split', markersize=4, linewidth=1)
 
         ax.set_title(f"{omics}-{cohort}", fontsize=10, fontweight='bold')
         ax.set_xlabel("Seed", fontsize=8)
@@ -499,8 +499,8 @@ def plot_per_seed_comparison(
         row, col = divmod(idx, n_cols)
         axes[row, col].set_visible(False)
 
-    fig.suptitle("Per-Seed C-index: Original vs Per-Fold Feature Selection",
-                 fontsize=14, fontweight='bold', y=1.02)
+    fig.suptitle("Per-Seed C-index: Original vs Per-Split Feature Selection",
+                 fontsize=14, fontweight='bold')
     plt.tight_layout()
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     fp = os.path.join(OUTPUT_DIR, fn_save)
@@ -513,10 +513,10 @@ def plot_per_seed_comparison(
 # Main
 # ============================================================
 
-def main():
+def main(all_plots: bool = False):
     """Main entry point."""
     print("=" * 60)
-    print("Per-Fold Feature Selection Analysis")
+    print("Per-Split Feature Selection Analysis (R2 #12)")
     print("=" * 60)
     print(f"Output: {OUTPUT_DIR}")
 
@@ -542,29 +542,33 @@ def main():
     # Compute numeric stats for plotting
     stats = compute_stats_for_plotting(df)
 
-    # Generate plots
-    print("\n[3] Generating plots...")
+    # Generate core plots (combined PRO+RNA)
+    print("\n[3] Generating core plots (combined PRO+RNA)...")
     plot_grouped_bar(stats, fn_save="grouped_bar.png")
     plot_delta_bar(stats, fn_save="delta_bar.png")
-    plot_scatter(stats, fn_save="scatter.png")
     plot_per_seed_comparison(df, fn_save="per_seed_comparison.png")
 
-    # Per-omics breakdown plots
-    for omics in ['PRO', 'RNA']:
-        sub_stats = stats[stats['Omics'] == omics]
-        if not sub_stats.empty:
-            plot_grouped_bar(
-                sub_stats,
-                title=f"{omics}: Original vs Per-Fold C-index",
-                fn_save=f"{omics.lower()}_grouped_bar.png",
-            )
-            plot_delta_bar(
-                sub_stats,
-                title=f"{omics}: C-index Change (Δ) from Per-Fold FS",
-                fn_save=f"{omics.lower()}_delta_bar.png",
-            )
+    # Optional detailed plots
+    if all_plots:
+        print("\n[3b] Generating detailed plots (--all_plots)...")
+        plot_scatter(stats, fn_save="scatter.png")
 
-    # Paired t-test summary
+        # Per-omics breakdown plots
+        for omics in ['PRO', 'RNA']:
+            sub_stats = stats[stats['Omics'] == omics]
+            if not sub_stats.empty:
+                plot_grouped_bar(
+                    sub_stats,
+                    title=f"{omics}: Original vs Per-Split C-index",
+                    fn_save=f"{omics.lower()}_grouped_bar.png",
+                )
+                plot_delta_bar(
+                    sub_stats,
+                    title=f"{omics}: C-index Change (Δ) from Per-Split FS",
+                    fn_save=f"{omics.lower()}_delta_bar.png",
+                )
+
+    # Paired t-test summary (always print)
     print("\n[4] Paired t-test analysis (per cohort):")
     for (omics, cohort), group in df.groupby(['Omics', 'Cohort']):
         paired = group.dropna(subset=['Original_CIndex', 'PerFold_CIndex'])
@@ -587,4 +591,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser(description="Per-split FS analysis and visualization")
+    parser.add_argument("--all_plots", action="store_true",
+                        help="Generate scatter, per-seed, and per-omics breakdown plots")
+    args = parser.parse_args()
+    main(all_plots=args.all_plots)

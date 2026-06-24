@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """
-All-Models Per-Fold Feature Selection Validation — HCC Only (R2 #12)
+All-Models Per-Split Feature Selection Validation — HCC Only (R2 #12)
 =====================================================================
 
 对 HCC PRO 和 LIHC RNA 两个案例，在所有 benchmark 模型 × 知识类型上执行
-per-fold 特征选择验证实验。
+per-split 特征选择验证实验。
 
 覆盖组合
 ---------
@@ -77,9 +77,10 @@ from sklearn.model_selection import train_test_split
 warnings.filterwarnings("ignore")
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "DataPreprocess"))
 
 from models.Models import HGS, DeepSurv, DeepHit, DRSA, Pnet
-from utils.hg_ops import generate_G_from_H, construct_H_STRING
+from utils.hg_ops import generate_G_from_H, construct_H_STRING, Construct_Hierachy_Clust_H
 from utils.data_utils import build_hiddens, data_split
 from Preprocess.DATA_preprocess import cox_feature_selection
 
@@ -223,7 +224,7 @@ def parse_baseline_best_hp(fn_results: str, model_name: str) -> Tuple[float, flo
     if not os.path.isfile(fn_results):
         return None, None, None
 
-    df = pd.read_csv(fn_results, comment='G')
+    df = pd.read_csv(fn_results, skiprows=2, on_bad_lines='skip')
     if df.empty:
         return None, None, None
 
@@ -233,7 +234,7 @@ def parse_baseline_best_hp(fn_results: str, model_name: str) -> Tuple[float, flo
         return None, None, None
 
     best = hp_groups.idxmax()
-    return best[0], best[1], best[2]
+    return float(best[0]), float(best[1]), int(best[2])
 
 
 def parse_baseline_original_results(fn_results: str, target_l2: float,
@@ -245,7 +246,7 @@ def parse_baseline_original_results(fn_results: str, target_l2: float,
     """
     if not os.path.isfile(fn_results):
         return {}
-    df = pd.read_csv(fn_results, comment='G')
+    df = pd.read_csv(fn_results, skiprows=2, on_bad_lines='skip')
     if df.empty:
         return {}
 
@@ -283,10 +284,10 @@ def build_STRING_H_from_genes(selected_genes: List[str], cohort: str,
         H.to_csv(fn_H)
 
     edges_sorted = H.columns.sort_values()
-    valid_genes = gene_set.intersection(H.index)
+    valid_genes = [g for g in gene_set if g in H.index]
     H = H.loc[valid_genes, edges_sorted]
     H = H.loc[:, H.sum(axis=0) != 0]
-    return H.values, valid_genes.tolist()
+    return H.values, valid_genes
 
 
 def build_Reactome_H_from_genes(selected_genes: List[str],
@@ -297,29 +298,32 @@ def build_Reactome_H_from_genes(selected_genes: List[str],
     return H.values
 
 
-def build_hcluster_H(selected_genes: List[str], cohort: str,
-                     omics: str) -> np.ndarray:
+def build_hcluster_H(tr_f: pd.DataFrame, pk_config: dict) -> Tuple[np.ndarray, List[str]]:
     """
-    Load hcluster (hierarchical clustering) H matrix.
-    hcluster H is pre-computed and stored per cohort.
-    Format: data/PriorKnow/hcluster/{omics}/{cohort}/H.csv
+    Build hcluster H matrix via hierarchical clustering on training data.
+
+    hcluster H is computed dynamically from the training expression data
+    using Construct_Hierachy_Clust_H, replicating HGS_GS.py behavior.
+
+    Args:
+        tr_f: Training data DataFrame (patients × genes, last 2 cols = time/event).
+        pk_config: Knowledge config dict with keys 'method', 'criterion',
+                   'num_clusters', 'divisor'.
+
+    Returns:
+        (H_array, gene_list) where gene_list is the column names of tr_f
+        (excluding time/event columns).
     """
-    fn_h = f"data/PriorKnow/hcluster/{omics}/{cohort}/H.csv"
-    if not os.path.isfile(fn_h):
-        logger = logging.getLogger("build_hcluster")
-        logger.error(f"hcluster H not found: {fn_h}")
-        return None
-
-    H_full = pd.read_csv(fn_h, index_col=0)
-
-    # Filter to selected genes
-    valid_genes = [g for g in selected_genes if g in H_full.index]
-    if len(valid_genes) == 0:
-        return None
-
-    H = H_full.loc[valid_genes, :]
-    H = H.loc[:, H.sum(axis=0) != 0]
-    return H.values
+    gene_cols = tr_f.columns[:-2].tolist()
+    H = Construct_Hierachy_Clust_H(
+        tr_f.iloc[:, :-2],
+        method=pk_config.get('method', 'weighted'),
+        criterion=pk_config.get('criterion', 'maxclust'),
+        t=pk_config.get('num_clusters', 40),
+    )
+    if H is None or (isinstance(H, np.ndarray) and H.size == 0):
+        return None, []
+    return H, gene_cols
 
 
 # ============================================================
@@ -501,7 +505,7 @@ def run_hcc_experiment(
     """
     cohort = "HCC" if omics == "PRO" else "LIHC"
     logger.info(f"\n{'=' * 60}")
-    logger.info(f"{omics} {cohort} — All-Models Per-Fold Experiment")
+    logger.info(f"{omics} {cohort} — All-Models Per-Split Experiment")
     logger.info(f"Models: {models}")
     logger.info(f"{'=' * 60}")
 
@@ -562,6 +566,7 @@ def run_hcc_experiment(
                 logger.warning(f"No benchmark config for {model_label}, skipping")
                 continue
             cfg = parse_hgs_config(hp_dict, pk_dict)
+            cfg['dataset'] = cohort  # required by HGS.__init__
             cfg['epochs'] = actual_epochs
         else:
             # Baseline model — parse best HP from results
@@ -702,14 +707,28 @@ def run_hcc_experiment(
                     if H.shape[1] == 0:
                         logger.error("Empty Reactome H, skipping seed")
                         continue
+
+                    extra = ["OS time", "death"] if omics == "PRO" else ["time", "event"]
+                    tr_f = tr_f[common + extra]
+                    va_f = va_f[common + extra]
+                    te_f = te_f[common + extra]
+                    logger.info(f"    Filtered data splits to {len(common)} Reactome genes")
+
                     G = generate_G_from_H(H.T) if cfg["edge_pooling"] else generate_G_from_H(H)
 
                 elif knowledge == "hcluster":
-                    H = build_hcluster_H(top_400, cohort, omics)
+                    H, hcluster_genes = build_hcluster_H(tr_f, cfg)
                     if H is None or H.shape[0] == 0 or H.shape[1] == 0:
                         logger.error(f"Empty hcluster H for {omics} {cohort}, skipping seed")
                         continue
-                    logger.info(f"    hcluster H: {H.shape}")
+                    logger.info(f"    hcluster H: {H.shape} (from {len(hcluster_genes)} genes)")
+
+                    extra = ["OS time", "death"] if omics == "PRO" else ["time", "event"]
+                    tr_f = tr_f[hcluster_genes + extra]
+                    va_f = va_f[hcluster_genes + extra]
+                    te_f = te_f[hcluster_genes + extra]
+                    logger.info(f"    Filtered data splits to {len(hcluster_genes)} hcluster genes")
+
                     G = generate_G_from_H(H.T) if cfg["edge_pooling"] else generate_G_from_H(H)
 
                 else:
@@ -717,7 +736,7 @@ def run_hcc_experiment(
                     continue
 
                 # Build graph G
-                t_obs = tr_f.iloc[:, -2].max() + 2
+                t_obs = max(tr_f.iloc[:, -2].max(), va_f.iloc[:, -2].max(), te_f.iloc[:, -2].max()) + 2
                 fn_ckpt = os.path.join(OUT_DIR, f"{model_label}_{seed}")
 
                 per_fold_ci = train_hgs(
@@ -736,7 +755,7 @@ def run_hcc_experiment(
                 elif base_model == "Pnet":
                     batch_size = 64
 
-                t_obs_baseline = tr_f.iloc[:, -2].max() + 2
+                t_obs_baseline = max(tr_f.iloc[:, -2].max(), va_f.iloc[:, -2].max(), te_f.iloc[:, -2].max()) + 2
                 fn_ckpt = os.path.join(OUT_DIR, f"{model_label}_{seed}")
 
                 # For Pnet, build pathway mask
@@ -763,14 +782,18 @@ def run_hcc_experiment(
                         logger.error(f"Failed to build PNET pathways: {e}, skipping")
                         continue
 
-                per_fold_ci = train_baseline(
-                    base_model, tr_f, va_f, te_f,
-                    num_layers=best_nl, lr=best_lr, l2=best_l2,
-                    batch_size=batch_size,
-                    device=device, fn_ckpt=fn_ckpt, seed=seed,
-                    t_obs=t_obs_baseline, pathway_mask=pathway_mask,
-                    logger=logger,
-                )
+                try:
+                    per_fold_ci = train_baseline(
+                        base_model, tr_f, va_f, te_f,
+                        num_layers=best_nl, lr=best_lr, l2=best_l2,
+                        batch_size=batch_size,
+                        device=device, fn_ckpt=fn_ckpt, seed=seed,
+                        t_obs=t_obs_baseline, pathway_mask=pathway_mask,
+                        logger=logger,
+                    )
+                except Exception as e:
+                    logger.error(f"    {base_model} training failed: {e}")
+                    per_fold_ci = float('nan')
 
             # --- Step D: Compare with original ---
             original_ci = original_results.get(seed, None)
@@ -778,7 +801,7 @@ def run_hcc_experiment(
 
             logger.info(f"    Original C-index:  {original_ci:.4f}" if original_ci
                         else "    Original: N/A")
-            logger.info(f"    Per-fold C-index:  {per_fold_ci:.4f}")
+            logger.info(f"    Per-split C-index:  {per_fold_ci:.4f}")
             if delta is not None:
                 logger.info(f"    Delta:             {delta:+.4f}")
 
@@ -842,7 +865,7 @@ def compute_summary(results_list: List[pd.DataFrame]) -> pd.DataFrame:
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="All-models per-fold feature selection validation (HCC, R2 #12)"
+        description="All-models per-split feature selection validation (HCC, R2 #12)"
     )
     parser.add_argument(
         "--omics", type=str, choices=["PRO", "RNA", "both"], default="both",

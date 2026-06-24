@@ -131,6 +131,7 @@ warnings.filterwarnings("ignore")
 # ============================================================
 # Add project root to path if needed
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "DataPreprocess"))
 
 from models.Models import HGS
 from utils.hg_ops import generate_G_from_H, construct_H_STRING
@@ -697,8 +698,8 @@ def run_pro_string_experiment(
         # --- Step 5e: Build graph G from H (hypergraph → graph projection) ---
         G = generate_G_from_H(H.T) if hyper_params["edge_pooling"] else generate_G_from_H(H)
         
-        # --- Step 5f: Compute t_obs (max observed time + buffer for discrete bins) ---
-        t_obs = data_train_filt["OS time"].max() + 2
+        # --- Step 5f: Compute t_obs (max observed time across all splits + buffer) ---
+        t_obs = max(data_train_filt["OS time"].max(), data_valid_filt["OS time"].max(), data_test_filt["OS time"].max()) + 2
         logger.info(f"t_obs: {t_obs}")
         
         # --- Step 5g: Compute pooling_hiddens from H's number of hyperedges ---
@@ -963,7 +964,7 @@ def run_rna_reactome_experiment(
         
         # --- Step 6f: Build graph G and compute t_obs ---
         G = generate_G_from_H(H.T) if hyper_params["edge_pooling"] else generate_G_from_H(H)
-        t_obs = data_train_filt["time"].max() + 2
+        t_obs = max(data_train_filt["time"].max(), data_valid_filt["time"].max(), data_test_filt["time"].max()) + 2
         
         # --- Step 6g: Compute pooling_hiddens ---
         hyper_params['pooling_hiddens'] = build_hiddens(
