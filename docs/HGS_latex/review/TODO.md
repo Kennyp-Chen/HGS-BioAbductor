@@ -16,6 +16,7 @@
 - [x] **R2 #3** (cid #8) 随机 vs 按重要性扰动对比 — cyp (图+回复已提交)
 - [x] **R2 #6** (cid #11) HCC 批次效应 PCA 可视化 — cyp (per-sample Z-score 对齐 pipeline)
 - [x] **R2 #12** (cid #18) 每种子训练集内特征筛选 — cyp (HCC PRO +0.006; LIHC RNA -0.051)
+- [x] **R2 #13** (cid #19) Cox 400 与 XAI 发现关系 — cyp (PFKFB2: Cox rank 102/2258, XAI检出, DEA漏检, 实验验证)
 
 ---
 
@@ -54,13 +55,13 @@
 
 ## 四、其他负责人任务（供参考，非 cyp）
 
-### xlh（5 项）
+### xlh（4 项 — #13 已由 cyp 完成）
 | CID | 审稿意见 | 内容 |
 |-----|---------|------|
 | 10 | R2 #5 | 讨论各类模型可解释性 |
 | 12 | R2 #7 | BCLC 临床依据说明 |
 | 14 | R2 #9 | 双向遮蔽 rationale 详细说明 |
-| 19 | R2 #13 | Cox 400 说明 |
+| 19 | R2 #13 | Cox 400 说明 → ✅ cyp: PFKFB2 案例（Cox rank 102/2258; XAI检出; DEA漏检; 实验验证有效）回复已补充 |
 | 23 | R2 #17 | 超图 vs 二部图 + compatibility 公式解释 |
 
 ### zqy（5 项）
