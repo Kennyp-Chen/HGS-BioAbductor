@@ -17,7 +17,7 @@ models (HGS with STRING/Reactome/hcluster knowledge + DeepSurv/DeepHit/DRSA/Pnet
 关键设计
 ---------
 1. 自动从 benchmark Results-nt20.csv / Results.csv 中解析每个 cohort × model 的超参
-2. 复用单数据集脚本 (per_fold_feature_selection_experiment.py) 的核心函数
+2. 复用单数据集脚本 (per_split_feature_selection_experiment.py) 的核心函数
 3. 每 cohort × model 独立保存结果，支持断点续跑
 4. 基因选择缓存：每 seed 的 Cox 选出基因保存到文件，中断后自动跳过已完成 seed
 5. 通过 --models 参数支持 HGS 多知识类型和 DeepSurv/DeepHit/DRSA/Pnet 基线模型
@@ -44,29 +44,29 @@ Baseline models (DeepSurv/DeepHit/DRSA/Pnet):
 用法
 -----
     # Full experiment on all cohorts (default HGS knowledge per omics)
-    python review_experiments/per_fold_fs_all_cohorts.py
+    python review_experiments/per_split_fs_all_cohorts.py
 
     # Run specific models on all cohorts
-    python review_experiments/per_fold_fs_all_cohorts.py --models HGS-STRING HGS-Reactome DeepSurv
+    python review_experiments/per_split_fs_all_cohorts.py --models HGS-STRING HGS-Reactome DeepSurv
 
     # PRO only
-    python review_experiments/per_fold_fs_all_cohorts.py --omics PRO
+    python review_experiments/per_split_fs_all_cohorts.py --omics PRO
 
     # Single cohort, single model
-    python review_experiments/per_fold_fs_all_cohorts.py --omics PRO --cohort HCC --models HGS-STRING
+    python review_experiments/per_split_fs_all_cohorts.py --omics PRO --cohort HCC --models HGS-STRING
 
     # Smoke test (1 seed, 5 epochs)
-    python review_experiments/per_fold_fs_all_cohorts.py --smoke_test
+    python review_experiments/per_split_fs_all_cohorts.py --smoke_test
 
     # Resume interrupted run
-    python review_experiments/per_fold_fs_all_cohorts.py --skip_existing
+    python review_experiments/per_split_fs_all_cohorts.py --skip_existing
 
     # Limit Cox genes (for fast testing / avoiding hang)
-    python review_experiments/per_fold_fs_all_cohorts.py --max_cox_genes 2000
+    python review_experiments/per_split_fs_all_cohorts.py --max_cox_genes 2000
 
 输出
 -----
-Results/per_fold_fs/all_cohorts/
+Results/per_split_fs/all_cohorts/
 ├── {Omics}_{Cohort}_{Model}_results.csv   # Per-seed results per cohort × model
 ├── {Omics}_{Cohort}_{Model}_summary.csv   # Summary stats per cohort × model
 ├── selected_genes/                        # Per-seed gene selection cache
@@ -104,7 +104,7 @@ from utils.data_utils import build_hiddens
 from Preprocess.DATA_preprocess import cox_feature_selection
 
 # Reuse shared functions from single-dataset experiment script
-from review_experiments.per_fold_feature_selection_experiment import (
+from review_experiments.per_split_feature_selection_experiment import (
     build_STRING_H,
     build_Reactome_H,
     save_selected_genes,
@@ -112,7 +112,7 @@ from review_experiments.per_fold_feature_selection_experiment import (
     setup_logger,
 )
 
-from review_experiments.per_fold_fs_all_models import (
+from review_experiments.per_split_fs_all_models import (
     train_hgs,
     train_baseline,
     parse_baseline_best_hp,
@@ -127,7 +127,7 @@ from review_experiments.per_fold_fs_all_models import (
 # Constants
 # ============================================================
 
-OUT_DIR = "Results/per_fold_fs/all_cohorts"
+OUT_DIR = "Results/per_split_fs/all_cohorts"
 GENES_CACHE_DIR = os.path.join(OUT_DIR, "selected_genes")
 
 PRO_COHORTS = ["CCRCC", "GBM", "HaNSCC", "HCC", "LA", "LSCC", "PDA", "UCEC"]
@@ -320,7 +320,7 @@ def parse_original_seed_results(fn_results: str, cfg: dict) -> Dict[int, float]:
     }
 
     # Import the shared parser
-    from review_experiments.per_fold_feature_selection_experiment import \
+    from review_experiments.per_split_feature_selection_experiment import \
         parse_original_seed_results as _parse_func
 
     return _parse_func(fn_results, target_hp)
@@ -1092,7 +1092,7 @@ def is_cohort_complete(omics: str, cohort: str, model_name: str) -> bool:
 def main():
     """Main entry point."""
     args = parse_args()
-    logger = setup_logger("per_fold_fs_all", log_dir="logs")
+    logger = setup_logger("per_split_fs_all", log_dir="logs")
     logger.info(f"Arguments: {args}")
     logger.info(f"Output directory: {OUT_DIR}")
 

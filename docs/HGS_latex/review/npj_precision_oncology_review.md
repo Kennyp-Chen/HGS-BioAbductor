@@ -240,7 +240,7 @@ Figures are available at:
 
 **Rationale for this design choice.** The hypergraph incidence matrix H is constructed from the selected gene set. To ensure that the hypergraph structure remains consistent across all cross-validation folds --- a prerequisite for meaningful cross-fold comparison of downstream XAI explanations and triplet ranking --- we opted to perform feature selection on the full cohort. If feature selection were re-done independently within each fold, each fold could select a different gene set, leading to different hypergraph topologies and making it difficult to aggregate and compare interpretability results across folds for the same disease.
 
-**Validation experiment.** To demonstrate that this design choice does not materially impact the reported performance, we performed a per-fold feature selection validation across all 18 cohorts (8 proteomic + 10 transcriptomic). The experiment pipeline re-runs Cox univariate regression strictly within each training fold (60% of the data) for each of 10 random seeds, selects the top 400 most significant genes, reconstructs the hypergraph and graph projections, and trains the HGS model using the original hyperparameters before comparing test-set C-indices against the original full-data procedure.
+**Validation experiment.** To demonstrate that this design choice does not materially impact the reported performance, we performed a per-split feature selection validation across all 18 cohorts (8 proteomic + 10 transcriptomic). For each of 10 random seeds, we perform a single 60/20/2 train/validation/test split. Cox univariate regression is applied strictly to the training set only (60% of the data), the top 400 most significant genes are selected, the hypergraph and graph projections are reconstructed, and the HGS model is trained using the original hyperparameters before comparing test-set C-indices against the original full-data procedure.
 
 **Hyperparameter configuration.** To isolate the effect of feature selection timing, we reused the optimal hyperparameters from the original full-data pipeline for each cohort (identified by the AutoML search in the original study). Keeping hyperparameters fixed ensures that any observed C-index differences are attributable solely to the change in feature selection timing, not to confounding from a different hyperparameter configuration. The main hyperparameters (network depth, hidden dimensions, activation function, and attention type) are architecture-level choices that remain appropriate regardless of feature selection timing. While learning rate and regularization strength could in principle shift with different feature subsets, the coarse-grained binary search space (e.g., lr in {0.01, 0.001}) and early stopping based on validation C-index provide robustness to moderate hyperparameter mismatch.
 
@@ -254,7 +254,7 @@ Figures are available at:
 
 **Status.** Full 10-seed x 50-epoch execution across all cohorts is in progress. The experiment scripts (`DataPreprocess/per_fold_feature_selection_experiment.py` for single-dataset runs, `DataPreprocess/per_fold_fs_all_cohorts.py` for the full 18-cohort sweep) have been created and smoke-tested, with per-seed gene selection caching and checkpoint-based resume support.
 
-> *Change: All 18 cohorts re-analyzed with per-fold feature selection; results reported in Supplementary Table X.*
+> *Change: All 18 cohorts re-analyzed with per-split (train-only) feature selection; results reported in Supplementary Table X.*
 
 ---
 

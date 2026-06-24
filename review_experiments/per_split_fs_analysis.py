@@ -12,9 +12,9 @@ Per-Fold Feature Selection: Results Compilation & Visualization (R2 #12)
 
 数据来源
 ---------
-- Results/per_fold_fs/all_cohorts/PRO_{cohort}_results.csv
-- Results/per_fold_fs/all_cohorts/RNA_{cohort}_results.csv
-- Results/per_fold_fs/comparison.csv  (单数据集实验旧结果)
+- Results/per_split_fs/all_cohorts/PRO_{cohort}_results.csv
+- Results/per_split_fs/all_cohorts/RNA_{cohort}_results.csv
+- Results/per_split_fs/comparison.csv  (单数据集实验旧结果)
 """
 
 import os
@@ -41,11 +41,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # ============================================================
 
 RESULTS_DIRS = [
-    "Results/per_fold_fs/all_cohorts",
-    "Results/per_fold_fs",  # fallback for single-cohort results
+    "Results/per_split_fs/all_cohorts",
+    "Results/per_split_fs",  # fallback for single-cohort results
 ]
 
-OUTPUT_DIR = "Results/per_fold_fs/analysis"
+OUTPUT_DIR = "Results/per_split_fs/analysis"
 
 # Color scheme
 COLOR_ORIGINAL = "#4C72B0"  # blue
@@ -74,7 +74,8 @@ def load_all_results() -> pd.DataFrame:
     """
     Load all per-cohort results from available result directories.
 
-    Searches RESULTS_DIRS for PRO_*_results.csv and RNA_*_results.csv files.
+    Searches RESULTS_DIRS for PRO_*_results.csv and RNA_*_results.csv files,
+    and also loads Results/per_split_fs/comparison.csv (single-dataset format).
 
     Returns:
         Combined DataFrame with columns:
@@ -82,6 +83,23 @@ def load_all_results() -> pd.DataFrame:
          'Original_CIndex', 'PerFold_CIndex', 'Delta']
     """
     all_dfs = []
+
+    single_df = load_single_dataset_results()
+    if not single_df.empty:
+        def parse_dataset(ds):
+            ds = str(ds)
+            if 'PRO' in ds or 'pro' in ds or 'HCC' in ds:
+                parts = ds.split()
+                return ('PRO', parts[0] if len(parts) >= 1 else ds)
+            elif 'RNA' in ds or 'rna' in ds or 'LIHC' in ds:
+                parts = ds.split()
+                return ('RNA', parts[0] if len(parts) >= 1 else ds)
+            return ('UNKNOWN', ds)
+
+        omics_cohort = single_df['Dataset'].apply(lambda x: parse_dataset(x))
+        single_df.insert(0, 'Omics', omics_cohort.apply(lambda x: x[0]))
+        single_df.insert(1, 'Cohort', omics_cohort.apply(lambda x: x[1]))
+        all_dfs.append(single_df)
 
     for res_dir in RESULTS_DIRS:
         if not os.path.isdir(res_dir):
@@ -146,7 +164,7 @@ def load_single_dataset_results() -> pd.DataFrame:
     Returns:
         DataFrame with single-cohort results (compatible format), or empty.
     """
-    fn = "Results/per_fold_fs/comparison.csv"
+    fn = "Results/per_split_fs/comparison.csv"
     if os.path.isfile(fn):
         return pd.read_csv(fn)
     return pd.DataFrame()
@@ -508,7 +526,7 @@ def main():
     print(f"  Loaded {len(df)} rows across {df[['Omics', 'Cohort']].drop_duplicates().shape[0]} cohorts")
 
     if df.empty:
-        print("  No results found. Run per_fold_fs_all_cohorts.py first.")
+        print("  No results found. Run per_split_fs_all_cohorts.py first.")
         return
 
     # Print summary table

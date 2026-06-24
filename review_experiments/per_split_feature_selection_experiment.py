@@ -75,7 +75,7 @@ Step 3: 对每个 seed (0-9)：
 Step 4: 汇总与对比
   - 每个 seed 输出: Original C-index vs Per-fold C-index vs Δ
   - 汇总: 每个数据集输出均值 ± 标准差
-  - 保存: Results/per_fold_fs/comparison.csv (per-seed) + summary.csv (汇总)
+  - 保存: Results/per_split_fs/comparison.csv (per-seed) + summary.csv (汇总)
 
 数据流概要
 -----------
@@ -94,19 +94,19 @@ RNA Reactome:
 用法
 -----
     # Full experiment (all seeds, both datasets)
-    python DataPreprocess/per_fold_feature_selection_experiment.py
+    python review_experiments/per_split_feature_selection_experiment.py
 
     # Smoke test (1 seed with fast epochs)
-    python DataPreprocess/per_fold_feature_selection_experiment.py --smoke_test
+    python review_experiments/per_split_feature_selection_experiment.py --smoke_test
 
     # Skip one dataset
-    python DataPreprocess/per_fold_feature_selection_experiment.py --skip_rna
+    python review_experiments/per_split_feature_selection_experiment.py --skip_rna
 
     # Custom seeds / epochs
-    python DataPreprocess/per_fold_feature_selection_experiment.py --num_seeds 3 --epochs 20
+    python review_experiments/per_split_feature_selection_experiment.py --num_seeds 3 --epochs 20
 
     # 限制 Cox 基因数（RNA 8559 基因可能挂起时用）
-    python DataPreprocess/per_fold_feature_selection_experiment.py --max_cox_genes 2000
+    python review_experiments/per_split_feature_selection_experiment.py --max_cox_genes 2000
 """
 
 import os
@@ -302,7 +302,7 @@ def build_STRING_H(data_train: pd.DataFrame, cohort: str,
     valid_genes = gene_set.intersection(H.index)
     if len(valid_genes) < len(gene_set):
         n_missing = len(gene_set) - len(valid_genes)
-        logger = logging.getLogger("per_fold_fs")
+        logger = logging.getLogger("per_split_fs")
         logger.warning(f"{n_missing}/{len(gene_set)} genes not in STRING H, dropping them")
     H = H.loc[valid_genes, edges_sorted]
     H = H.loc[:, H.sum(axis=0) != 0]
@@ -342,7 +342,7 @@ def build_Reactome_H(selected_genes: List[str],
 #   - 中断后恢复（跳过 Cox 直接训练）
 #   - 跨 seed 分析哪些基因被稳定选中
 
-GENES_CACHE_DIR = "Results/per_fold_fs/selected_genes"
+GENES_CACHE_DIR = "Results/per_split_fs/selected_genes"
 
 
 def save_selected_genes(seed_label: str, genes: List[str]) -> None:
@@ -488,7 +488,7 @@ def parse_original_seed_results(fn_results: str,
 # Section 4: Logging Helper
 # ============================================================
 
-def setup_logger(name: str = "per_fold_fs",
+def setup_logger(name: str = "per_split_fs",
                  log_dir: str = "logs") -> logging.Logger:
     """
     Configure a logger that writes to both file and console.
@@ -502,7 +502,7 @@ def setup_logger(name: str = "per_fold_fs",
     """
     os.makedirs(log_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%y%m%d-%H%M%S")
-    log_file = os.path.join(log_dir, f"per_fold_fs-{timestamp}.log")
+    log_file = os.path.join(log_dir, f"per_split_fs-{timestamp}.log")
     
     logger = logging.getLogger(name)
     logger.setLevel(logging.INFO)
@@ -611,7 +611,7 @@ def run_pro_string_experiment(
     # ---------------------------------------------------------------
     # Step 4: Create output directory
     # ---------------------------------------------------------------
-    out_dir = "Results/per_fold_fs"
+    out_dir = "Results/per_split_fs"
     os.makedirs(out_dir, exist_ok=True)
     
     # ---------------------------------------------------------------
@@ -872,7 +872,7 @@ def run_rna_reactome_experiment(
     # ---------------------------------------------------------------
     # Step 5: Create output directory
     # ---------------------------------------------------------------
-    out_dir = "Results/per_fold_fs"
+    out_dir = "Results/per_split_fs"
     os.makedirs(out_dir, exist_ok=True)
     
     # ---------------------------------------------------------------
@@ -1124,7 +1124,7 @@ def main():
     """Main entry point."""
     args = parse_args()
     
-    logger = setup_logger("per_fold_fs")
+    logger = setup_logger("per_split_fs")
     logger.info(f"Arguments: {args}")
     
     all_results = []
@@ -1177,7 +1177,7 @@ def main():
     if all_results:
         # Combine per-seed results
         results_df = pd.concat(all_results, ignore_index=True)
-        out_dir = "Results/per_fold_fs"
+        out_dir = "Results/per_split_fs"
         os.makedirs(out_dir, exist_ok=True)
         
         # Save per-seed table
