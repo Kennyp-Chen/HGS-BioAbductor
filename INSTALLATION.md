@@ -1,310 +1,75 @@
-# Installation Guide
+# Installation and verification
 
-This project requires **two separate Python environments**:
-1. **Benchmark & XAI Environment**: for model training, benchmarking, and XAI interpretation
-2. **Abduction Environment**: for LLM-based hypothesis generation and validation
+Use Python 3.10 or newer. The validated smoke-test environment uses Python 3.10 and PyTorch 2.5.1 on Linux. Neural training and XAI require an NVIDIA GPU; CPU checks verify imports and data handling only.
 
----
+## Choose an environment
 
-## Environment 1: Benchmark & XAI Environment
-
-### Create Virtual Environment
+Run commands from the repository root. Create one environment for the whole pipeline, or separate environments for the two components.
 
 ```bash
-# Using conda (recommended)
-conda create -n hgs-benchmark python=3.9
-conda activate hgs-benchmark
-
-# Or using venv
-python3.9 -m venv hgs-benchmark
-source hgs-benchmark/bin/activate  # Linux/Mac
-# hgs-benchmark\Scripts\activate  # Windows
+conda create -n hgs python=3.10 -y
+conda activate hgs
+python -m pip install --upgrade pip
 ```
 
-### Install Dependencies
+Install a PyTorch build compatible with your GPU and CUDA runtime using the [PyTorch installation selector](https://pytorch.org/get-started/locally/), then choose one dependency entry point:
 
 ```bash
-# Install PyTorch (choose based on your CUDA version)
-# CUDA 11.8
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+# Whole pipeline
+python -m pip install -r requirements.txt
 
-# CUDA 12.1
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+# Or, benchmarking and XAI only
+python -m pip install -r requirements_benchmark.txt
 
-# CPU only
-pip install torch torchvision
-
-# Install other dependencies
-pip install -r requirements_benchmark.txt
+# Or, hypothesis generation and evaluation only
+python -m pip install -r requirements_abduction.txt
 ```
 
-### Verify Installation
+`requirements.txt` includes both component files. `requirements_benchmark.txt` constrains NumPy, SciPy, and setuptools to versions compatible with the retained `lifelines==0.27.7` implementation. Do not remove these bounds without retesting imports and survival metrics. Jupyter is optional and can be installed separately.
+
+For the exact package versions used by the public-release checks, add `-c constraints/python310.txt` to the install command. This is a tested environment snapshot, not a reconstruction of the original paper's training environment. The snapshot's PyTorch version can be installed from the appropriate CPU or CUDA wheel index before installing the other dependencies.
+
+## Configure data and credentials
+
+The root `config.yaml` links to `configs/config.yaml`. Training architecture/search settings are in `configs/hgs_architecture_PRO.yaml` and `configs/hgs_architecture_RNA.yaml`; XAI settings are in `configs/xai_hcc.yaml`.
+
+For local paths and evaluation credentials, make an ignored copy:
 
 ```bash
-python -c "import torch; print(f'PyTorch: {torch.__version__}')"
-python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
-python -c "import lifelines; print(f'Lifelines: {lifelines.__version__}')"
+cp configs/config.yaml configs/config.local.yaml
+export HGS_CONFIG=configs/config.local.yaml
 ```
 
-### Run with This Environment
+Edit the copy with your data locations. For hypothesis evaluation, fill in `generic.api_key` and `generic.base_url` for your API service and check `default_model`. The evaluation agents and embedding client use this local configuration. Do not commit the copy. For generation, set `OPENAI_API_KEY` and `BASE_URL` in your shell; the script prompts if they are missing.
+
+By default generation and evaluation use `Results/AI_Hypothesis/`. Set `input_triplet.triplets_info_file` to the same JSON used for generation. To inspect the bundled examples instead, point the `plausibility` and `input_triplet` paths in your local copy to `examples/AI_hypotheses/`; evaluation can write to its configured inputs/output directory.
+
+The repository does not include clinical datasets, prior-knowledge tables, literature corpora, an embedding database, or trained checkpoints. See the paper's data availability statement, then prepare the paths described in the main [README](README.md). HCC multi-cohort PCA and legacy preprocessing additionally require cohort-level inputs; their CLI options accept custom locations.
+
+## Verify the installation
+
+These checks do not train a model or call an LLM API:
 
 ```bash
-# Model training
-python HGS_GS.py --omics_data RNA --device cuda:0
-python baseline_DL_GS.py --omics_data RNA --device 0
-python baseline_SA_GS.py --omics_data RNA
-python baseline_SHINE_GS.py --omics_data RNA --device 0
-
-# XAI explanation
-python HGS_XAI.py
+python -c "import torch, lifelines, sksurv, captum, optuna; print('Benchmark imports OK'); print('CUDA:', torch.cuda.is_available())"
+python HGS_GS.py --help
+python HGS_XAI.py --help
+python HGS_abduction.py --help
+python Hypotheses_evaluation.py --help
+MPLBACKEND=Agg python -m unittest discover -s tests -v
 ```
 
----
+The regression checks use synthetic cohorts to verify configuration overrides, XAI loading, and alignment of feature columns with prior-knowledge nodes. They do not establish paper-level numerical reproduction.
 
-## Environment 2: Abduction Environment
-
-### Create Virtual Environment
+## Run the pipeline
 
 ```bash
-# Using conda (recommended)
-conda create -n hgs-abduction python=3.10
-conda activate hgs-abduction
-
-# Or using venv
-python3.10 -m venv hgs-abduction
-source hgs-abduction/bin/activate  # Linux/Mac
-# hgs-abduction\Scripts\activate  # Windows
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements_abduction.txt
-```
-
-### Configure OpenAI API
-
-```bash
-# Set environment variable
-export OPENAI_API_KEY="your-api-key-here"
-
-# Or set in Python script
-# import os
-# os.environ["OPENAI_API_KEY"] = "your-api-key-here"
-```
-
-### Verify Installation
-
-```bash
-python -c "import openai; print(f'OpenAI: {openai.__version__}')"
-python -c "import langchain_openai; print('LangChain OpenAI installed')"
-python -c "import chromadb; print(f'ChromaDB: {chromadb.__version__}')"
-```
-
-### Run with This Environment
-
-```bash
-# Hypothesis generation
-python HGS_abduction.py
-
-# Hypothesis evaluation
+python HGS_GS.py --omics_data PRO --prior_knowledge STRING --device 0
+python HGS_XAI.py --experiment configs/xai_hcc.yaml
+python HGS_abduction.py examples/10triplets_statistics.json
 python Hypotheses_evaluation.py
 ```
 
----
+Adjust the XAI experiment and generation input to match your training cohort. Generation model/database/output settings are exposed through `--chat-model`, `--embedding-model`, `--knowledge-path`, and `--output-dir`.
 
-## Quick Install (One-Click)
-
-### Method 1: Using conda
-
-```bash
-# Create and install Benchmark environment
-conda create -n hgs-benchmark python=3.9 -y
-conda activate hgs-benchmark
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-pip install -r requirements_benchmark.txt
-
-# Create and install Abduction environment
-conda create -n hgs-abduction python=3.10 -y
-conda activate hgs-abduction
-pip install -r requirements_abduction.txt
-```
-
-### Method 2: Using installation script
-
-Create `install.sh`:
-
-```bash
-#!/bin/bash
-
-echo "Installing HGS-BioAbductor environments..."
-
-# Benchmark environment
-echo "Creating benchmark environment..."
-conda create -n hgs-benchmark python=3.9 -y
-conda activate hgs-benchmark
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-pip install -r requirements_benchmark.txt
-echo "Benchmark environment installed!"
-
-# Abduction environment
-echo "Creating abduction environment..."
-conda create -n hgs-abduction python=3.10 -y
-conda activate hgs-abduction
-pip install -r requirements_abduction.txt
-echo "Abduction environment installed!"
-
-echo "Installation complete!"
-```
-
-Run:
-```bash
-chmod +x install.sh
-./install.sh
-```
-
----
-
-## Environment Switching
-
-### Using Benchmark Environment
-
-```bash
-conda activate hgs-benchmark
-# or
-source hgs-benchmark/bin/activate
-```
-
-### Using Abduction Environment
-
-```bash
-conda activate hgs-abduction
-# or
-source hgs-abduction/bin/activate
-```
-
----
-
-## Dependency Overview
-
-### Benchmark & XAI Environment Key Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| torch | >=1.10.0 | Deep learning framework |
-| lifelines | 0.27.7 | Survival analysis |
-| scikit-survival | >=0.17.0 | Survival analysis |
-| captum | >=0.5.0 | XAI interpretation |
-| optuna | >=3.0.0 | Hyperparameter optimization |
-| gprofiler-official | >=1.0.0 | Pathway enrichment analysis |
-
-### Abduction Environment Key Dependencies
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| openai | >=1.0.0 | OpenAI API |
-| langchain-openai | >=0.0.5 | LangChain OpenAI integration |
-| chromadb | >=0.4.0 | Vector database |
-| mcp-server-pubtator3 | >=0.1.0 | PubTator3 API |
-| biopython | >=1.79 | Bioinformatics tools |
-
----
-
-## Troubleshooting
-
-### Q1: PyTorch installation fails
-
-```bash
-# Check CUDA version
-nvidia-smi
-
-# Select appropriate PyTorch based on CUDA version
-# Visit https://pytorch.org/get-started/locally/ for correct installation command
-```
-
-### Q2: Some packages fail to install
-
-```bash
-# Try upgrading pip
-pip install --upgrade pip
-
-# Use domestic mirror (for users in China)
-pip install -r requirements_benchmark.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-```
-
-### Q3: CUDA not available
-
-```bash
-# Check if CUDA is installed correctly
-nvidia-smi
-
-# Check if PyTorch recognizes CUDA
-python -c "import torch; print(torch.cuda.is_available())"
-
-# If False, reinstall PyTorch matching your CUDA version
-```
-
-### Q4: OpenAI API configuration
-
-```bash
-# Method 1: Environment variable
-export OPENAI_API_KEY="sk-..."
-
-# Method 2: Set in code
-# Edit HGS_abduction.py, add:
-# import os
-# os.environ["OPENAI_API_KEY"] = "sk-..."
-
-# Method 3: Using .env file
-# Create .env file with:
-# OPENAI_API_KEY=sk-...
-```
-
----
-
-## System Requirements
-
-### Minimum Requirements
-- **OS**: Linux, macOS, Windows 10+
-- **Python**: 3.9+ (Benchmark), 3.10+ (Abduction)
-- **Memory**: 16GB RAM
-- **Storage**: 50GB available space
-
-### Recommended Configuration
-- **OS**: Linux (Ubuntu 20.04+)
-- **Python**: 3.9 (Benchmark), 3.10 (Abduction)
-- **GPU**: NVIDIA GPU with 8GB+ VRAM (CUDA 11.8 or 12.1)
-- **Memory**: 32GB+ RAM
-- **Storage**: 100GB+ SSD
-
----
-
-## Installation Verification
-
-Run the following commands to verify both environments are correctly installed:
-
-```bash
-# Test Benchmark environment
-conda activate hgs-benchmark
-python -c "
-import torch
-import lifelines
-import captum
-import optuna
-print('✓ Benchmark environment OK')
-print(f'  PyTorch: {torch.__version__}')
-print(f'  CUDA: {torch.cuda.is_available()}')
-"
-
-# Test Abduction environment
-conda activate hgs-abduction
-python -c "
-import openai
-import langchain_openai
-import chromadb
-print('✓ Abduction environment OK')
-print(f'  OpenAI: {openai.__version__}')
-"
-```
-
-If both environments display "OK", the installation is successful!
+See [experiments/README.md](experiments/README.md) for supplementary validation scripts and the limits of the legacy ablation template. Full training and literature evaluation require the external data, GPU resources, and API configuration above.

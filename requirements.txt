@@ -1,34 +1,3 @@
-# Core dependencies
-numpy
-pandas
-lifelines
-scipy
-scikit-learn
-matplotlib
-seaborn
-tqdm
-pyyaml
-configparser
-
-# HGS model
-# XAI explanation
-lifelines==0.27.7
-gprofiler-official
-gseapy
-captum
-biopython
-# hypothesis abduction
-openai
-aiofiles
-langchain-openai
-langchain-chroma
-langchain-core
-# hypothesis scoring
-mcp-server-pubtator3
-fast-agent-mcp
-
-# Survival analysis
-sksurv
-
-# Optional dependencies 
-# plotly  
+# Full pipeline. Install only a component file for a smaller environment.
+-r requirements_benchmark.txt
+-r requirements_abduction.txt
