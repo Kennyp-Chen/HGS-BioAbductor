@@ -64,8 +64,6 @@ knowledge_params:
   criterion: "maxclust"  # Only for hcluster
   divisor: 3  # For pooling layers
   num_clusters: 100  # For hcluster
-  layer_reactome: 12  # For Reactome
-  type_know: "STRING"
   layer_STRING: 100
   k: 10
   layer_reactome: 11
@@ -75,7 +73,7 @@ paths:
   data_root: "data"
   proteomic_data_template: "{data_root}/PRO/{dataset}/dataset.csv"
   rna_data_template: "{data_root}/RNA/{dataset}/feature_matrix.csv"
-  reactome_graph_template: "{data_root}/RNA/HCC/ReactomeGraph/reactome_P{layer}/"
+  reactome_graph_template: "{data_root}/PriorKnow/Reactome/reactome_P{layer}/"
   string_graph_template: "{data_root}/PriorKnow/STRING/{method}/{dataset}-Level{layer}-H.csv"
   string_gene_list: "{data_root}/PriorKnow/STRING/clusters.protein.ensg.csv"
   cluster_relation_file: "{data_root}/PriorKnow/STRING/9606.clusters.tree.v12.0.txt"
@@ -83,6 +81,9 @@ paths:
   survival_data_template: "{data_root}/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv"
   mart_export: "{data_root}/mart_export.txt"
   gsva_dir: "{data_root}/GSVA/"
+  reactome_description: "{data_root}/PriorKnow/Reactome/HSA_ReactomePathways.txt"
+  reactome_p2p: "{data_root}/PriorKnow/Reactome/ReactomePathwaysRelation.txt"
+  reactome_g2p: "{data_root}/PriorKnow/Reactome/Ensembl2Reactome_All_Levels.txt"
   
   # Output paths
   results_root: "Results/GridSearch/SingleCohort"
@@ -165,25 +166,25 @@ novelty:
 
 # Literature Evidence Configuration
 plausibility:
-    viewpoint_pattern: "examples/AI_hypotheses/*/"
-    out_dir: "./examples/AI_hypotheses"
-    evidence_results_file: "./examples/AI_hypotheses/evidence_results_pubtator3.json"
-    evidence_percent_file: "./examples/AI_hypotheses/evidence_percent_pubtator3.json"
+    viewpoint_pattern: "Results/AI_Hypothesis/*/"
+    out_dir: "./Results/AI_Hypothesis"
+    evidence_results_file: "./Results/AI_Hypothesis/evidence_results_pubtator3.json"
+    evidence_percent_file: "./Results/AI_Hypothesis/evidence_percent_pubtator3.json"
 
 
 
 # Input Configuration
 input_triplet:
-    base_path: "examples/AI_hypotheses"
-    evidence_percent_file: "examples/AI_hypotheses/evidence_percent_pubtator3.json"
+    base_path: "Results/AI_Hypothesis"
+    evidence_percent_file: "Results/AI_Hypothesis/evidence_percent_pubtator3.json"
     triplets_info_file: "examples/10triplets_statistics.json"
-    output_csv: "examples/AI_hypotheses/HypothesisScores.csv"
+    output_csv: "Results/AI_Hypothesis/HypothesisScores.csv"
 
 generic:
-    # default
-    api_key: <your-api-key-here>
-    base_url: <your-base-url-here>
+  # Configure evaluation credentials only in an ignored local copy.
+  api_key: null  # Configure in an ignored *.local.yaml file.
+  base_url: null
 anthropic:
     api_key: ~
 openrouter:
-    api_key: <your-api-key-here>
+    api_key: null

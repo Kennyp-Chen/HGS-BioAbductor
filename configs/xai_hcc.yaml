@@ -1,0 +1,61 @@
+omics_data: PRO
+dataset: HCC
+device: 0
+model_parameters:
+  AGG: cat
+  num_hgat: single
+  depth: 2
+  l2: 0.1
+  lr: 0.01
+  glr: 0
+  type_atten: additive
+  n_hid: 200
+  gamma: 0.99
+  patience: 5
+  update_freq: 1
+  score: harmonic score
+  metric_update: score
+  train_scheme: final_epoch
+  MLP_hiddens:
+  - 200
+  predict_hiddens:
+  - 200
+  - 100
+  model: HGS
+  dataset: HCC
+  epochs: 50
+  print_freq: 10
+  batch_size: 32
+  cox_num: 400
+  dropout: 0.5
+  ACT: LeakyReLU
+  pooling_hiddens:
+  - 59
+  - 5
+  RESNET: false
+  repeat_time: 10
+  end_point: OS_60
+  edge_pooling: true
+  loss_w:
+    a: 1
+    b: 1
+    c1: 1
+    c2: 0
+    d: 1
+  pooling_method: linear
+  n_trials: 20
+  BayeOpt: false
+  JM: final
+  feature_base: STRING
+  num_min: 25
+  HG_BN: true
+  n_hp_ckpt: 11
+  atten_type: single
+  seed: 7
+knowledge_parameters:
+  type_know: hcluster
+  method: weighted
+  criterion: maxclust
+  num_clusters: 59
+  divisor: 10
+  DataDrive: hcluster

@@ -897,7 +897,16 @@ Hypothesis: {champion}
 
 
 def _main():
-    with open(sys.argv[1]) as f:
+    import argparse
+    from pathlib import Path
+    parser = argparse.ArgumentParser(description="Generate biological hypotheses from XAI triplets")
+    parser.add_argument("triplets", type=Path, help="Triplet-statistics JSON file")
+    parser.add_argument("--output-dir", type=Path, default=Path("Results/AI_Hypothesis"))
+    parser.add_argument("--knowledge-path", default="data/text-embedding-3-small")
+    parser.add_argument("--chat-model", default="o3-mini")
+    parser.add_argument("--embedding-model", default="text-embedding-3-small")
+    args = parser.parse_args()
+    with args.triplets.open(encoding="utf-8") as f:
         triplets = json.load(f)
     
     for index,triple in enumerate(triplets):
@@ -913,10 +922,10 @@ def _main():
         ai_scientist = AI_Hypothesis(
             triplet,
             num_hypothethesis=8,
-            save_path=f"Results/AI_Hypothesis/{triplets[triple].get('cancer name')}_{triplets[triple].get('gene name')}_8",
-            knowledge_path="data/text-embedding-3-small",
-            chatModel='o3-mini',
-            embeddingModel='text-embedding-3-small'
+            save_path=str(args.output_dir / f"{triplets[triple].get('cancer name')}_{triplets[triple].get('gene name')}_8"),
+            knowledge_path=args.knowledge_path,
+            chatModel=args.chat_model,
+            embeddingModel=args.embedding_model
         )
         
         champion_hypothesis = asyncio.run(ai_scientist.internal_trial_system())

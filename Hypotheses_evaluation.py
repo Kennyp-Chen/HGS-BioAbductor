@@ -15,10 +15,9 @@ from openai import OpenAI
 from mcp_agent.core.fastagent import FastAgent
 
 # Initialize FastAgent and OpenAI client
-fast = FastAgent("hypothesis candidate tournament", config_path='config.yaml')
+fast = FastAgent("hypothesis candidate tournament", config_path=os.environ.get("HGS_CONFIG", "config.yaml"))
 
-client = OpenAI(api_key=fast.config.get('generic').get('api_key'),
-                base_url=fast.config.get('generic').get('base_url'))
+client = None
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -77,6 +76,11 @@ The table itself should be in Markdown format without caption or header. Return 
 # Utility functions
 def get_embedding(text: str, model="text-embedding-3-small", **kwargs) -> list[float]:
     """Get embedding for text using OpenAI API"""
+    global client
+    if client is None:
+        generic = fast.config.get('generic') or {}
+        client = OpenAI(api_key=generic.get('api_key') or os.environ.get('OPENAI_API_KEY'),
+                        base_url=generic.get('base_url') or os.environ.get('BASE_URL'))
     logger.info(f"Embedding for text by {model}. Text: {text}")
     text = text.replace("\n", " ")
     response = client.embeddings.create(input=[text], model=model, **kwargs)
@@ -478,4 +482,4 @@ async def main():
     logger.info("Hypothesis evaluation completed successfully!")
 
 if __name__ == "__main__":
-    asyncio.run(main()) 
+    asyncio.run(main())

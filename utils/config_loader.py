@@ -1,20 +1,20 @@
 import yaml
 import os
 import hashlib
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import logging
 
 class ConfigLoader:
     """Configuration loader for HGS training"""
     
-    def __init__(self, config_path: str = "config.yaml"):
+    def __init__(self, config_path: Optional[str] = None):
         """
         Initialize config loader
         
         Args:
             config_path: Path to YAML configuration file
         """
-        self.config_path = config_path
+        self.config_path = config_path or os.environ.get("HGS_CONFIG", "config.yaml")
         self.config = self._load_config()
         self._validate_config()
         self._setup_logging()
@@ -293,4 +293,4 @@ class ConfigLoader:
             param_dict = dict(zip(param_names, values))
             combinations.append(param_dict)
         
-        return combinations 
+        return combinations

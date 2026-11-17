@@ -19,7 +19,7 @@ from sklearn.preprocessing import StandardScaler
 from utils.config_loader import ConfigLoader
 from utils.hg_ops import construct_H_STRING
 # 全局加载config
-config = ConfigLoader("config.yaml")
+config = ConfigLoader()
 
 def load_H_G(data,H_path):
     '''
@@ -273,10 +273,11 @@ def data_split(seed,data,dataset:str=None,HD={"type_know":"STRING","layer_STRING
                 H.to_csv(fn_H)
             edges_sorted = H.columns.sort_values()# keep order same
             H = H.loc[gene_set,edges_sorted]
-            H = H if H_df else H.values
-            return data_train.values,data_valid.values,data_test.values,t_obs,H
-            
-            H = H.loc[gene_set,:]
+            # Keep the feature columns aligned with the nodes retained by STRING.
+            columns = gene_set.to_list() + data_train.columns[-2:].to_list()
+            data_train = data_train.loc[:, columns]
+            data_valid = data_valid.loc[:, columns]
+            data_test = data_test.loc[:, columns]
             H = H if H_df else H.values
             return data_train.values,data_valid.values,data_test.values,t_obs,H
 
@@ -355,7 +356,7 @@ def load_opt_data(data_path,H_path,Filt_num,endpoint,DF=False,pathway_mask=False
     data_df = pd.read_csv(os.path.join(data_path + '/feature_matrix.csv'), index_col= 0,)
 
     # get patients' survival data
-    survival_df = pd.read_csv("data/RNA/ClinicalDataFrame_DiscreteTime-Cut15Years.csv",index_col= 0,)
+    survival_df = pd.read_csv(config.get_paths()['survival_data_template'], index_col=0)
 
     # get gene info; which selected by cox uni reg
     gene_info_df = pd.read_csv(os.path.join(data_path +  '/genes_list.csv'),index_col= 0,)

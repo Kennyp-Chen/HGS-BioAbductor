@@ -99,7 +99,6 @@ nohup.out
 origin_scripts/
 .kiro/
 other_experiments/
-requirements.txt
 
 # Keep important files (exceptions)
 !README.md
@@ -114,11 +113,17 @@ docs/
 
 # AI Agent workspace files
 .sisyphus/
+.omo/
 AGENTS.md
 TODO_Cyp.md
 
 # Generated notebook execution outputs and plots
 notebook/*_executed.ipynb
 notebook/*.svg
+
+# Private runtime configuration and generated analyses
+config.local.yaml
+configs/*.local.yaml
+borda_scores/
 
 

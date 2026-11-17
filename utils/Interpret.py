@@ -31,6 +31,7 @@ from scipy.stats import pearsonr
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 import json
+from utils.config_loader import ConfigLoader
 class Interpreter:
     def __init__(self, model: nn.Module, input: pd.DataFrame, target: int = None):
         """
@@ -1233,8 +1234,6 @@ def get_death_CDF_sum(model,data):
 
 class TripletsAnalysis:
     def __init__(self,model,H_df,data,out_path,dn_data,hyperedge_borda,node_borda,n_triplets,PK_D,fn_map,dn_esdb):
-        # ensemble2gene = pd.read_table('/Backup/home/chenyupeng/DATA/mart_export (1).txt', index_col=0)
-        # self.dn_esdb = f"/Backup/home/chenyupeng/DATA/GSVA/"
         ensemble2gene = pd.read_table(fn_map, index_col=0)
         self.n_triplets = n_triplets
         self.outpath = out_path
@@ -1332,7 +1331,6 @@ class TripletsAnalysis:
         '''
         triplet: {'gene':gene_symbol, 'cancer':cancer_name, 'pathway':pathway_name}
         '''
-        # Entrez.email = "qymyc04@live.com"
         gene_symbol = triplet['gene']
         cancer_name = triplet['cancer']
         pathway_name = triplet[name_hyperedge]
@@ -1437,7 +1435,8 @@ class TripletsAnalysis:
         超边：聚类知识、STRING：富集分析；Reactome：description
         节点：ensg->gene_name
         '''
-        if self.PK_D['type_know'] =='hcluster' or (self.PK_D['type_know']=='STRING' and self.PK_D['Description']=="Enrichment"):
+        config = ConfigLoader()
+        if self.PK_D['type_know'] =='hcluster' or (self.PK_D['type_know']=='STRING' and self.PK_D.get('Description', 'STRING')=="Enrichment"):
             # GSEA for description
             ## map for cluster-genes
             clus_genes={}
@@ -1447,11 +1446,11 @@ class TripletsAnalysis:
             hyperedge_name = [enrich_results[f"{i}"] for i in range(len(self.H_df.columns))]
         elif self.PK_D['type_know'] == 'Reactome':
             # H = pd.read_csv("/data/HGCluster/reactome_P12/AcrossCohorts/RNA/test-['ICGC_LIRI']-cox200/H1.csv", index_col =0)
-            reactome_description = pd.read_table('/Backup/home/chenyupeng/Projects240423/HGS-Explainer/HSA_ReactomePathways.txt', index_col = 0, header=None)# TODO
+            reactome_description = pd.read_table(config.get_paths()['reactome_description'], index_col=0, header=None)
             reactome_description = reactome_description[1].to_dict()
             hyperedge_name = [reactome_description[hsa[0]] for hsa in self.H_df.columns.str.split('_')]
-        elif self.PK_D['type_know']=='STRING' and self.PK_D['Description']=="STRING":
-            STRING_description = pd.read_csv('/Backup/home/chenyupeng/DATA/Graph/STRING/clusters.protein.ensg.csv',index_col='cluster_id')
+        elif self.PK_D['type_know']=='STRING' and self.PK_D.get('Description', 'STRING')=="STRING":
+            STRING_description = pd.read_csv(config.get_paths()['string_gene_list'], index_col='cluster_id')
             STRING_description = STRING_description['best_described_by'].to_dict()
             # TODO：key error 如果不存在则找其父，如果仍然不存在，则不进行解释;暂时直接保留 ;判断是否存在没有解释的cluster，若存在在字典中添加其值为 unexplained
             if sum([1-(ppi[0] in (STRING_description.keys())) for ppi in self.H_df.columns.str.split('_')])>0:
