@@ -7,7 +7,6 @@ from torch.nn.parameter import Parameter
 from torch.autograd import Variable
 import numpy as np, scipy.sparse as sp
 # from torch_geometric.nn import GCNConv
-from torch.nn.parameter import Parameter
 from torch.nn.modules.module import Module
 from torch.cuda.amp import autocast
 

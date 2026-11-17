@@ -7,15 +7,11 @@ import torch
 from torch.cuda.amp import autocast
 from collections import defaultdict
 import numpy as np
-import torch.nn.functional as F
-import torch
 from torch.autograd import Variable
 import time
 import copy
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
-from collections import defaultdict
 from torch.utils import data
 from utils.survfunc_utils import *
 from models.FC_Surv import FC_layers,FC_Res_layers, FC_layers1_2

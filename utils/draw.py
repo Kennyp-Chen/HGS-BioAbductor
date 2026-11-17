@@ -11,7 +11,6 @@ from sklearn.preprocessing import MinMaxScaler
 import time 
 import json
 
-# js = "/Backup/home/chenyupeng/Results/Interpret/PRO-HCC-hcluster/AGG:cat-num_hgat:single-depth:2-l2:0.1-lr:0.01-glr:0-type_atten:additive-n_hid:200-gamma:0.99-patience:5-update_freq:1-type_know:hcluster-method:weighted-criterion:maxclust-num_clusters:59-divisor:10/bordas_dict.json"
 # with open(js, 'r') as f:
 #     bordas_dict = json.load(f)
 # bordas_dict.keys()
@@ -87,10 +86,6 @@ def get_risk_minmax(data,model):
     risk_sum = cdf.sum(axis=1)
     risk_minmax = scaler.fit_transform(risk_sum.reshape(-1, 1))
     return risk_minmax
-def get_risk_mean(data,model):
-    cdf = get_cdf(data,model)
-    risk_mean = cdf.sum(axis=1)/cdf.shape[1]
-    return risk_mean
 def get_label_n_year(data,s):
     label = data[:,-2:].copy()
     # print(f"before process : {label[label[:,0]>=s,:]}")
@@ -191,17 +186,6 @@ def get_HR(data,model):
     h = model.predict(tensor).cpu().detach().numpy()
     return np.exp(h) 
 
-def plot_ROC(y_true,y_scores,method=""):
-    display = RocCurveDisplay.from_predictions(
-        y_true, y_scores,
-        name=f"Death vs. Survival",    
-        plot_chance_level=True,
-    )
-    _ = display.ax_.set(
-        xlabel="False Positive Rate",
-        ylabel="True Positive Rate",
-        title=f"{method} ROC curves",
-    )
 
 
 def plot_cancer_comparison(results,x_min=0.5,x_max=0.9):
@@ -453,8 +437,6 @@ def plot_DCA(ax, thresh_group, net_benefit_models, model_names, net_benefit_all,
 
 # 批次效应pca可视化
 from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import seaborn as sns
 from scipy import stats
@@ -668,9 +650,7 @@ def Difference_Analysis(group_h, group_l,df_corr,XAI):
     df['abs_log2FC']=np.abs(df['log2FC'])
     df['corr_DA_XAI'] = df['abs_log2FC'].corr(df['XAI'],method='pearson')
     return df
-import matplotlib.pyplot as plt
 from matplotlib_venn import venn2, venn2_circles, venn3, venn3_circles
-import numpy as np
 
 def draw_venn(sets, labels=None, title="Venn Diagram", colors=('#1f77b4', '#ff7f0e', '#2ca02c'), 
               alpha=0.5, figsize=(8, 6), show_percentages=True, percentage_decimals=1,subset_label_fontsize=10):
